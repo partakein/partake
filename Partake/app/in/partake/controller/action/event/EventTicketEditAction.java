@@ -1,0 +1,34 @@
+package in.partake.controller.action.event;
+
+import in.partake.base.PartakeException;
+import in.partake.controller.base.permission.EventEditPermission;
+import in.partake.model.UserEx;
+import in.partake.model.dao.DAOException;
+import in.partake.resource.UserErrorCode;
+import play.mvc.Result;
+
+public class EventTicketEditAction extends AbstractEventEditAction {
+    private String eventId;
+
+    public static Result get(String eventId) throws DAOException, PartakeException {
+        EventTicketEditAction action = new EventTicketEditAction();
+        action.eventId = eventId;
+        return action.execute();
+    }
+
+    @Override
+    protected Result doExecute() throws DAOException, PartakeException {
+        UserEx user = ensureLogin();
+        checkIdParameterIsValid(eventId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
+
+        event = new EventEditTransaction(eventId).execute();
+        if (event == null)
+            return renderInvalid(UserErrorCode.INVALID_EVENT_ID);
+
+        if (!EventEditPermission.check(event, user))
+            return renderForbidden(UserErrorCode.FORBIDDEN_EVENT_EDIT);
+
+        return render(views.html.events.edit_ticket.render(context(), event));
+    }
+}
+

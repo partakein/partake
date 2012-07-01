@@ -1,0 +1,33 @@
+@(ctx: in.partake.controller.PartakeActionContext)@internal.main(ctx, "フィードリスト") {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+    <h1>フィードリスト</h1>
+</div>
+
+<h2>RSS 配信</h2>
+<p>PARTAKE では、新着イベントを RSS でフィードしています。カテゴリごとに RSS を受信することもできます。</p>
+<p>ただし、パスワードが設定されているイベントは配信されません。</p>
+
+<ul>
+    <li><a href="/feed/all">全て</a></li>
+    <li><a href="/feed/upcoming/all">近日開催</a></li>
+    @for(kv <- in.partake.model.dto.auxiliary.EventCategory.getCategories()) {
+		<li><a href="/feed/category/@kv.getKey()">@kv.getValue()</a></li>
+    }
+</ul>
+
+<h2>iCal 配信</h2>
+<p>PARTAKE では、イベントを iCal 形式でも配信しています。</p>
+<p>ただし、パスワードが設定されているイベントは配信されません。</p>
+
+<ul>
+    <li><a href="/calendars/all">全て</a></li>
+    @for(kv <- in.partake.model.dto.auxiliary.EventCategory.getCategories()) {
+        <li><a href="/calendars/category/@kv.getKey()">@kv.getValue()</a></li>
+
+    }
+</ul>
+
+</div></div>
+}
