@@ -1,0 +1,418 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  user: in.partake.model.UserEx)
+@import in.partake.view.util._
+@import in.partake.base._
+@import org.apache.commons.lang._
+<h3>主催者</h3>
+<p><a href="/users/@event.getOwnerId()">
+    <img src="@event.getOwner().getProfileImageURL()" class="profile-image" alt="" width="20" height="20" />
+   	@if(event.getOwner().getTwitterLinkage().getName() != null) {
+   		@Html(Helper.escapeTwitterResponse(event.getOwner().getTwitterLinkage().getName()))
+        (@event.getOwner().getScreenName())
+    } else {
+    	@event.getOwner().getScreenName()
+    }
+</a></p>
+
+<h3>編集者</h3>
+<div id="editor-show">
+    <div id="editor-content">
+    	@if(event.getEditors() != null) { @for(editor <- event.getEditors()) {
+            <div>
+                <a href="/users/@event.getId()"><img src="@editor.getProfileImageURL()" height="20" width="20">@editor.getScreenName()</a>
+                <input type="hidden" name="editorId" value="@editor.getId()">
+            </div>
+        } }
+    </div>
+    <p><span id="editor-edit" class="label label-edit edit-button">編集者を追加・削除</span></p>
+</div>
+<p class="help-block">他のユーザーにこのイベントの編集権を出すことが可能です。編集権を持つユーザーは、イベント削除以外の全てが可能です。</p>
+<form id="editor-form" action="javascript:void(0)" style="display: none">
+    <div id="editor-list"></div>
+    <div>
+        <p>Twitter のスクリーン名を入力してユーザーを検索し、追加してください。</p>
+        <input type="text" id="editor-input" name="userNamePrefix" placeholder="twitter のスクリーン名を入力">
+    </div>
+    <div class="edit-form-buttons">
+        <input type="button" value="キャンセル" class="btn edit-cancel-button">
+        <input id="editor-submit" type="button" value="保存" class="btn edit-save-button">
+    </div>
+</form>
+<script>
+var initialEditors = [
+@if(event.getEditors() != null) {
+	@event.getEditors().zipWithIndex.map { editorWithIndex =>
+		@if(editorWithIndex._2 != 0) {,}
+		{
+			id: '@editorWithIndex._1.getId()',
+	        screenName: '@editorWithIndex._1.getScreenName()',
+			profileImageURL: '@editorWithIndex._1.getProfileImageURL()'
+		}
+	}
+}];
+
+$('#editor-edit').click(function(e) {
+    $('#editor-list').empty();
+    for (var i = 0; i < initialEditors.length; ++i)
+        addUserToList(initialEditors[i]);
+});
+
+function addUserToList(user) {
+    var li = $('<div></div>');
+
+    $('<a></a>')
+    .attr('href', '/users/' + user.id)
+    .append($('<img>').attr('src', user.profileImageURL).attr('width', 20).attr('height', 20))
+    .append($('<span></span>').text(user.screenName))
+    .appendTo(li);
+
+    $('<input type="hidden" name="editorId">')
+    .val(user.id)
+    .appendTo(li);
+
+    li.append(' [')
+    .append($('<a>x</a>').click(function(e) { $(this).parent().remove(); }))
+    .append(']');
+
+    $('#editor-list').append(li);
+}
+
+function addEditorToContent(user) {
+    var li = $('<div></div>');
+
+    var a = $('<a></a>').attr('href', '/users/' + user.id).appendTo(li);
+    $('<img height="20" width="20">').attr('src', user.profileImageURL).appendTo(a);
+    $('<span></span>').text(user.screenName).appendTo(a);
+
+    $('<input type="hidden" name="editorId"').val(user.id).appendTo(li);
+
+    $('#editor-content').append(li);
+}
+
+$('#editor-submit').click(function(e) {
+    var inputs = $('#editor-list input');
+    var editorIds = [];
+    inputs.each(function() {
+        editorIds.push($(this).val());
+    });
+
+    partake.event.modify(eventId, { editorIds: editorIds })
+    .done(function (json) {
+        if (json.editors) {
+            initialEditors = json.editors;
+            $('#editor-content').empty();
+            for (var i = 0; i < initialEditors.length; ++i)
+                addEditorToContent(initialEditors[i]);
+        }
+        $('#editor-form').hide();
+        $('#editor-show').show();
+    })
+    .fail(partake.defaultFailHandler);
+});
+$('#editor-input').autocomplete({
+    minLength: 3,
+    source: function(request, response) {
+        if (self.xhr)
+            self.xhr.abort();
+
+        var userNamePrefix = request.term || "";
+        userNamePrefix = $.trim(userNamePrefix);
+
+        var data = {
+            userNamePrefix: userNamePrefix
+        };
+
+        self.xhr = $.ajax({
+            url: '/api/user/search',
+            data: data,
+            dataType: "json",
+            success: function(data, status) {
+                var items = [];
+                for (var i = 0; i < data.users.length; ++i) {
+                    var user = data.users[i];
+
+                    var label = $('<span></span>');
+                    $('<img width="20" height="20">').attr('src', user.profileImageURL).appendTo(label);
+                    $('<span></span>').text(user.screenName).appendTo(label);
+
+                    items.push({
+                        label: label.html(),
+                        value: '',
+                        user: user
+                    });
+                }
+
+                response(items);
+            },
+            error: function() {
+                response([]);
+            }
+        });
+    },
+
+    select: function(event, ui) {
+        addUserToList(ui.item.user);
+    }
+});
+</script>
+
+<h3>開催日時</h3>
+<p id="date-show">
+    <span id="date-content">@Helper.readableDuration(event.getBeginDate(), event.getEndDate())</span>
+    <span id="date-edit" class="label label-edit edit-button">日時を編集</span>
+</p>
+<form id="date-form" style="display: none;">
+<p>開始日時</p>
+<div><input type="text" id="date-begin-input" name="beginDate" class="edit-input" placeholder="YYYY-MM-DD HH:MM" value="@TimeUtil.formatForEvent(event.getBeginDate())" /></div>
+<p>終了日時</p>
+<div class="input-prepend">
+    <div class="add-on"><input id="date-end-use-input" type="checkbox" class="edit-input" name="usesEndDate" @if(event.getEndDate() != null) { checked } ></div><input type="text" id="date-end-input" name="endDate" placeholder="YYYY-MM-DD HH:MM" value="@if(event.getEndDate() != null) { @TimeUtil.formatForEvent(event.getEndDate()) } else { @TimeUtil.formatForEvent(event.getBeginDate()) }" />
+</div>
+<div class="edit-form-buttons">
+    <input type="button" value="キャンセル" class="btn edit-cancel-button">
+    <input id="date-submit" type="button" value="保存" class="btn edit-save-button">
+</div>
+</form>
+<script>
+$('#date-begin-input, #date-end-input').datetimepicker({
+    dateFormat: 'yy-mm-dd'
+});
+$('#date-submit').click(function(e) {
+    var id = removeSuffix($(enclosingForm(this)).attr("id"), "-form");
+
+    var arg = {};
+    arg.beginDate = $('#date-begin-input').val();
+    if ($('#date-end-use-input').is(':checked')) {
+        arg.endDate = $('#date-end-input').val();
+    } else {
+        arg.endDate = '';
+    }
+
+    partake.event.modify(eventId, arg)
+    .done(function (json) {
+        $('#date-content').text(json.eventDuration);
+        $('#' + id + '-form').hide();
+        $('#' + id + '-show').show();
+    })
+    .fail(partake.defaultFailHandler);
+});
+</script>
+
+<h3>開催場所</h3>
+<p id="place-show">
+    会場：
+    <span id="place-content">@event.getPlace()</span>
+    <span id="place-edit" class="label label-edit edit-button">会場を編集</span>
+</p>
+<form id="place-form" style="display: none;">
+    <p><input type="text" class="span8 edit-input" name="place" id="place-input" value="" placeholder="会場：　「武道館」「株式会社 PARTAKE ビル 2F」など"></p>
+    <div class="edit-form-buttons">
+        <input type="button" value="キャンセル" class="btn edit-cancel-button">
+        <input id="place-submit" type="button" value="保存" class="btn edit-save-button">
+    </div>
+</form>
+<script>
+$('#place-edit').click(function(e) {
+    $('#place-input').val($('#place-content').text());
+});
+
+$('#place-submit').click(function(e) {
+    var form = $(enclosingForm(this));
+    var id = removeSuffix(form.attr("id"), "-form");
+
+    partake.event.modify(eventId, { place: $('#place-input').val() })
+    .done(function (json) {
+        $('#place-content').text($('#place-input').val());
+        $('#' + id + '-form').hide();
+        $('#' + id + '-show').show();
+    })
+    .fail(partake.defaultFailHandler);
+});
+</script>
+
+<p id="address-show">
+    住所：
+    <span id="address-content">@event.getAddress()</span>
+    <span id="address-edit" class="label label-edit edit-button">住所を編集</span>
+</p>
+<form id="address-form" style="display: none;">
+    <p><input type="text" class="span8 edit-input" name="address" id="address-input" value="" placeholder="住所：　「東京都千代田区1-1-1」など"></p>
+    <div class="edit-form-buttons">
+        <input type="button" value="キャンセル" class="btn edit-cancel-button">
+        <input id="address-submit" type="button" value="保存" class="btn edit-save-button">
+    </div>
+</form>
+<script>
+$('#address-edit').click(function(e) {
+    $('#address-input').val($('#address-content').text());
+});
+
+$('#address-submit').click(function(e) {
+    var form = $(enclosingForm(this));
+    var id = removeSuffix(form.attr("id"), "-form");
+
+    partake.event.modify(eventId, { address: $('#address-input').val() })
+    .done(function (json) {
+        $('#address-content').text($('#address-input').val());
+
+        var address = $('#address-input').val();
+        var mapURL = 'http://maps.google.co.jp/maps?q=' + encodeURIComponent(address);
+        $('#address-anchor').attr('href', mapURL);
+
+        var imgSrc = 'http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=' +
+            encodeURIComponent(address) +
+            '&zoom=17&sensor=false';
+        $('#address-img').attr('src', imgSrc);
+
+        $('#' + id + '-form').hide();
+        $('#' + id + '-show').show();
+    })
+    .fail(partake.defaultFailHandler);
+});
+</script>
+
+<div class="event-map"><a id="address-anchor" href="http://maps.google.co.jp/maps?q=@if(event.getAddress() != null){@Util.encodeURIComponent(event.getAddress())}">
+    <img id="address-img" src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=@if(event.getAddress() != null){@Util.encodeURIComponent(event.getAddress())}&zoom=17&sensor=false" />
+</a></div>
+
+<h3>参考情報</h3>
+<p id="url-show">
+    URL ： <a id="url-content" href="">@event.getUrl()</a>
+    <span id="url-edit" class="label label-edit edit-button">URLを編集</span>
+</p>
+<form id="url-form" style="display: none;">
+    <p><input type="text" class="span8 edit-input" name="url" id="url-input" value="" placeholder="URL: http://partake.in/ など"></p>
+    <div class="edit-form-buttons">
+        <input type="button" value="キャンセル" class="btn edit-cancel-button">
+        <input id="url-submit" type="button" value="保存" class="btn edit-save-button">
+    </div>
+</form>
+<script>
+$('#url-edit').click(function(e) {
+    $('#url-input').val($('#url-content').text());
+});
+
+$('#url-submit').click(function(e) {
+    var form = $(enclosingForm(this));
+    var id = removeSuffix(form.attr("id"), "-form");
+
+    partake.event.modify(eventId, { url: $('#url-input').val() })
+    .done(function (json) {
+        $('#url-content').text($('#url-input').val());
+        $('#url-content').attr('href', $('#url-input').val());
+        $('#' + id + '-form').hide();
+        $('#' + id + '-show').show();
+    })
+    .fail(partake.defaultFailHandler);
+});
+</script>
+
+<div id="related-show">
+    <ul id="related-content">
+    @for(relatedEvent <- event.getRelatedEvents()) {
+    	<li><a href="@relatedEvent.getEventURL()">@relatedEvent.getTitle()</a></li>
+    }
+    </ul>
+    <p><span id="related-edit" class="label label-edit edit-button">関連イベントを編集</span></p>
+    <p class="help-block">このイベントの関連イベントを追加できます。</p>
+</div>
+<form id="related-form" action="javascript:void(0)" style="display: none;">
+    <p>イベント ID を入力します。イベント ID とは、イベントページの http://partake.in/events/{ID} の ID の部分です。</p>
+    <div id="related-list"></div>
+    <div class="edit-form-buttons">
+        <input type="button" value="キャンセル" class="btn edit-cancel-button">
+        <input id="related-submit" type="button" value="保存" class="btn edit-save-button">
+    </div>
+</form>
+<script>
+$('#related-edit').click(function(e) {
+    updateFromEventIds();
+});
+$('#related-submit').click(function(e) {
+    var id = removeSuffix($(enclosingForm(this)).attr("id"), "-form");
+
+    var relatedEventIds = [];
+    $('#related-list input').each(function(elem) {
+        relatedEventIds.push($(this).val());
+    });
+
+    partake.event.modify(eventId, { relatedEventIds: relatedEventIds })
+    .done(function (json) {
+        $('#' + id + '-form').hide();
+        $('#' + id + '-show').show();
+
+        $('#related-content').empty();
+        if (!json.relatedEvents)
+            return;
+
+        for (var i = 0; i < json.relatedEvents.length; ++i) {
+            var relatedEvent = json.relatedEvents[i];
+            var li = $("<li></li>");
+            var a = $("<a></a>");
+            a.attr('href', '/events/' + relatedEvent.id);
+            a.text(relatedEvent.title);
+            li.append(a);
+
+            $('#related-content').append(li);
+        }
+    })
+    .fail(partake.defaultFailHandler);
+});
+
+@if(event.getRelatedEventIds() != null) {
+var relatedEventIds = [
+	@event.getRelatedEventIds().zipWithIndex.map { relatedEventIdWithIndex =>
+		@if(relatedEventIdWithIndex._2 != 0) {,}
+		@relatedEventIdWithIndex._1
+	}
+];
+} else {
+var relatedEventIds = [];
+}
+
+function updateFromEventIds() {
+    $('#related-list').empty();
+    for (var i = 0; i < relatedEventIds.length; ++i) {
+        var input = $('<input name="relatedEventId[]" class="input-edit" placeholder="イベント ID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) を入力" />');
+        input.attr('value', relatedEventIds[i]);
+
+        var div = $('<div><i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i></div>');
+        div.append(input);
+
+        $('#related-list').append(div);
+    }
+
+    if (relatedEventIds.length == 0) {
+        var input = $('<input name="relatedEventId[]" class="input-edit" placeholder="イベント ID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) を入力" />');
+        var div = $('<div><i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i></div>');
+        div.append(input);
+        $('#related-list').append(div);
+    }
+    updateRelatedEvent();
+}
+function updateRelatedEvent() {
+    $('#related-list .icon-plus-sign').unbind('click');
+    $('#related-list .icon-minus-sign').unbind('click');
+    $('#related-list .icon-plus-sign').click(onClickPlusSign);
+    $('#related-list .icon-minus-sign').click(onClickMinusSign);
+    if ($('#related-list > div').size() > 1)
+        $('#related-list .icon-minus-sign').show();
+    else
+        $('#related-list .icon-minus-sign').hide();
+}
+updateRelatedEvent();
+function onClickPlusSign(e) {
+    var div = $('<div></div>');
+    div.html('<i class="icon-plus-sign"></i> <i class="icon-minus-sign"></i>' +
+            '<input name="relatedEventId[]" class="input-edit" placeholder="イベント ID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) を入力" />');
+    $(e.srcElement.parentNode).after(div);
+    updateRelatedEvent();
+}
+function onClickMinusSign(e) {
+    var tr = e.srcElement.parentNode;
+    $(tr).remove();
+    updateRelatedEvent();
+}
+</script>
+

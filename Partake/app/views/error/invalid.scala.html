@@ -1,0 +1,34 @@
+@(ctx: in.partake.controller.PartakeActionContext, userErrorCode: in.partake.resource.UserErrorCode)@internal.main(ctx, "ユーザーからのリクエストにエラーがありました") {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+    <h1>ユーザーからのリクエストにエラーがありました</h1>
+</div>
+
+<p>ご迷惑をおかけしております。ユーザーからのリクエストにエラーがありました。</p>
+
+<p>このエラーは、ユーザーからのリクエストが不正であると検知された場合に発生します。次のような場合に起こる可能性があります。</p>
+<ul>
+    <li>多重投稿防止のためのトークンチェックにひっかかった。</li>
+    <li>必要なパラメータがサーバーに渡されていない。(POST リクエストを新しいタブで開きながら投げようとしたときに起きる場合があります。)</li>
+    <li>登録されていないイベント ID など、不正なパラメータが渡された。</li>
+    <li>CSRF (Cross-site Request Forgery) の発生を検知し、未然に防止した。</li>
+</ul>
+
+<p>操作をやり直してみてください。それでもエラーが発生する場合 twitter にて <a href="http://twitter.com/partakein">@@partakein</a> までお問い合わせください。</p>
+<p>もしくは、<a href="http://code.google.com/p/partakein/issues/list">Issue Tracker</a> へ登録していただいてもかまいません。(日本語でも英語でもかまいません。)</p>
+
+<h2>エラー詳細 (上級者向け / 管理者向け)</h2>
+<p>このエラーは、ユーザーからのリクエストが不正であると判断された場合に発生します。</p>
+@if(userErrorCode != null) {
+    <p>エラー詳細は以下の通りでした。</p>
+    <dl>
+        <dt>エラーコード</dt><dd>@userErrorCode.toString()</dd>
+        <dt>エラーメッセージ</dt><dd>@userErrorCode.getReasonString()</dd>
+    </dl>
+}
+
+<p><a href="/">トップに戻る</a></p>
+
+</div></div>
+}

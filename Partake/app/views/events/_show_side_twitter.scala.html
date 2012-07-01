@@ -1,0 +1,46 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx)
+@import org.apache.commons.lang._
+@if(!StringUtils.isEmpty(event.getHashTag())) {
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<div class="event-twitter-hashtag-stream">
+<script>
+new TWTR.Widget({
+    version: 2,
+    type: 'search',
+    search: '@event.getHashTag()',
+    interval: 6000,
+    title: 'Twitter Hashtag Live Feed',
+    subject: '@event.getHashTag()',
+    width: 'auto',
+    height: 400,
+    theme: {
+        shell: {
+        background: 'none',
+        color: '#7c7c7c'
+        },
+        tweets: {
+        background: '#ffffff',
+        color: '#444444',
+        links: '#1985b5'
+        }
+    },
+    features: {
+        scrollbar: true,
+        loop: false,
+        live: true,
+        hashtags: true,
+        timestamp: true,
+        avatars: true,
+        toptweets: true,
+        behavior: 'all'
+    }
+    }).render().start();
+</script>
+</div>
+} else {
+<p>ツイートを表示するにはハッシュタグを設定してください。</p>
+}
+
+
+

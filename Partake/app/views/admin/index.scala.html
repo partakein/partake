@@ -1,0 +1,32 @@
+@(ctx: in.partake.controller.PartakeActionContext, countUser: Int, countEvent: Int, countPublicEvent: Int, countPrivateEvent: Int, countPublishedEvent: Int, countDraftEvent: Int)@internal.main(ctx, "Administrator Mode") {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+    <h1>Administrator Mode</h1>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <h2>Count of users</h2>
+        <dl>
+            <dt>User</dt><dd>@countUser</dd>
+        </dl>
+
+        <h2>Count of events</h2>
+        <dl>
+            <dt>event</dt><dd>@countEvent</dd>
+            <dt>public event</dt><dd>@countPublicEvent</dd>
+            <dt>private event</dt><dd>@countPrivateEvent</dd>
+            <dt>published event</dt><dd>@countPublishedEvent</dd>
+            <dt>draft event</dt><dd>@countDraftEvent</dd>
+        </dl>
+
+    </div>
+    <div class="span12">
+        <h2>いろんなリンク</h2>
+        <p><a href="/admin/recreateEventIndex">Luceneインデックス の再生成</a></p>
+    </div>
+</div>
+
+</div></div>
+}

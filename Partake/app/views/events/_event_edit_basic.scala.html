@@ -1,0 +1,149 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx)
+@import in.partake.base.TimeUtil
+<div id="beginDate" class="control-group">
+    <label class="control-label">開催日時 <span class="label label-important">必須</span></label>
+    <div class="controls form-inline">
+        <input type="text" id="beginDataInput" name="beginDate" class="span2"
+                placeholder="YYYY-MM-DD HH:MM"
+                value="@TimeUtil.formatForEvent(event.getBeginDate())" />
+    </div>
+    <script>
+    $('#beginDataInput').datetimepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    </script>
+</div>
+<div id="endDate" class="control-group">
+    <label class="control-label">終了日時</label>
+    <div class="controls">
+        <label class="checkbox">
+            <input type="checkbox" id="usesEndDate" name="usesEndDate" @if(event.getEndDate() != null){checked} />
+            終了日時を設定する
+        </label>
+    </div>
+    <div class="controls form-inline">
+        <input type="text" id="endDataInput" name="endDate" class="span2"
+            placeholder="YYYY-MM-DD HH:MM"
+                value="@if(event.getEndDate() != null){ @TimeUtil.formatForEvent(event.getEndDate()) } else { @TimeUtil.formatForEvent(TimeUtil.getCurrentDateTime().nDayAfter(1)) }" />
+    </div>
+    <script>
+    $('#endDataInput').datetimepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    function checkEndDate() {
+        if ($("#usesEndDate").is(":checked")) {
+            $("#endDataInput").removeAttr('disabled');
+        } else {
+            $("#endDataInput").attr('disabled', '');
+        }
+    }
+    checkEndDate();
+    $("#usesEndDate").change(checkEndDate);
+    </script>
+</div>
+
+<div id="backImageId" class="control-group">
+    <label class="control-label" for="backImage">背景画像</label>
+    <div class="controls form-inline">
+        <label class="checkbox"><input id="back-image-checkbox" type="checkbox" name="backImage" @if(event.getBackImageId() != null){checked} />掲載する</label>
+        <input type="hidden" id="back-image-id-input" name="backImageId" value="@if(event.getBackImageId() != null){event.getBackImageId()}" />
+        <p class="help-block">画像を設定できます。画像は上部に背景にされます。(png, gif, jpeg 画像のみが送信できます)</p>
+    </div>
+    <div id="back-image-chooser" class="controls" style="display:none">
+        <ul class="thumbnails"><li class="span2">
+            <img id="selected-back-image"
+                src="@if(event.getBackImageId() != null){/images/ + @event.getBackImageId()}else{/images/no-image.png} %>"
+                alt="">
+        </li></ul>
+        <p><input id="select-new-background-image" type="button" class="btn" value="新しく画像を選択します" /></p>
+        <script>
+            $('#select-new-background-image').click(function() {
+                $('#image-upload-dialog').attr('purpose', 'background');
+                var imageId = $('#back-image-id-input').val();
+                if (!imageId || imageId == "") {
+                    $('#selected-image').attr('src', '/images/no-image.png');
+                    $('#selected-image').removeAttr('imageId');
+                } else {
+                    $('#selected-image').attr('src', '/images/' + imageId);
+                    $('#selected-image').attr('imageId', imageId);
+                }
+                $('#image-upload-dialog').modal('show');
+            });
+        </script>
+    </div>
+    <script>
+    function updateBackImageChooser() {
+        var v = $('#back-image-checkbox').is(':checked');
+        if (v)
+            $('#back-image-chooser').fadeIn("fast");
+        else
+            $('#back-image-chooser').fadeOut("fast");
+    }
+    $('input[name="backImage"]').change(updateBackImageChooser);
+    updateBackImageChooser();
+    </script>
+</div>
+
+<div id="hashTag" class="control-group">
+    <label class="control-label">ハッシュタグ</label>
+    <div class="controls">
+        <input type="text" name="hashTag" class="span7" value="@event.getHashTag()" />
+        <p class="help-block">twitter で用いる公式ハッシュタグを設定できます。# から始まる英数字、日本語、アンダースコアなどを含む文字列が使用できます。</p>
+    </div>
+</div>
+
+<div id="reletedEvents" class="control-group">
+    <label class="control-label">関連イベント</label>
+    <div class="controls">
+        <table class="table">
+            <colgroup>
+                <col class="span1" /><col class="span4" /><col class="span1" /><col class="span1" />
+            </colgroup>
+            <thead>
+                <tr><th></th><th>イベント ID</th><th>必須</th><th>優先</th></tr>
+            </thead>
+            <tbody id="related-event-tbody">
+                <tr>
+                    <td><i class="icon-plus-sign vertical-middle"></i> <i class="icon-minus-sign vertical-middle"></i></td>
+                    <td><input type="text"     name="relatedEventID[]" class="span4" /></td>
+                    <td><input type="checkbox" name="relatedEventRequired[]" /></td>
+                    <td><input type="checkbox" name="relatedEventPriority[]" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+        function updateRelatedEvent() {
+            $('#related-event-tbody .icon-plus-sign').unbind('click');
+            $('#related-event-tbody .icon-minus-sign').unbind('click');
+            $('#related-event-tbody .icon-plus-sign').click(onClickPlusSign);
+            $('#related-event-tbody .icon-minus-sign').click(onClickMinusSign);
+            if ($('#related-event-tbody tr').size() > 1)
+                $('#related-event-tbody .icon-minus-sign').show();
+            else
+                $('#related-event-tbody .icon-minus-sign').hide();
+        }
+        updateRelatedEvent();
+        function onClickPlusSign(e) {
+            var newTr = $('<tr></tr>');
+            newTr.html('<td><i class="icon-plus-sign vertical-middle"></i> <i class="icon-minus-sign vertical-middle"></i></td>' +
+                    '<td><input type="text"     name="relatedEventID[]" class="span4" /></td>' +
+                    '<td><input type="checkbox" name="relatedEventRequired[]" /></td>' +
+                    '<td><input type="checkbox" name="relatedEventPriority[]" /></td>');
+            var tr = e.srcElement.parentNode.parentNode;
+            $(tr).after(newTr);
+            updateRelatedEvent();
+        }
+        function onClickMinusSign(e) {
+            var tr = e.srcElement.parentNode.parentNode;
+            $(tr).remove();
+            updateRelatedEvent();
+        }
+        </script>
+        <p class="help-block">関連イベントを設定できます。</p>
+        <p class="help-block">「必須」にチェックすると、そのイベントに登録されていなければこのイベントに登録することは出来ません。</p>
+        <p class="help-block">「優先」にチェックすると、そのイベントに登録している方は優先的にこのイベントに参加することが出来ます。</p>
+        <p class="help-block">イベント ID とは、 http://partake.in/events/{ID} の {ID} の部分の文字列です。</p>
+    </div>
+</div>
+

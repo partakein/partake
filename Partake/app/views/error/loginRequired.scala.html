@@ -1,0 +1,19 @@
+@(ctx: in.partake.controller.PartakeActionContext)@internal.main(ctx, "ログインが必要です") {
+<div class="container"><div class="content-body">
+<div class="page-header">
+    <h1>ログインが必要です</h1>
+</div>
+
+<p>PARTAKE では、Twitter アカウントを用いてログインすることができます。PARTAKE への登録は必要ありません。</p>
+
+<p>次のボタンをクリックしてログインしてください。</p>
+
+<p><a href="/auth/loginByTwitter?redirectURL=@ctx.redirectURL()"><img src="@routes.Assets.at("/images/signinwithtwitter.png")" alt="Sign in with twitter" /></a></p>
+
+<h2>Twitter アカウントを持っていませんか？</h2>
+
+<p>PARTAKE では、Twitter アカウントをログインに使用します。</p>
+<p><a href="https://twitter.com/signup">このページで  Twitter のアカウントを取得してください。</a></p>
+
+</div></div>
+}

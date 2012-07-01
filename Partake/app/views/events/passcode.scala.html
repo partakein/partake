@@ -1,0 +1,20 @@
+@(ctx: in.partake.controller.PartakeActionContext, eventId: String)@internal.main(ctx, "パスコードを入れてください") {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+    <h1>イベントを表示するためにパスコードを入れてください。</h1>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <form method="post" action="/events/passcode" id="passcode-checking-form">
+        	<input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
+            <input type="hidden" name="eventId" value="@eventId" />
+            <label for="passcode">パスコード:</label><input id="passcode-checking" name="passcode" autofocus="autofocus" /><br />
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+
+</div></div>
+}
