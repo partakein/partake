@@ -1,0 +1,96 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  ticketAndHolders: List[in.partake.base.Pair[in.partake.model.dto.EventTicket, in.partake.model.EventTicketHolderList]],
+  userTicketInfoMap: Map[String, List[String]],
+  index: Int)
+@import in.partake.model._
+@import in.partake.model.dto.auxiliary._
+@import org.apache.commons.lang._
+@ps = @{ new ArrayList[UserTicketEx]() }
+@{
+	ps.addAll(ticketAndHolders.get(index).getSecond().getEnrolledParticipations())
+	ps.addAll(ticketAndHolders.get(index).getSecond().getSpareParticipations())
+}
+
+<table class="table table-striped">
+    <colgroup>
+        <col width="30px"><col width="60px"><col width="100px"><col width="80px"><col width="300px"><col width="150px"><col width="150px">
+        @* Another ticket information if any *@
+        @for(i <- 0 until ticketAndHolders.size()) {
+        	@if(i != index) {
+        		<col width="200px">
+        	}
+		}
+
+		@* Enquete information if any *@
+		@if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+			@for(i <- 0 until event.getEnquetes().size()) {
+				<col width="200px">
+			}
+        }
+    </colgroup>
+    <thead>
+        <tr>
+            <th rowspan="2">&nbsp;</th>
+            <th rowspan="2">順番</th><th rowspan="2">名前</th><th rowspan="2">予約状況</th><th rowspan="2">コメント</th><th rowspan="2">登録日時</th><th rowspan="2">実際の出欠状況</th>
+            @* Another ticket information if any *@
+            @if(ticketAndHolders.size() > 1) {
+                <th colspan="@(ticketAndHolders.size() - 1)">他のチケットの状況</th>
+            }
+            @* Enquete information if any *@
+            @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+                <th colspan="@(event.getEnquetes().size() - 1)">アンケートの回答</th>
+            }
+        </tr>
+        <tr>
+        	@* Another ticket information if any *@
+        	@for(i <- 0 until ticketAndHolders.size()) {
+				@if(i != index) {
+					<th>@ticketAndHolders.get(i).getFirst().getName()</th>
+				}
+        	}
+            @* Enquete information if any *@
+            @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+            	@for(enquete <- event.getEnquetes()) {
+            		<th>@enquete.getText()</th>
+            	}
+            }
+        </tr>
+    </thead>
+    <tbody>
+
+	@ps.zipWithIndex.map { pWithIndex => @defining(pWithIndex._1) { p =>
+    <tr id="attendant-@p.getUserId()">
+        <td>[<a onclick="removeAttendant('@p.getUserId()', '@p.getTicketId().toString()')">&times;</a>]</td>
+        <td>@pWithIndex._2</td>
+        <td>@p.getUser().getTwitterScreenName()</td>
+        <td>@if(ParticipationStatus.ENROLLED.equals(p.getStatus())) { 参加 } else { 仮参加 }</td>
+        <td>@p.getComment()</td>
+        <td class="print-del">@p.getAppliedAt().toHumanReadableFormat()</td>
+        <td class="print-del"><form>
+            <input type="radio" onchange="changeAttendance('@p.getUserId()', '@p.getTicketId().toString()', 'unknown')" name="present-@p.getUserId()" value="unknown" @if(AttendanceStatus.UNKNOWN.equals(p.getAttendanceStatus())) { checked } /> 未選択<br />
+            <input type="radio" onchange="changeAttendance('@p.getUserId()', '@p.getTicketId().toString()', 'present')" name="present-@p.getUserId()" value="present" @if(AttendanceStatus.PRESENT.equals(p.getAttendanceStatus())) { checked } /> 出席
+            <input type="radio" onchange="changeAttendance('@p.getUserId()', '@p.getTicketId().toString()', 'absent')" name="present-@p.getUserId()" value="absent"   @if(AttendanceStatus.ABSENT.equals(p.getAttendanceStatus()))  { checked } /> 欠席<br />
+            <span id="attendance-status-@p.getTicketId().toString()-@p.getUserId()"></span>
+        </form></td>
+        @* Another ticket information if any *@
+        @for(i <- 0 until ticketAndHolders.size()) {
+			@if(i != index) {
+				<td>@if(userTicketInfoMap.get(p.getUserId())(i) != null) { @(userTicketInfoMap.get(p.getUserId())(i)) } else { - }</td>
+			}
+        }
+        @* Enquete information if any *@
+        @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+			@for(enquete <- event.getEnquetes()) {
+				@defining(p.getEnqueteAnswers().get(enquete.getId())) { answers =>
+					@if(answers != null && !answers.isEmpty()) {
+						@StringUtils.join(answers.iterator(), ',')
+					}
+				}
+            }
+        }
+    </tr>
+    } }
+</tbody>
+</table>
+

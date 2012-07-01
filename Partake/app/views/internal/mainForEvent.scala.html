@@ -1,0 +1,54 @@
+@(ctx: in.partake.controller.PartakeActionContext, title: String, event: in.partake.model.EventEx)(content: Html)<!DOCTYPE html>
+
+@import org.apache.commons.lang._
+@import in.partake.base._
+@import in.partake.controller.base.permission._
+
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @if(StringUtils.isEmpty(event.getSummary())) {
+    <meta name="description" content="@event.getSummary()" />
+    } else {
+    <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
+    }
+
+    @* TODO: combine them all *@
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-1.8.16.custom.css")' />
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-timepicker-addon.css")' />
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/partake-all.css")'>
+    <!--[if IE ]"
+    <link rel="stylesheet" type="text/css" href="/css/fixie.css">
+    <![endif]-->
+    @if(event.getBackImageId() != null) {
+    <style>
+        body {
+            background-image: url("/images/@event.getBackImageId()");
+            background-repeat: repeat;
+        }
+    </style>
+    }
+
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
+
+    @if(event.getFeedId() != null) {
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/event/@event.getFeedId()" />
+    }
+
+    @internal.javascript(ctx)
+
+    @* If google analytics is installed, analytics code will be shown here. *@
+    @if(in.partake.resource.PartakeProperties.get().getGoogleAnalyticsCode() != null) {
+        @internal.googleCodeSnippet()
+    }
+    <title>PARTAKE</title>
+</head>
+<body @if(ctx.loginUser() != null && EventEditPermission.check(event, ctx.loginUser)) { class="with-sub-nav" }>
+@internal.header(ctx)
+@content
+@internal.footer(ctx)
+</body>
+</html>
