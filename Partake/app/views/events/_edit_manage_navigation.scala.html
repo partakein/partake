@@ -1,0 +1,13 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  navigation: String)
+<div class="subnav subnav-fixed"><div class="container">
+    <ul class="nav nav-pills nav-stacked-if-phone">
+        <li @if("basic".equals(navigation)) {class='active'}><a href="/events/edit/basic/@event.getId()">基本内容</a></li>
+        <li @if("ticket".equals(navigation)) {class='active'}><a href="/events/edit/ticket/@event.getId()">チケット</a></li>
+        <li @if("enquete".equals(navigation)) {class='active'}><a href="/events/edit/enquete/@event.getId()">アンケート</a></li>
+        <li @if("privacy".equals(navigation)) {class='active'}><a href="/events/edit/privacy/@event.getId()">プライバシー</a></li>
+        <li class="pull-right-if-not-phone"><a href="/events/@event.getId()">編集を終了</a></li>
+    </ul>
+</div></div>
+

@@ -1,0 +1,9 @@
+@(ctx: in.partake.controller.PartakeActionContext)@internal.main(ctx, "イベント検索") {
+<div class="container"><div class="content-body">
+<div class="page-header">
+    <h1>イベント検索</h1>
+    <p>タイトル、カテゴリ、本文などからイベントを検索します。</p>
+</div>
+@events._search(ctx, false)
+</div></div>
+}

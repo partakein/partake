@@ -1,0 +1,488 @@
+@charset "UTF-8";
+
+/* ==================================================================
+ * decorate
+ * ==================================================================
+ */
+
+/* curved corner */
+.rad {
+	border-radius: 5px; /* CSS3 */
+    -webkit-border-radius: 5px; /* Safari,Chrome */
+    -moz-border-radius: 5px; /* FireFox */
+    behavior: url(border-radius.htc); /* forIE */
+	}	
+/* drop shadow */	
+.sdw {
+	-moz-box-shadow: 2px 2px 2px #bcbcbc; /* firefox */
+    -webkit-box-shadow: 2px 2px 2px #bcbcbc;/* Safari,Chrome */
+    box-shadow: 2px 2px 2px #bcbcbc; /* CSS3 */
+	}
+/* filter */
+.cler:hover {
+    opacity:0.83;
+    filter: alpha(opacity=83);	
+}
+.cler28 {
+    opacity:0.28;
+    filter: alpha(opacity=28);	
+}
+
+/* ==================================================================
+ * color layout
+ * ==================================================================
+ */
+
+body {
+    color: #2a2a2a;
+    background: top left repeat-x #9AD5E2;
+}
+
+a:link {
+    color: #1D2088;
+    text-decoration:none;
+}
+a:visited {
+    color: #4F1F80;
+    text-decoration:none;
+}
+a:hover,a:active  {
+    color: #4C4B4C;
+}
+#wrapper {
+    color: inherit;
+    margin-bottom:5px;
+    background: transparent;
+    background-color:#FEFEFE;
+    border:1px solid #dddddd;
+    -moz-box-shadow: 1px 1px 15px #B8B8B8; /* firefox */
+    -webkit-box-shadow: 1px 1px 15px #B8B8B8;/* Safari,Chrome */
+    box-shadow: 1px 1px 15px #B8B8B8; /* CSS3 */
+}
+
+#header {
+	color: inherit;
+	/*background: transparent url(../images/back-top.png) no-repeat top;*/
+}
+
+#content {
+    color: inherit;
+    /*background: transparent url(../images/back-middle.png) repeat-y bottom;*/
+}
+
+.top-introduction {
+    background: transparent url(../images/introduction.png);
+}
+
+.top-explanation ul {
+    list-style-image: url(../images/mark.png);
+}
+
+.event-enrollment {
+    color: #555555;
+    background-color: #E9E9E9;
+}
+
+.event-enrollment a:link,.event-enrollment a:hover,.event-enrollment a:visited {
+    color: #1D2088;
+}
+.event-enrollment a:hover {
+    color: #4C4B4C;
+}
+.event-owner-information {
+    color: #555555;
+    background-color: #FAF9CE;
+}
+
+.event-owner-information a:visited {
+	color: #1d2088;
+    text-decoration:none;
+}
+
+.event-owner-information ul {
+    list-style-image: url(../images/mark.png);
+}
+
+.event-owner-information dt {
+    list-style-image: url(../images/mark.png);
+}
+
+.event-participants {
+    color: #555555;
+    background-color: #F8F7F6;
+}
+.actionMessage {
+    color: f5f5f5;
+    background-color: #deebb2;
+    -moz-box-shadow: 0px 0px 15px #deebb2; /* firefox */
+    -webkit-box-shadow: 0px 0px 15px #deebb2;/* Safari,Chrome */
+    box-shadow: 0px 0px 15px #deebb2; /* CSS3 */
+}
+
+.warningMessage {
+    color: f5f5f5;
+    background-color: #f0f0ac;
+    -moz-box-shadow: 0px 0px 15px #deebb2; /* firefox */
+    -webkit-box-shadow: 0px 0px 15px #deebb2;/* Safari,Chrome */
+    box-shadow: 0px 0px 15px #deebb2; /* CSS3 */
+}
+
+.errorMessage {
+    color: f5f5f5;
+    background-color: #f0acac;
+    -moz-box-shadow: 1px 1px 13px #f0acac; /* firefox */
+    -webkit-box-shadow: 1px 1px 13px #f0acac;/* Safari,Chrome */
+    box-shadow: 1px 1px 13px #f0acac; /* CSS3 */
+}
+
+.event-form dt {
+    color: #353535;
+}
+.event-form dd {
+    color: #4a4a4a;
+}
+#event-edit-submit:hover {
+    opacity:0.86;
+    filter: alpha(opacity=86);
+}
+
+#event-search-form {
+    color: #7A7674;
+    background-color: #F5F5F5;
+}
+
+.line-space {
+    color: #2a2a2a;
+}
+
+#mypage-title img {
+    background: #FFF;
+}
+
+#mypage-title img {
+    border:1px outset #dddddd;
+    margin-left:3px;
+    padding:0;
+    border-radius: 3px; /* CSS3 */
+    -webkit-border-radius: 3px; /* Safari,Chrome */
+    -moz-border-radius: 3px; /* FireFox */
+    behavior:url(border-radius.htc); /* googlecode forIE */
+}
+
+#comment_0:hover {
+   opacity:0.85;
+    filter: alpha(opacity=85);
+}
+
+.output a {
+	color:#1D2088;
+	text-decoration:underline;
+}
+.output a:hover {
+	color:#000000;
+}
+
+/*----------------------------------------------------
+  Top - �E�[icon
+----------------------------------------------------*/
+
+#right-tweet a {
+    background:transparent url(../images/right-tweet.png) left bottom;
+    position: absolute;
+    top: 93px;
+    right: 0px;
+    width: 102px;
+    height: 32px;
+    opacity:0.94; filter: alpha(opacity=94);
+    z-index:2;
+}
+
+#right-tweet a:hover {
+    width: 103px;
+    opacity:1.0; filter: alpha(opacity=100);
+    background:transparent url(../images/right-tweet2.png) left bottom;
+}
+
+#right-momonga a {
+    background:transparent url(../images/right-momonga.png) left bottom;
+    position: absolute;
+    top: 128px;
+    right: 0px;
+    width: 102px;
+    height: 32px;
+    opacity:0.90; filter: alpha(opacity=90);
+    z-index:2;
+}
+
+#right-momonga a:hover {
+    width: 103px;
+    background:transparent url(../images/right-momonga2.png) left bottom;
+    opacity:1.0; filter: alpha(opacity=100);
+}
+
+#right-rss a {
+    background:transparent url(../images/right-rss.png) left bottom;
+    position: absolute;
+    top: 163px;
+    right: 0px;
+    width: 102px;
+    height: 32px;
+    opacity:0.90; filter: alpha(opacity=90);
+    z-index:2;
+}
+
+#right-rss a:hover {
+    width: 103px;
+    background:transparent url(../images/right-rss2.png) left bottom;
+    opacity:1.0; filter: alpha(opacity=100);
+}
+
+/*----------------------------------------------------
+  OpenID
+----------------------------------------------------*/
+.signinwithopenid {
+    width:12px;
+    height:12px;
+    margin-right:3px;
+}
+
+#signin-with-openid-part a {
+}
+
+/* ==================================================================
+ * header
+ * ==================================================================
+ */
+
+
+#header a {
+    color: inherit;
+    background: inherit;
+}
+
+/* #sitetitle a, #sitetitle a:link, #sitetitle a:visited, #sitetitle a:hover, #sitetitle a:active {
+    color: inherit;
+	background: transparent url(../images/back-bottom.png) no-repeat bottom
+} */
+
+
+#header ul {
+    color:#2D2B2A;
+    background: transparent;
+}
+
+#header ul, #header ul li, #sidebar {
+    border-color: #77777;
+}
+
+#header ul li a {
+    background: inherit;
+}
+
+#header ul li a:hover {
+    color: #95004a;	
+
+}
+
+/* ==================================================================
+ * footer
+ * ==================================================================
+ */
+
+#footer ul li a {
+    color:#999999;
+    background: inherit;
+}
+
+#footer ul li a:hover {
+	color: #A9A9A9;	
+    background: inherit;
+}
+/*
+#footer {
+	background: transparent url(../images/back-bottom.png) no-repeat bottom;
+}
+*/
+#footer ul {
+    background: transparent;
+}
+
+#rights {
+    color: #7f7f7f;
+    font-size: 0.85em;
+    text-align: center;
+    padding:0 0 10px 0;
+}
+
+/* ==================================================================
+ * sidebar
+ * ==================================================================
+ */
+
+#sidebar .subsection {
+    color: #000000;
+    background-color: #fff;
+}
+
+#sidebar h3 {
+    color: #ffffff;
+    background-color: #990033;
+}
+
+#sidebar h3 a {
+    color: #ffffff;
+    background-color: #990033;
+}
+
+/* ==================================================================
+ * headings
+ * ==================================================================
+ */
+
+h1 {
+    color: #444;
+}
+
+h1 a:link, h1 a:visited, h1 a:hover, h1 a:active {
+    color: #444;
+    background: inherit;
+}
+
+h2 {
+    color: #353535;
+}
+
+/* ==================================================================
+ * blocks
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * divs
+ * ==================================================================
+ */
+
+pre.code {
+	background: #fff;
+	color: inherit;
+}
+
+blockquote {
+	border-color: #ccc;
+	background: #eef;
+	color: inherit;
+}
+
+blockquote[cite]:after {
+	color: #000;
+	background: #ccf;
+}
+
+blockquote[title]:before {
+	color: #000;
+	background: #ccf;
+}
+
+/* ==================================================================
+ * inline elements
+ * ==================================================================
+ */
+
+kbd {
+	color: inherit;
+	background: #fffff0;
+}
+
+q {
+	color: #009933;
+	background: transparent;
+}
+
+.compiler {
+	color: #0080ff;
+	background: transparent;
+}
+
+.pro {
+	color: #008000;
+	background: transparent;
+}
+
+.str {
+	color: #0000ff;
+	background: transparent;
+}
+
+.dec {
+	color: #004080;
+	background: transparent;
+}
+
+.hex {
+	color: #808000;
+	background: transparent;
+}
+
+.oct {
+	color: #808000;
+	background: transparent;
+}
+
+.flo {
+	color: #004080;
+	background: transparent;
+}
+
+.com {
+	color: #008080;
+	background: transparent;
+}
+
+.type {
+	color: #800000;
+	background: transparent;
+}
+
+.key {
+	color: #800080;
+	background: transparent;
+}
+
+.bool {
+	color: #008080;
+	background: transparent;
+}
+
+.required {
+    color: #ff0000;
+}
+
+.accent {
+    color: #FF9900;
+    font-weight: bold; 
+}
+
+/* ==================================================================
+ * anchors
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * lists
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * ins and dels
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * forms
+ * ==================================================================
+ */
+
+
+
+
+

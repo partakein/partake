@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+/* to fix IE behavior */
+
+/* {
+    border: 1px dashed;
+} */
+
+/* max-width: 100% is buggy for IE. */
+img {
+    max-width: none;
+}
+/* But we need max-width: 100% for #selected-image */
+img#selected-image, img#foreimage-showimage {
+    max-width: 100%;
+}
+
+.invisible-if-not-ie {
+    display: block !important;
+    position: static !important;
+    left: 0 !important;
+}
+
+.invisible-if-ie {
+    display: none;
+}
+
+.top-recent-event {
+    height: auto !important;
+    height: 130px;
+}
+
+.top-recent-event img {
+    width: expression(this.width >= this.height ? "100px" : "auto");
+    height: expression(this.height >= this.width ? "100px" : "auto");
+}

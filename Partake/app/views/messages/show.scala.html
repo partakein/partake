@@ -1,0 +1,16 @@
+@(ctx: in.partake.controller.PartakeActionContext, message: in.partake.model.UserMessageEx)@internal.main(ctx, "メッセージ") {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+    <h1>メッセージ</h1>
+</div>
+
+<h2>@message.getMessage().getSubject()</h2>
+
+<p>イベント「@message.getEvent().getTitle()」に関するメッセージ</p>
+<p>送信者「@message.getSender().getScreenName()」</p>
+
+<p>@message.getMessage().getBody()</p>
+
+</div></div>
+}
