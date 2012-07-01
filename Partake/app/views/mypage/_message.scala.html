@@ -1,0 +1,79 @@
+@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx)
+
+@* TODO: 本当はクリックすると、アコーディオン的にメッセージが表示されるようにしたい。 beta3 以降かな…… *@
+<div id="received-whole">
+<table class="table table-striped">
+    <colgroup>
+        <col class="span1" /><col class="span6" /><col class="span3" /><col class="span2" />
+    </colgroup>
+    <thead>
+        <tr><th>送信者</th><th>タイトル</th><th>受信日時</th></tr>
+    </thead>
+    <tbody id="received-tbody">
+    </tbody>
+</table>
+</div>
+<div id="received-none">
+    <p>メッセージがありません。</p>
+</div>
+
+<div id="received-pagination" class="pagination pagination-centered"></div>
+
+<script>
+(function() {
+    var ident = 'received';
+
+    function createTable(nthPage, messages) {
+        if (!messages || !messages.length) {
+            $('#' + ident + '-none').show();
+            return;
+        }
+
+        $('#' + ident + '-none').hide();
+        var tbody = $('#' + ident + '-tbody');
+        tbody.empty();
+
+        for (var i = 0; i < messages.length; ++i) {
+            var message = messages[i];
+
+            var tr = $('<tr></tr>');
+
+            // 新着？
+            if (message.openedAt)
+                $('<td></td>').text('&nbsp;').appendTo(tr);
+            else
+                $('<td><span class="label">New</span></td>').appendTo(tr);
+
+            // 送信者
+            $('<td></td>').text(message.sender.screenName).appendTo(tr);
+            if (message.sender)
+
+            // タイトル
+            $('<td></td>').text(message.message.subject).appendTo(tr);
+
+            // 送信日時
+            $('<td></td>').text(message.deliveredAtText).appendTo(tr);
+
+
+            tr.appendTo(tbody);
+        }
+    }
+
+    function update(nthPage) {
+        partake.account.getMessages((nthPage - 1) * 10, 10)
+        .done(function (json) {
+            createTable(nthPage, json.messages);
+            var lst = partakeUI.pagination($('#' + ident + '-pagination'), nthPage, json.totalMessagesCount, 10);
+            for (var i = 0; i < lst.length; ++i) {
+                lst[i].anchor.click((function(i) {
+                    return function() { update(lst[i].pageNum); };
+                })(i));
+            }
+        })
+        .fail(partake.defaultFailHandler);
+    }
+
+    update(1);
+})();
+
+</script>

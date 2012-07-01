@@ -1,0 +1,75 @@
+@(ctx: in.partake.controller.PartakeActionContext, event: in.partake.model.EventEx)
+@import org.apache.commons.lang._
+@internal.mainForEvent(ctx, "アクセス権とプライバシーの編集", event) {
+<div class="container">
+
+@events._edit_manage_navigation(ctx, event, "privacy")
+
+<div class="content-body">
+
+<div class="page-header">
+    <h1>プライバシー</h1>
+</div>
+
+<form id="event-form" class="form-horizontal" onsubmit="return false;">
+    <div id="passcode" class="control-group">
+        <label for="passcode-checkbox" class="control-label">パスコード設定</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <div class="add-on">
+                    <input id="passcode-checkbox" type="checkbox" name="passcodeCheckbox" @if(!StringUtils.isBlank(event.getPasscode())) { checked } />
+                </div><input type="text" id="passcode-input" name="passcode" class="span8"
+                    placeholder="パスコードを設定"
+                    value="@if(event.getPasscode() != null) {@event.getPasscode()}" />
+                <span id="passcode-help" class="help-inline"></span>
+            </div>
+            <p class="help-block">パスコードを設定すると、管理者以外の方はイベントの閲覧にパスコードが必要になります。</p>
+        </div>
+    </div>
+    <script>
+    function checkPasscode() {
+        if ($('#passcode-checkbox').is(':checked')) {
+            $('#passcode-input').removeAttr('disabled');
+        } else {
+            $('#passcode-input').attr('disabled', '');
+        }
+    }
+    checkPasscode();
+    $('#passcode-checkbox').change(checkPasscode);
+    </script>
+
+    <div class="form-actions">
+        <input id="passcode-submit" type="button" class="btn btn-primary" value="保存">
+        <span id="submit-info" class="text-info"></span>
+    </div>
+    <script>
+    $('#passcode-submit').click(function(e) {
+        var eventId = '@event.getId()';
+
+        var passcode = '';
+        if ($('#passcode-checkbox').is(':checked')) {
+            passcode = $('#passcode-input').val();
+            if (passcode == '') {
+                $('#passcode').addClass('error');
+                $('#passcode-help').text('パスコードが設定されていません。');
+                return;
+            }
+        } else {
+            passcode = '';
+        }
+        $('#passcode').removeClass('error');
+        $('#passcode-help').empty();
+
+        partake.event.modify(eventId, { passcode: passcode })
+        .done(function (json) {
+            $('#submit-info').hide();
+            $('#submit-info').text('保存しました');
+            $('#submit-info').fadeIn(500);
+        })
+        .fail(partake.defaultFailHandler);
+    });
+    </script>
+</form>
+
+</div></div>
+}

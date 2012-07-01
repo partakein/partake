@@ -1,0 +1,81 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  user: in.partake.model.UserEx,
+  tickets: List[in.partake.model.dto.EventTicket],
+  ticketHolderListMap: Map[UUID, in.partake.model.EventTicketHolderList])
+@import in.partake.view.util._
+@import in.partake.base._
+@import org.apache.commons.lang._
+@import in.partake.model.dto.auxiliary._
+
+@*
+    1. 各チケットの参加者を表示する
+    2. 補欠、キャンセル者はデフォルトでは表示せず、「補欠者、キャンセル者も表示する」をクリックすることで表示される
+*@
+
+@for(ticket <- tickets) {
+	@defining(ticketHolderListMap.get(ticket.getId())) { list =>
+<div>
+    <h3>@ticket.getName() (参加者)</h3>
+    @if(list.getEnrolledParticipations().isEmpty()) {
+    <p>現在参加者はいません</p>
+    } else {
+    <ol>
+    	@for(userTicket <- list.getEnrolledParticipations()) {
+            <li>
+                <img class="userphoto" src="@userTicket.getUser().getProfileImageURL()" alt="">
+                <a href="/users/@userTicket.getUserId()">
+                    @userTicket.getUser().getScreenName()
+                </a>
+                @if(userTicket.getStatus().equals(ParticipationStatus.RESERVED)) { <img src="@routes.Assets.at("/images/reserved1.png")" title="仮参加" alt="仮参加者" /> }
+                : @userTicket.getComment()
+            </li>
+        }
+    </ol>
+    }
+</div>
+
+@if(!list.getSpareParticipations().isEmpty() || !list.getCancelledParticipations().isEmpty()) {
+<p><a onclick="$('#list-@ticket.getId().toString()').show()">補欠・キャンセル済の参加者を表示する</a></p>
+}
+<div id="list-@ticket.getId().toString()" style="display: none">
+    <h3>補欠</h3>
+    @if(list.getSpareParticipations().isEmpty()) {
+    <p>現在補欠者はいません</p>
+    } else {
+    <ol>
+        @for(userTicket <- list.getSpareParticipations()) {
+            <li>
+                <img class="userphoto" src="@userTicket.getUser().getProfileImageURL()" alt="">
+                <a href="/users/@userTicket.getUserId()">
+                    @userTicket.getUser().getTwitterLinkage().getScreenName()
+                </a>
+                @if(userTicket.getStatus().equals(ParticipationStatus.RESERVED)) { <img src="@routes.Assets.at("/images/reserved1.png")" title="仮参加" alt="仮参加者" /> }
+                : @userTicket.getComment()
+            </li>
+        }
+    </ol>
+    }
+
+    <h3>キャンセル</h3>
+    @if(list.getCancelledParticipations().isEmpty()) {
+    <p>現在補欠者はいません</p>
+    } else {
+    <ol>
+        @for(userTicket <- list.getCancelledParticipations()) {
+            <li>
+                <img class="userphoto" src="@userTicket.getUser().getProfileImageURL()" alt="">
+                <a href="/users/@userTicket.getUserId()">
+                    @userTicket.getUser().getScreenName()
+                </a>
+                @if(userTicket.getStatus().equals(ParticipationStatus.RESERVED)) { <img src="@routes.Assets.at("/images/reserved1.png")" title="仮参加" alt="仮参加者" /> }
+                : @userTicket.getComment()
+            </li>
+        }
+    </ol>
+    }
+</div>
+}
+}
+
+

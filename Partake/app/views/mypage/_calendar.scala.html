@@ -1,0 +1,62 @@
+@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, calendarLink: in.partake.model.dto.UserCalendarLink)
+@import in.partake.resource.PartakeProperties
+<h2>カレンダー</h2>
+
+<p>自分の参加・管理イベントを ics ファイル (カレンダー) で受信することが出来ます。</p>
+<p>以下が、あなたのカレンダーID（URL）です。これを、普段使っている Google カレンダーなどにインポートすることができます。</p>
+
+<div class="row"><form class="form-horizontal"><fieldset>
+    <div class="control-group">
+        <label class="control-label">カレンダー URL</label>
+        <div class="controls">
+        	@if(calendarLink != null) {
+        		<input id="calendarURL" type="text" value="@PartakeProperties.get().getTopPath()/calendars/@(calendarLink.getId()).ics" class="span12" />
+        	} else {
+                <input id="calendarURL" type="text" value="あなたのカレンダー ID はまだ生成されていません。" class="span12" />
+            }
+        </div>
+    </div>
+</fieldset></form></div>
+
+<h3>カレンダーIDを再生成する</h3>
+
+<p>カレンダー ID がまだ割り当てられていない場合や不意にカレンダー ID を知られてしまった場合などに、カレンダー ID を再生成できます。</p>
+<p>これまでのカレンダー URL は無効になるため、お使いのカレンダーアプリケーションを再設定する必要があります。</p>
+<form>
+    <p class="spinner-container">
+        <input id="revokeCalendarURLButton" type="button" class="btn" value="カレンダー ID を再生成する" />
+        <span id="revokeCalendarURLMessage" class="text-info"></span>
+    </p>
+</form>
+
+<script>
+function callRevokeCalendar() {
+    var spinner = partakeUI.spinner(document.getElementById('revokeCalendarURLButton'));
+    var button = $('#revokeCalendarURLButton');
+
+    spinner.show();
+    button.attr('disabled', '');
+    partake.account.revokeCalendar()
+    .always(function () {
+        spinner.hide();
+        button.removeAttr('disabled');
+    })
+    .done(function (json) {
+        if (json.calendarId) {
+            $('#calendarURL').val('@in.partake.resource.PartakeProperties.get().getTopPath()/calendars/' + json.calendarId + '.ics');
+        } else {
+            location.reload();
+        }
+
+        $('#revokeCalendarURLMessage').text("カレンダー ID を再生成しました。");
+        $('#revokeCalendarURLMessage').hide();
+        $('#revokeCalendarURLMessage').fadeIn("fast");
+    })
+    .fail(function (xhr) {
+        $('#revokeCalendarURLMessage').text("カレンダー ID の生成に失敗しました。");
+        $('#revokeCalendarURLMessage').hide();
+        $('#revokeCalendarURLMessage').fadeIn("fast");
+    });
+};
+$('#revokeCalendarURLButton').click(callRevokeCalendar);
+</script>

@@ -1,0 +1,45 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  user: in.partake.model.UserEx)
+@import in.partake.view.util._
+@import in.partake.base._
+@import org.apache.commons.lang._
+<h3>主催者</h3>
+
+<p><a href="/users/@event.getOwnerId()">
+    <img src="@event.getOwner().getProfileImageURL()" class="profile-image" alt="" width="20" height="20" />
+    @if(event.getOwner().getTwitterLinkage().getName() != null) {
+   		@Html(Helper.escapeTwitterResponse(event.getOwner().getTwitterLinkage().getName()))
+        @event.getOwner().getScreenName()
+    } else {
+        @event.getOwner().getScreenName()
+    }
+</a></p>
+
+@if(event.getEditors() != null && !event.getEditors().isEmpty()) {
+<h3>編集者</h3>
+<div>@for(editor <- event.getEditors()) {
+    <p><a href="/users/@editor.getId()"><img src="@editor.getProfileImageURL()" width="20" height="20">@editor.getScreenName()</a></p>
+}</div>
+}
+
+<h3>開催日時</h3>
+<p>@Helper.readableDuration(event.getBeginDate(), event.getEndDate())</p>
+
+<h3>開催場所</h3>
+<p>会場: @if(StringUtils.isBlank(event.getPlace())) { 未定 } else { @event.getPlace() }</p>
+@if(!StringUtils.isBlank(event.getAddress())) {
+<p>住所: @event.getAddress()</p>
+<div class="event-map"><a href="http://maps.google.co.jp/maps?q=@Util.encodeURIComponent(event.getAddress())">
+    <img src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=@Util.encodeURIComponent(event.getAddress())&zoom=17&sensor=false" />
+</a></div>
+}
+
+@if(event.getRelatedEvents() != null && !event.getRelatedEvents().isEmpty()) {
+    <h3>関連イベント</h3>
+    <ul>
+    @for(relatedEvent <- event.getRelatedEvents()) {
+        <li><a href="@relatedEvent.getEventURL()">@relatedEvent.getTitle()</a></li>
+    }
+    </ul>
+}

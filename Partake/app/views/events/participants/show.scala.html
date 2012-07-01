@@ -1,0 +1,67 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  ticketAndHolders: List[in.partake.base.Pair[in.partake.model.dto.EventTicket, in.partake.model.EventTicketHolderList]],
+  userTicketInfoMap: Map[String, List[String]])
+@internal.main(ctx, "参加者一覧") {
+
+<div class="container">
+
+<div class="subnav subnav-fixed"><div class="container">
+    <ul class="nav nav-pills nav-stacked-if-phone">
+        <li><a href="#" onclick="window.print()">印刷する</a></li>
+        <li><a href="/events/participants/csv/@(event.getId()).csv">CSVで出力する(UTF-8)</a></li>
+        <li class="pull-right"><a href="/events/@event.getId()">イベントに戻る</a></li>
+    </ul>
+</div></div>
+
+<div class="content-body">
+
+<div class="page-header">
+    <h1>参加者一覧</h1>
+</div>
+
+<h3>@event.getTitle() - 参加者リスト</h3>
+
+<div class="tabbable">
+    <ul class="nav nav-pills nav-stacked-if-phone">
+    	@ticketAndHolders.zipWithIndex.map { ticketAndHolderWithIndex =>
+            <li @if(ticketAndHolderWithIndex._2 == 0) {class='active'}
+            	<a href="#ticket@ticketAndHolderWithIndex._2" data-toggle="tab">@ticketAndHolderWithIndex._1.getFirst().getName()</a>
+            </li>
+    	}
+    </ul>
+    <div class="tab-content">
+    	@ticketAndHolders.zipWithIndex.map { ticketAndHolderWithIndex =>
+            <div id="ticket@ticketAndHolderWithIndex._2" class="tab-pane @if(ticketAndHolderWithIndex._2 == 0) {active}">
+            	@events.participants._show_participants_table(ctx, event, ticketAndHolders, userTicketInfoMap, ticketAndHolderWithIndex._2)
+            </div>
+    	}
+    </div>
+</div>
+
+<script type="text/javascript">
+function removeAttendant(userId, ticketId) {
+    if (!window.confirm('参加者を削除しようとしています。この操作は取り消せません。削除しますか？'))
+        return;
+
+    partake.ticket.removeAttendant(userId, ticketId)
+    .done(function (json) {
+        location.reload();
+    })
+    .fail(partake.defaultFailHandler);
+}
+
+function changeAttendance(userId, ticketId, status) {
+    var id = ticketId + '-' + userId;
+    partake.ticket.changeAttendance(userId, ticketId, status)
+    .done(function(json) {
+        $("#attendance-status-" + id).html("保存しました");
+    })
+    .fail(function(xhr) {
+        $("#attendance-status-" + id).html("保存時にエラーが発生しました");
+    })
+}
+</script>
+
+</div></div>
+}

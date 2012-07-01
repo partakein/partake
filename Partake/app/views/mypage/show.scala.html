@@ -1,0 +1,70 @@
+@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, pref: in.partake.model.dto.UserPreference, openIds: java.util.List[in.partake.model.dto.UserOpenIDLink], calendarLink: in.partake.model.dto.UserCalendarLink)@internal.main(ctx, user.getScreenName()) {
+<div class="container"><div class="content-body">
+
+<div class="page-header">
+	<h1>@user.getScreenName()</h1>
+</div>
+
+<div class="row tabbable">
+    <div class="span6"><div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list tabs">
+            <li class="nav-header">管理イベント</li>
+            <li class="active"><a href="#event-owner" data-toggle="tab">主催イベント</a></li>
+            <li><a href="#event-draft" data-toggle="tab">下書き中のイベント</a></li>
+            <li><a href="#event-editor" data-toggle="tab">編集権のあるイベント</a></li>
+            <li class="nav-header">参加イベント</li>
+            <li><a href="#event-enrolled" data-toggle="tab">登録イベント</a></li>
+            <li class="nav-header">メッセージ</li>
+            <li><a href="#message-received" data-toggle="tab">受信メッセージ</a></li>
+            <li class="nav-header">ユーザー設定</li>
+            <li><a id="account-link" href="#account" data-toggle="tab">アカウントリンク</a></li>
+            <li><a href="#calendar" data-toggle="tab">カレンダー</a></li>
+            <li><a href="#preference" data-toggle="tab">各種設定</a></li>
+        </ul>
+    </div></div>
+    <div class="span18"><div class="tab-content">
+        <div class="tab-pane active" id="event-owner">
+        	@mypage._event_table(ctx, user, "owner", "owner")
+        </div>
+        <div class="tab-pane" id="event-draft">
+            @mypage._event_table(ctx, user, "draft", "draft")
+        </div>
+        <div class="tab-pane" id="event-editor">
+            @mypage._event_table(ctx, user, "editor", "editor")
+        </div>
+
+        <div class="tab-pane" id="event-enrolled">
+        	@mypage._enrollment_table(ctx, user, "enrollment")
+        </div>
+
+        <div class="tab-pane" id="message-received">
+        	@mypage._message(ctx, user)
+        </div>
+
+        <div class="tab-pane" id="account">
+        	@mypage._account(ctx, user, openIds)
+        </div>
+        <div class="tab-pane" id="calendar">
+        	@mypage._calendar(ctx, user, calendarLink)
+        </div>
+        <div class="tab-pane" id="preference">
+        	@mypage._preference(ctx, user, pref)
+        </div>
+    </div></div>
+</div>
+
+<script>
+(function() {
+    if (location.hash == "#account") {
+        $('#account-link').tab('show');
+        return;
+    }
+
+    if (location.hash == "#message") {
+        $('#message-received').tab('show');
+    }
+})();
+</script>
+
+</div></div>
+}

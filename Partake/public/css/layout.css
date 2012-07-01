@@ -1,0 +1,1434 @@
+@charset "UTF-8";
+
+/* ==================================================================
+ * layout layer
+ * ================================================================== 
+ */
+
+/* {
+    border: 1px dotted green;
+}*/ 
+
+#logo {
+    margin-right:10px;
+    text-align:right;
+}
+body {
+    min-width: 900px;
+    padding: 0;
+}
+
+/* ==================================================================
+ * structure
+ * ==================================================================
+ */
+#wrapper {
+    position: relative;
+    width: 900px;
+	margin: 10px auto 0px;
+	padding: 0;
+}
+#header {
+    margin: 0 auto 0;
+    padding: 10px 10px 0 10px;
+    width: 880px;
+    height: 75px;
+}
+#content {
+    position: relative;
+    overflow: auto;
+    width: 880px;
+    padding: 0 10px 10px 10px;
+}
+#content-adjust {
+    margin:0 1em 0 1em;
+}
+/*----------------------------------------------------
+  top画面
+----------------------------------------------------*/
+
+.top-introduction {
+    position: relative;
+    width: 850px;
+    height: 194px;
+    margin: 0 auto 10px;
+}
+.top-introduce {
+    position: absolute;
+    top: 29px;
+    left: 65px;
+}
+#sign-in-with-twitter-button {
+    position: absolute;
+    width: 151px;
+    height: 24px;
+    top: 57px;
+    left: 634px;
+}
+/* top - button */
+
+
+.top-search {
+    position: absolute;
+    top: 105px;
+    left: 110px;
+    width:143px;
+    height:33px;
+    background: transparent url(../images/top-search2.png) no-repeat left bottom;
+    }
+.top-form {
+    position: absolute; 
+    top: 105px;
+    left: 270px;
+    width:143px;
+    height:33px;
+    background: transparent url(../images/top-form2.png) no-repeat left bottom;}
+.sample {
+    position: absolute; 
+    top: 40px;
+    left: 526px;
+    width:166px;
+    height:97px;
+    background: transparent url(../images/sample2.png) no-repeat left bottom;}
+.sample a {
+    display:block;
+    width:166px;
+    height:97px;
+    font-size:1px;
+    line-height:1px;
+    outline:none;
+}
+.sample a:hover {
+    text-indent:-9999px;
+}
+/* partakeの特徴
+---------------------------*/
+
+.top-explanations {
+    background-repeat:repeat;
+    float: left;
+    width: 400px;
+    padding:5px 7px 0 13px;
+}
+
+.top-explanations h2 {
+    position: relative;
+    margin-left: 8px;
+    margin-bottom: 40px;
+}
+ 
+.top-explanations h2 img { 
+    position: absolute;
+    top: 1em;
+    left: -1em;
+    width: 135px;
+    height: 11px;
+}
+.top-explanation {
+    padding:0px;
+    margin:30px 30px 50px 20px;
+    position: relative;
+}
+
+.top-explanation img {
+    position: absolute;
+    top: -15px;
+    z-index: 1;
+}
+
+.top-feature {
+	margin-bottom:3px;
+    padding: 4px 0 0 52px;
+    width: 300px;
+}
+
+
+.top-explanation li {
+	margin:0;
+    margin-bottom:3px;
+}
+
+.top-explanation h3 {
+    position: relative;
+    border-bottom: 2px dotted #bfbfbf;	
+    padding: 0 0 4px 50px;	
+    z-index: 0;
+}
+
+.top-feature img {
+    position: relative;
+    top: 0px;
+    margin-left:5px;
+    vertical-align:middle;
+}
+
+.top-feature img:hover {
+    opacity:0.86;
+    filter: alpha(opacity=86);
+}
+
+/* 最近のイベント
+---------------------------*/
+.top-recent-events h3 {
+    margin:8px 0px 4px 1px;
+    word-break: break-all;
+}
+.top-recent-events, .top-user-events {
+	word-break: break-all;
+	word-wrap: break-word;
+    background-color:#F7F7F7;
+    padding:5px 18px 8px 18px;
+    margin-top:20px;
+    float: right;
+    width: 405px;
+    border : 1px solid #EAEAEA;
+    border-bottom : 1px solid #C0C0C0;  
+    list-style: none;
+    list-style-image: url(../images/mark.png);
+}
+.top-recent-event {
+    clear: both;
+    min-height: 120px;
+    margin: 1px 0 1px 0;
+    padding: 0px 0 5px 0;
+    border-top: 1px dotted #b8b8b8;
+}
+.top-recent-event-image img {
+    float: left;
+    max-width: 90px;
+    max-height: 90px;
+    margin: 0 10px 10px 0;
+}
+.top-recent-event-content {
+    margin-left: 110px;
+    width:290px;
+}
+.top-recent-event-content p {
+   padding: 2px;
+   margin:0;
+}
+.top-recent-event dl {
+    float: left;
+    width: 280px;
+}
+.top-recent-event dt {
+    float: left;
+    width: 3em;
+}
+.top-recent-event dd {
+    width:230px;
+    float: left;
+    margin-left: 0;
+}
+
+.top-recent-events h3 {
+    margin:8px 0px 4px 1px;
+    word-break: break-all;
+}
+
+/* 直近のマイイベント top-user-events
+---------------------------*/
+
+.top-user-events {
+	background-color:/*#FFF8DC;*/;
+    background: transparent url(../images/texture.png);
+    font-size:90%;
+}
+.top-user-events ul {
+	margin-top:3px;
+	margin-bottom:0px;
+}
+.top-user-events p {
+	margin:2px;
+	padding:0 0 0 33px;
+}
+.top-user-events h2 {
+	font-size:10px;
+	margin:9px 0 5px 3px;
+}
+.more {
+	text-align: right;
+}
+.top-user-events a {
+    color:#494440;    
+    text-decoration:none;
+}
+.top-user-events a:visited {
+    color: #494440;
+    text-decoration:none;
+}
+.top-user-events a:hover,a:active {
+    color:#616161;;
+}
+
+/*----------------------------------------------------
+  イベント画面
+----------------------------------------------------*/
+#wrapper h1 {
+	word-break: break-all;
+	word-wrap:break-word;
+}
+
+.summary {
+    padding: 0 0px 20px 15px;
+    margin-bottom:0;        
+}
+
+.event-wrapper {
+    position: relative;
+    width: 100%;    
+    border-top: 2px solid #444;
+    clear: both;	
+}
+/* これを指定すると子供が float でも背景を表示させることが出来るようになる */
+.event-wrapper:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.event-feed-rss {
+	margin: 0;
+	padding: 0;
+	text-align: right;
+    position: absolute;
+    top: -20px;
+    right: 0;
+}
+
+.event-content {
+    float: left;
+    width: 610px;
+    word-break: break-all;
+	word-wrap:break-word;
+}
+.event-information {
+    margin: 0 0 0 0px;
+}
+.event-information p {
+    padding:0;
+    margin:4px 0 0 8px;
+}
+.event-information p img {
+    padding:0;
+    vertical-align:middle;
+}
+
+.event-description {
+    border-top: 2px solid #444;
+    border-bottom: 2px double #444;
+    padding: 10px 0 10px 0;
+    margin: 30px 0 5px 10px;
+}
+/* google Map */
+.event-map {
+    float: right;
+    width: 200px;
+    height: 200px;
+    margin: 10px 20px 0 0;
+    border: 1px #c9c9c9 double;
+}
+.event-information:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+/* コメントらん
+---------------------------*/
+.event-comments {
+	color:#282828;
+    height:478px;
+    overflow:auto;
+    margin-bottom:5px;
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+}
+
+#event-comments-comment {
+	height:auto;
+    min-height:300px;
+    max-height: 570px;
+}
+
+.comment {
+    border-bottom: 1px dotted #cccccc;
+    margin: 0 5px 0px 8px;
+}
+.comment p {
+    margin-top:7px;
+}
+.event-comments textarea#commentForm-commentEdit {
+    margin: 5px 0 0 0px;
+    height: 100px;
+}
+.comment-form textarea {
+	margin-left:8px;
+	height: 40px;
+	width: 510px;
+}
+/* Tab- LiveFeed,CommentBoard
+----------------------------------------------------*/
+ img {
+border:0
+}
+#tab-wrapper {
+width:577px;
+height:auto;
+min-height:700px;
+max-height:1280px;
+margin: 0 auto;
+text-align: left;
+padding-top:15px;
+}
+#tab-wrapper h2 {
+	color:#7c7c7c;
+	margin:7px 0 3px 10px;
+}
+#tab-a1 {
+border-left: 1px solid #ccc;
+}
+#tab li {
+float: left;
+width: 120px;
+border-right: 1px solid #ccc;
+border-top: 1px solid #ccc;
+list-style-type: none;
+border-radius: 3px; /* CSS3 */
+-webkit-border-radius: 3px; /* Safari,Chrome */
+-moz-border-radius: 3px; /* FireFox */
+behavior:url(border-radius.htc); /* forIE */
+}
+#tab li a {
+display: block;
+width: 116px;
+color: #C58120;
+text-align: center;
+text-decoration:none;
+background-color:#f9f9f9;
+padding:2px;
+}
+#tab li a:hover, #tab li.present a {
+background-color:#EDECE8;
+color: #282828;
+font-weight:bold;
+}
+#news1, #news2, #news3 {
+background-color:#EDECE8;
+overflow: auto;
+clear:both;
+border:1px solid #cccccc;
+padding:14px;
+color:#666;
+height:570px;
+}
+#news1 {
+color:#666;
+height:auto;
+max-height:980px;
+}
+/* event-owner
+---------------------------*/
+.event-owner-information {
+    margin: 2px 0 0px 0;
+    padding: 11px 5px 5px 12px;
+    border-bottom : 1px solid #DDD9D7;
+    border-right : 1px solid #DDD9D7;
+}
+.event-owner-information h2, .event-status h2 {
+    margin: 8px 0 4px 0.5em;
+    padding: 0;
+}
+.event-owner-information img {
+    vertical-align: middle;
+    margin: 0 4px 0 0;
+}
+.event-owner-information ul {
+    margin-top: 0px;
+    margin-left:27px;
+    padding:2px;
+}
+.event-owner-information dt {
+	display: list-item;
+    margin-top: 0px;
+    margin-left:27px;
+    padding:2px;
+}
+
+.event-owner-information li {
+    margin-top: 3px;
+}
+
+.event-participation {
+    margin: 10px 0 0 0;
+}
+/* event-promotion 
+---------------------------*/
+.event-promotion {
+	text-align: right;
+    margin: 1px 0 0 0px;
+    padding: 7px 1px ;
+}
+
+.event-promotion iframe#facebook-like-button {
+	border: none;
+	overflow: hidden;
+	width: 98px;
+	height: 21px;
+}
+
+/* event-enrollment
+---------------------------*/
+.event-enrollment {
+    margin: 1px 0 0 0px;
+    padding: 10px 2px ;
+    text-align: center;
+    border-bottom : 1px solid #DDD9D7;
+    border-right : 1px solid #DDD9D7;
+}
+
+.event-enrollment ul li {
+    text-align:left;
+    list-style: none;
+    list-style-image: url(../images/mark.png);
+}
+
+.event-enrollment img {
+    vertical-align:middle;
+    margin-left:2px;
+    height:43px;
+}
+.resize16 {
+	width:16px;
+	height:16px;
+	}
+
+/* event-participants
+---------------------------*/
+
+.event-participants {
+    margin: 1px 0 0 0;
+    padding: 15px 0.4em 10px 0.4em;
+    border-bottom : 1px solid #DDD9D7;
+    border-right : 1px solid #DDD9D7;
+}
+
+.event-participants p {
+    margin: 5px 0 22px 12px;
+    padding-bottom: 0;
+}
+
+.event-participants img {
+    padding: 0;
+    margin-bottom:0;
+    vertical-align:middle;
+}
+
+.event-participants h2 {
+    width: 150px;
+    margin: 12px 0 0 0;
+    padding: 0 0 0 0.4em;
+}
+.event-participants h2 img {
+    vertical-align:middle;
+    padding:0 0 3px 0;
+}
+.event-participation {
+    float: right;
+    width: 260px;
+}
+
+.event-participants ul {
+    display: block;
+    list-style: none;
+    margin: 2px 0 0 0;
+    padding: 5px 1px 8px 7px;
+}
+
+.event-participants li {
+    display: block;
+    margin-bottom: 2px;
+    padding: 0;
+    vertical-align: bottom;
+    line-height:16px;
+}
+
+.event-participants ul li img {
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+    padding:0 0 2px 0;
+}
+.event-participants ul li img.userphoto {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px; /* CSS3 */
+    -webkit-border-radius: 2px; /* Safari,Chrome */
+    -moz-border-radius: 2px; /* FireFox */
+    behavior:url(border-radius.htc); /* forIE */
+    padding:0 0 0px 0;
+    margin:0;
+}
+.event-dashed {
+    border-bottom: 1px dashed #adb7d1;
+    margin: 10px;
+    width: 97%;
+}
+
+.event-information dl {
+    display: block;
+    float: left;
+    margin: 10px;
+}
+
+.event-information dt {
+    float: left;
+    display: inline-block;
+    width: 100px;
+    height: 15px;
+    line-height: 15px;
+    padding: 10px 0;
+}
+
+.event-information dd {
+    position: relative;
+    display: block;
+    width: 250px;
+    min-height: 15px;
+    line-height: 15px;
+    margin-left: 100px;
+    padding: 10px 0;
+    word-break: break-all;
+}
+.event-status {
+    list-style: none;
+    list-style-image: url(../images/mark.png);
+	}
+
+/* output
+---------------------------*/
+#printout h2 {
+	margin-top:30px;
+	}
+
+/*----------------------------------------------------
+  イベント作成画面
+----------------------------------------------------*/
+
+dl.event-form {
+    display: block;
+}
+
+.event-form dt {
+    float: left;
+    margin-left: 13px; 
+    display: inline-block;
+    width: 147px;
+    height: 50px;
+    padding: 5px 0;
+}
+
+.event-form dd {
+    position: relative;
+    display: block;
+    min-height: 50px;
+    margin-left: 160px;
+    padding: 5px 0;
+}
+
+.event-form dd input[type='text'] {
+    width: 93%;
+    height: 17px;
+    line-height:17px;
+    vertical-align:middle;
+    font-size:13px;
+}
+
+.event-form dd textarea {
+    display: block;
+    width: 93%;
+    height: 300px;
+}
+
+.event-form dd input[type='file'] {
+    height: 24px;
+    font-size:13px;
+    color:#2a2a2a;
+}
+
+table.associated-event  {
+    width: 450px;
+    /*background-color:#efefef;*/
+    text-align:center;
+    padding:3px;
+}
+
+table.associated-event input[type='text'] {
+    width: 280px;
+}
+
+#advanced-setting {
+    visibility:hidden;
+}
+
+.switchHat {
+	margin-left:10px;
+	font-weight:bold;
+    color:#DB4984;
+}
+
+.switchHat a:hover {
+	font-weight:bold;
+    color:#DD6C9F;
+}
+
+.switchDetail {
+    border:1px dashed #DB4984;
+    background-color:#f9f9f9;
+    margin-top:8px;
+    margin-bottom:10px;
+    padding:0 5px;
+}
+
+/*----------------------------------------------------
+  イベント編集画面
+----------------------------------------------------*/
+
+#event-edit-submit {
+    display: block;
+    margin: 0 auto;
+}
+
+/*----------------------------------------------------
+  イベント検索画面
+----------------------------------------------------*/
+
+#event-search-form {
+    width: 80%;
+    padding: 10px 10px 0px 10px;
+    margin: 12px auto 1px;
+
+    border: 1px #EAEAEA solid;
+    border-bottom : 1px solid #C0C0C0;
+    border-right : 1px solid #C0C0C0;
+}
+
+#event-search-form dl {
+    margin: 0;
+    padding: 0;
+}
+
+#event-search-form dt {
+    display: inline;
+    margin: 0 1em 0 0;
+    padding: 0;
+}
+
+#event-search-form dd {
+    display: inline;
+    margin: 0 1em 0 0;
+    padding: 0;
+}
+
+#event-search-form p {
+    margin: 0;
+    padding: 0;
+}
+
+#event-search-form img {
+    vertical-align:middle;
+}
+
+.line-space {
+    margin: 5px 0 0 0;
+    width: 97%;
+    padding: 7px 0 0 0;
+    margin: 5px auto;
+}
+
+.search-btn {
+    text-align:right;
+}
+
+.event-searched {
+    margin: 0 12px;
+    padding:0;
+	word-wrap:break-word;
+    word-break: break-all;
+    position: relative;
+    min-height: 145px;
+    border-bottom: 1px #5B5B5B dashed;
+}
+.event-searched dl {
+    margin-left:9px;
+}
+.event-searched dt {
+    float: left;
+    clear: both;
+    width: 4em;
+}
+
+.event-searched dd {
+    margin-left: 4em;
+    margin-bottom: 10px;
+    min-height: 1em;
+}
+
+.event-searched-image {
+    position: absolute;
+    top: 0;
+    left; 0;
+    width: 114px;
+    min-height: 114px;
+    margin:6px 0 0 0;
+}
+
+.event-searched-image img {
+    display: block;
+    max-width: 114px;
+    max-height: 114px;
+    margin: 0 auto 0;
+    border: 1px outset #F5F5F5;
+}
+
+.event-searched h3 {
+    margin: 10px 0 2px 160px;
+    padding: 8px 0 0 0;
+}
+.event-searched-content {
+    margin-left: 160px;
+    margin-bottom:0;
+}
+
+/*----------------------------------------------------
+  マイページ
+----------------------------------------------------*/
+
+#mypage-title {
+    margin: 0 0 10px 15px;
+}
+
+#mypage-title img {
+    margin: 0 11px 5px 0;
+    vertical-align: middle;
+    border: 1px outset #cccccc;
+    padding: 1px; 
+}
+
+.mypage-mine {
+    margin: 4px 15px;
+    padding: 10px 0px 5px 2px;
+}
+
+.mypage-mine h2 {
+    margin-left: 0px;
+    margin-bottom:0px;
+}
+
+.mypage-mine img {
+    margin: 0 5px 4px 0;
+    vertical-align: middle;
+}
+
+.mypage-mine img {
+    margin: 0 5px 4px 0;
+    vertical-align: middle;
+}
+
+.mypage-mine .table0 {
+	width:780px;
+	margin: 5px 0 8px 35px;
+}
+
+/*----------------------------------------------------
+  フィードリスト
+----------------------------------------------------*/
+
+#feedlist {
+    margin-left:15px;
+}
+
+#feedlist h1 img {
+    margin: 0 5px 0px 0;
+    vertical-align: middle;
+}
+
+#feedlist p {
+    margin:15px 0 20px 25px;
+}
+
+#feedlist ul li {
+    margin-top: 6px 0 0 16px;
+}
+
+#feedlist ul li {
+    margin: 6px 0 0 16px;
+    list-style: none;
+    list-style-image: url(../images/mark.png);
+}
+
+.col1 {
+width:100px;
+}
+
+.col2 {
+width:60px;
+}
+
+.col3 {
+width:50px;
+}
+
+/*----------------------------------------------------
+  setting
+----------------------------------------------------*/
+
+.setting-set h3 {
+	font-size:1em;
+	}
+#setting-content {
+    margin-left: 15px;
+}
+
+.setting-subtitle {
+    margin: 25px 0 0px 7px;
+}
+.setting-subtitle img {
+    margin: 0 5px 0 0;
+    vertical-align: middle;
+}
+.setting-set {
+    border-bottom: 2px dotted #bfbfbf;
+    width: 83%; 
+    padding: 0 0 30px 10px;
+    margin: 0px 0 0 60px ;     
+}
+.setting-set ul {
+    list-style: none;
+    padding: 8px 0px 8px 3px;
+}
+.setting-set ul img {
+    vertical-align:middle; 
+}
+.setting-set fieldset {
+	font-size: 0.82em;
+	}
+/*----------------------------------------------------
+  login
+----------------------------------------------------*/
+#login-content {
+    margin-left: 15px;
+}
+/*----------------------------------------------------
+  another
+----------------------------------------------------*/
+.providers li:hover {
+	opacity:0.77;
+    filter: alpha(opacity=77);
+}
+/* お問い合わせ画面  */
+.biglogo {
+    margin-top:60px;
+    margin-bottom:40px;
+    text-align:center;
+}
+
+/* participants-status-edit */
+#status-edit h2 {
+    margin:30px 0 5px 0;  	
+}
+#status-edit .status-control {
+    list-style: none;
+    list-style-image: url(../images/mark.png); 
+    padding:0 0 0 17px;	
+}
+#status-edit img {
+    vertical-align:middle;
+    margin-right:1px;	
+}
+.adjust1 {
+    margin:0 4px;	
+}
+.musangas {
+	margin:0 0 20px 150px;
+	}	
+
+/* ==================================================================
+ * header
+ * ==================================================================
+ */
+
+.skiplink {
+    position: absolute;
+    left: -9999px;
+}
+
+#header a {
+    text-decoration: none;
+}
+
+
+#sitetitle {
+    position: relative;
+    top: 15px;
+    left: 5px;
+    margin: 0;
+    padding: 0;
+    width: 137px;
+    height: 21px;
+}
+
+#sitetitle a {
+    margin: 0;
+    padding: 0;
+    width: 137px;
+    height: 21px;
+    display: block;
+}
+
+#header ul {
+        float: right;
+        margin: 1px 0 0 0;
+        padding: 0;
+        list-style: none;
+        text-align: center;
+}
+
+#menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 60px;
+        width: 620px;
+        margin: 10px 15px 10px 0;
+        padding: 0;
+}
+
+#menu ul li {
+        float: left;
+        display: block; 
+        border-left: 1px dotted #cccccc;
+        margin: 0;
+        padding: 0;
+        height: 56px;
+        width: 100px;
+        line-height: 58px;
+}
+.head-gr a {
+	display:block;
+}
+#header-navi li:hover {
+	    background: transparent url(../images/footprint.png);
+        background-repeat:no-repeat;
+        z-index:5;
+}
+#menu ul li#sign-in-with-twitter-menu {
+        width: 186px;
+}
+
+#menu ul li#sign-in-with-openid-menu {
+	width: 30px;
+    border-left-style: none;
+}
+
+#menu ul li#loggedin-menu {
+        width: 150px;
+}
+
+#menu ul li img.profile-image {
+	margin: 5px 1px 7px 7px;
+	width: 37px;
+	height: 37px;
+	float: left;
+}
+
+div#signin-with-twitter-part form {
+	display: block;
+    line-height: 20px;
+	margin: 0;
+    margin-top:5px;
+ 	padding: 0;
+    height: 28px;
+    background : none;
+}
+
+div#signin-with-openid-part a {
+    display: block;
+    line-height: 20px;
+    margin: 0 0 0 0;
+    padding: 0;
+    height: 28px;
+    font-size:92%;
+    color:#696969;
+}
+
+body.event #subtitle {
+	margin: 0 0 0 30px;
+}
+
+#event-image-image {
+     margin: 20px 20px;
+     max-width: 570px;
+     border: 1px outset #f5f5f5;
+     border-radius: 5px; /* CSS3 */
+     -webkit-border-radius: 5px; /* Safari,Chrome */
+     -moz-border-radius: 5px; /* FireFox */
+     behavior:url(border-radius.htc); /* forIE */  
+}
+
+.loggedin-name {
+	display: block;	
+	line-height: 18px;
+	margin: 6px 0 0 60px; /* 48 + 6x2 */
+	padding: 0;
+}
+
+.loggedin-link {
+	display: block;
+	line-height: 20px;
+	min-width: 90px;
+	height: 24px;
+	margin: 0 0 6px 60px;
+	padding: 0;
+}
+
+ul.actionMessage, ul.errorMessage, ul.warningMessage {
+    width:90%;
+    margin: 10px auto 25px auto;
+    padding: 18px;
+    list-style: none;
+    border-radius: 3px; /* CSS3 */
+    -webkit-border-radius: 3px; /* Safari,Chrome */
+    -moz-border-radius: 3px; /* FirexFox */
+    behavior:url(border-radius.htc); /* forIE */
+}
+
+ul.actionMessage, ul.errorMessage, ul.warningMessage {
+    text-align: center;
+}
+
+#message-form textarea, #twitter-promotion-form textarea {
+    width: 100%;
+    height: 3em;
+}
+
+#event-cancel-form, #event-delete-form, #message-form, #twitter-promotion-form {    text-align: left;
+}
+
+.pict-link {
+    font-size:92%;
+}
+
+.pict-link img {
+    vertical-align:middle;
+    padding:0 0 2px 2px;
+}
+
+.pict-link a:visited {
+    color:#1D2088;
+}
+
+.twitter-share-button {
+	margin-left:8px;
+}
+
+.output {
+	margin-bottom:10px;
+	}
+.output a {
+	text-decoration:underline;
+}
+.output li {
+	float: left;
+    display: block; 
+	list-style: none;
+    margin:10px 13px 20px 0;
+}
+
+/* ==================================================================
+ * footer
+ * ==================================================================
+ */
+#footer {
+    width: 880px;
+    padding: 0 10px 0px 10px;
+    margin-bottom: 10px;
+    clear: both;
+    font-size: 80%;
+}
+
+#footer ul {
+    display: block;
+    margin: 0;
+    padding: 25px 0 0 0;
+    text-align:right;
+}
+
+#footer li {
+    display: inline-block;
+    margin-right: 3px;
+}
+#footer a {
+    text-decoration: none;
+}
+
+
+
+/* ==================================================================
+ * dialog
+ * ==================================================================
+ */
+.ui-widget-overlay {
+    background: url("images/ui-bg_diagonals-thick_20_666666_40x40.png") repeat scroll 50% 50% #666666;
+    opacity: 0.35;
+}
+#openid-dialog {
+    margin:2px 10px;
+}
+#openid-dialog h1 {
+    font-size: 1.45em;  
+}
+#openid-dialog span {
+    color:#E22500;
+    font-weight:bold;
+}
+#openid-dialog span span {
+    font-size:1.65em;
+}
+
+#openid-dialog fieldset {
+	font-weight:normal;
+    font-size:0.80em;
+}
+
+#openid-dialog p {
+	font-size: 0.92em;
+	padding:0 0 5px 0;
+	border-bottom:1px dotted #dddddd;
+}
+
+#signin-dialog {
+	display: none;
+}
+
+.dialog-ui {
+	font-size:0.92em;
+	}
+	
+.dialog-ui img {
+	vertical-align:middle;
+	padding:0 0 2px 0;
+	}
+.dialog-ui ul {
+	margin:0;
+	margin-left:12px;
+	padding:8px;
+	}	
+.dotted-box	{
+	border:2px dotted #cd487d;
+	padding:3px 3px 3px 0px;
+	margin:7px;
+	color:#696969;
+	list-style: none;
+	list-style-image: url(../images/mark.png);	
+}
+
+.dialog-ui #comment {
+	mardin: 7px;
+	padding: 5px 5px 5px 2px;
+	width: 310px;
+}
+	
+	
+/* ==================================================================
+ * headings
+ * ==================================================================
+ */
+
+body.event h1 {
+	padding: 4px 6px;
+}
+
+h1 a, h2 a, h3 a, h4 a {
+    text-decoration: none;
+}
+
+h1 {
+    margin: 0;
+    position: relative;
+}
+
+h1 img {
+    vertical-align:middle;
+    margin-right:5px;
+}
+
+h2 img {
+    vertical-align:middle;
+    margin-right:5px;
+	}
+h1 a:link, h1 a:visited, h1 a:hover, h1 a:active,
+h2 a:link, h2 a:visited, h2 a:hover, h2 a:active,
+h3 a:link, h3 a:visited, h3 a:hover, h3 a:active { 
+    text-decoration: none;
+}
+
+/* ==================================================================
+ * COMMON PARTS
+ * ==================================================================
+ */
+.table0 {
+	margin: 7px 0 8px 0;
+	width:825px;
+	line-height: 1.8em;
+    word-break: break-all;
+	word-wrap:break-word;
+    table-layout:fixed;
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+.table0 th {
+    line-height:20px;
+    padding: 2px;    
+    color: #F5F5F5;
+    background-color: #494440;
+    background: transparent url(../images/head-bg.png) repeat;
+    border-radius: 4px; /* CSS3 */
+    -webkit-border-radius: 4px; /* Safari,Chrome */
+    -moz-border-radius: 4px; /* FireFox */
+    behavior:url(border-radius.htc); /* forIE */
+}
+
+.table0 td {
+	margin: 0;
+    padding: 2px 8px;
+    border-bottom: 1px dotted #b8b8b8;
+}
+
+/* brown head */
+.head0 {
+    padding: 4px 12px;
+    margin: 25px 0 5px 0px;
+    line-height : 20px;
+    border: 1px #c9c9c9;
+    color: #F5F5F5;
+    background-color: #494440;
+    background: transparent url(../images/head-bg.png) repeat;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    behavior:url(border-radius.htc);
+    font-size: 15px;    
+}
+
+/* h1 パステルライン */
+
+#pastel-line13ji {   
+    margin: 0 0 30px 15px;
+}
+#pastel-line13ji img {   
+    position: absolute;
+    top: 1.2em;
+    left: -0.5em;
+    width: 325px;
+    height: 11px;
+}
+#pastel-line11ji {   
+    margin: 0 0 30px 15px;
+}
+#pastel-line11ji img {   
+    position: absolute;
+    top: 1.2em;
+    left: -0.5em;
+    width: 300px;
+    height: 11px;
+}
+#pastel-line10ji {   
+    margin: 0 0 30px 15px;
+}
+#pastel-line10ji img {   
+    position: absolute;
+    top: 1.2em;
+    left: -0.5em;
+    width: 253px;
+    height: 11px;
+}
+#pastel-line5ji {   
+    margin: 0 0 30px 15px;
+}
+#pastel-line5ji img {   
+    position: absolute;
+    top: 1.2em;
+    left: -0.5em;
+    width: 187px;
+    height: 11px;
+}
+/* ==================================================================
+ * blocks
+ * ==================================================================
+ */
+
+hr {
+    clear: both;
+}
+
+pre.code {
+	border: 2px ridge;
+}
+
+blockquote {
+	border-width: 2px;
+	border-style: groove;
+}
+
+/* ==================================================================
+ * inline elements
+ * ==================================================================
+ */
+p {
+   margin-left:10px;
+}
+
+kbd {
+	border-width: 2px;
+	border-style: outset;
+}
+
+q {
+	text-decoration: underline;
+	quotes: "「" "」" "『" "』";
+}
+
+q:lang(en) {
+	quotes: '"' '"' "'" "'";
+}
+
+dfn {
+	border-bottom-style: dashed;
+	border-bottom-width: 1px;
+	cursor: help;
+}
+
+a img {
+	border: none;
+}
+
+/* ==================================================================
+ * anchors
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * lists
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * ins and dels
+ * ==================================================================
+ */
+
+/* ==================================================================
+ * forms
+ * ==================================================================
+ */

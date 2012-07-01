@@ -1,0 +1,132 @@
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx,
+  user: in.partake.model.UserEx,
+  tickets: List[in.partake.model.dto.EventTicket],
+  userTicketMap: Map[UUID, in.partake.model.dto.UserTicket],
+  ticketHolderListMap: Map[UUID, in.partake.model.EventTicketHolderList],
+  comments: List[in.partake.model.EventCommentEx],
+  eventMessages: List[in.partake.model.EventMessageEx])
+@import in.partake.base._
+@import in.partake.controller.base.permission._
+@import in.partake.model.dto.auxiliary._
+@import in.partake.view.util._
+@import org.apache.commons.lang._
+@internal.mainForEvent(ctx, event.getTitle(), event) {
+<div class="container">
+
+@if(user != null && EventEditPermission.check(event, user)) {
+	@events._show_manage_navigation(ctx, event, user)
+}
+
+<div class="content-body">
+
+<div class="page-header">
+    <h1>
+    	@if(event.isPrivate()) {<img src="@routes.Assets.at("/images/private.png") title="非公開イベント" />}
+		@event.getTitle()
+        @if(event.isDraft()) {<span class="label label-important">このイベントはまだ公開されていません</span>}
+    </h1>
+    <p>
+    	@if(!StringUtils.isEmpty(event.getSummary())) { @event.getSummary() }
+    </p>
+    <p>
+        <span class="label label-info">@EventCategory.getReadableCategoryName(event.getCategory())</span>
+    <p>
+</div>
+
+<div id="social-plugins" class="row">
+    <script>
+    $(document).ready(function() {
+        var socialPluginHTML =
+        // '<!-- hatena -->' +
+        '<div class="pull-right">' +
+            '<div style="display:inline-block;">' +
+                '<a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>' +
+                '<script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></' + 'script>' +
+            '</div>' +
+
+            // '<!-- facebook -->' +
+            '<iframe id="facebook-like-button" src="http://www.facebook.com/plugins/like.php?href=@Util.encodeURIComponent(event.getEventURL())&amp;layout=button_count&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" allowTransparency="true" height="20" width="100"></iframe>' +
+
+            // '<!--  twitter -->' +
+            '<div style="display:inline-block; width:105px" >' +
+                '<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="partakein" data-text="@event.getTitle() - [PARTAKE] @event.getHashTag()" data-width="105px">Tweet</a>' +
+                '<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></' + 'script>' +
+            '</div>' +
+
+            // '<!-- +1 -->' +
+            '<div style="display:inline-block; width:70px;"><div class="g-plusone" data-size="medium" data-href="@event.getEventURL()"></div></div>' +
+
+            // '<!-- rss -->' +
+            '@if(event.getFeedId() != null) { <div style="display:inline-block; vertical-align: top;"><a href="/feed/event/@event.getFeedId()"><img src="@routes.Assets.at("/images/feed-icon-15x15.png")" /></a></div>}' +
+        '</div>';
+
+        $('#social-plugins').html(socialPluginHTML);
+    });
+    </script>
+</div>
+
+@events._show_enroll(ctx, event, user, tickets, userTicketMap)
+
+<div class="row">
+    <div class="span8 tabbable pull-right">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#side-information" data-toggle="tab">イベント情報</a></li>
+            <li><a href="#side-participants" data-toggle="tab">参加者情報</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="side-information">
+            	@events._show_side_information(ctx, event, user)
+            </div>
+            <div class="tab-pane" id="side-participants">
+            	@events._show_side_participants(ctx, event, user, tickets, ticketHolderListMap)
+            </div>
+        </div>
+    </div>
+
+    <div class="span16">
+    	@if(event.getForeImageId() != null) {
+        <div class="row">
+            <div class="span16">
+                <div class="event-image">
+                    <img id="event-image-image" src="/images/@event.getForeImageId()" />
+                </div>
+            </div>
+        </div>
+        }
+
+        <h3>詳細情報</h3>
+        <div class="event-description" style="min-height: 200px;">
+        	@Html(Helper.cleanupHTML(event.getDescription()))
+        </div>
+
+        <h3>コメント</h3>
+        <div class="tabbable event-nav">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#news1" title="コメントボード" data-toggle="tab">掲示板</a></li>
+                <li><a href="#news2" title="管理者からのメッセージ" data-toggle="tab">管理者から</a></li>
+                @if(!StringUtils.isEmpty(event.getHashTag())) {
+                <li><a href="#side-twitter" data-toggle="tab">Twitter</a></li>
+                }
+            </ul>
+            <div class="tab-content">
+                <div id="news1" class="tab-pane active">
+                	@events._show_bottom_commentboard(ctx, event, user, comments)
+                </div>
+                <div id="news2" class="tab-pane">
+                	@events._show_bottom_message(ctx, eventMessages)
+                </div>
+                <div id="side-twitter" class="tab-pane">
+                	@events._show_side_twitter(ctx, event)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@events._show_enroll(ctx, event, user, tickets, userTicketMap)
+
+</div>
+@events._show_forms(ctx, event, user, tickets, userTicketMap, ticketHolderListMap, comments, eventMessages)
+</div></div>
+}

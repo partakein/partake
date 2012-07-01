@@ -1,0 +1,122 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /                                   in.partake.controller.action.toppage.ToppageAction.get()
+GET     /termofuse                          in.partake.controller.action.toppage.StaticTermOfUsePageAction.get()
+GET     /contact                            in.partake.controller.action.toppage.StaticContactPageAction.get()
+
+# Error
+GET     /error                              in.partake.controller.action.errorpage.StaticErrorPageAction.get()
+GET     /invalid                            in.partake.controller.action.errorpage.StaticInvalidPageAction.get()
+GET     /notfound                           in.partake.controller.action.errorpage.StaticNotFoundPageAction.get()
+GET     /forbidden                          in.partake.controller.action.errorpage.StaticForbiddenPageAction.get()
+GET     /loginRequired                      in.partake.controller.action.errorpage.StaticLoginRequiredPageAction.get()
+
+# Authentication
+GET     /auth/loginByTwitter                in.partake.controller.action.auth.LoginByTwitterAction.get()
+GET     /auth/verifyForTwitter              in.partake.controller.action.auth.VerifyForTwitterAction.get()
+GET     /auth/loginByOpenID                 in.partake.controller.action.auth.LoginByOpenIDAction.get()
+GET     /auth/connectWithOpenID             in.partake.controller.action.auth.ConnectWithOpenIDAction.get()
+GET     /auth/verifyOpenID                  in.partake.controller.action.auth.VerifyForOpenIDAction.get()
+GET     /auth/logout                        in.partake.controller.action.auth.LogoutAction.get()
+
+# My page
+GET     /mypage                             in.partake.controller.action.mypage.MypageAction.get()
+
+# Administrator
+GET     /admin                              in.partake.controller.action.admin.AdminPageAction.get()
+
+# User
+GET     /users/:userId                      in.partake.controller.action.user.ShowAction.get(userId: String)
+
+# Calendar
+GET     /calendars/all                      in.partake.controller.action.calendar.AllCalendarAction.get()
+GET     /calendars/category/:category       in.partake.controller.action.calendar.CategoryCalendarAction.get(category: String)
+GET     /calendars/:calengarId              in.partake.controller.action.calendar.ShowCalendarAction.get(calengarId: String)
+
+# Image
+GET     /images/thumbnail/:imageId          in.partake.controller.action.image.ThumbnailAction.get(imageId: String)
+GET     /images/:imageId                    in.partake.controller.action.image.ImageAction.get(imageId: String)
+
+# Event
+GET     /events/edit/basic/:eventId         in.partake.controller.action.event.EventEditAction.get(eventId: String)
+GET     /events/edit/ticket/:eventId        in.partake.controller.action.event.EventTicketEditAction.get(eventId: String)
+GET     /events/edit/enquete/:eventId       in.partake.controller.action.event.EventEnqueteEditAction.get(eventId: String)
+GET     /events/edit/privacy/:eventId       in.partake.controller.action.event.EventPrivacyEditAction.get(eventId: String)
+GET     /events/search                      in.partake.controller.action.event.EventSearchAction.get()
+GET     /events/passcode                    in.partake.controller.action.event.EventPasscodeAction.get()
+GET     /events/participants/csv/:eventId   in.partake.controller.action.event.ShowParticipantsCSVAction.get(eventId: String)
+GET     /events/participants/:eventId       in.partake.controller.action.event.ShowParticipantsAction.get(eventId: String)
+GET     /events/:eventId                    in.partake.controller.action.event.EventShowAction.get(eventId: String)
+
+# Message
+GET     /messages/:messageId                in.partake.controller.action.message.ShowAction.get(messageId: String)
+
+# Feed
+GET     /feed                               in.partake.controller.action.feed.FeedListPageAction.get()
+GET     /feed/all                           in.partake.controller.action.feed.FeedRecentEventsAction.get()
+GET     /feed/category/:category            in.partake.controller.action.feed.FeedCategoryAction.get(category: String)
+GET     /feed/event/:feedId                 in.partake.controller.action.feed.FeedEventAction.get(feedId: String)
+GET     /feed/upcoming/:category            in.partake.controller.action.feed.FeedUpcomingEventsAction.get(category: String)
+
+# ----------------------------------------------------------------------
+# Web API
+
+# Debug API
+GET     /api/debug/success                  in.partake.controller.api.debug.SuccessAPI.get()
+GET     /api/debug/echo                     in.partake.controller.api.debug.EchoAPI.get()
+POST    /api/debug/echo                     in.partake.controller.api.debug.EchoAPI.post()
+GET     /api/debug/successIfLogin           in.partake.controller.api.debug.SuccessIfLoginAPI.get()
+GET     /api/debug/invalid                  in.partake.controller.api.debug.InvalidAPI.get()
+GET     /api/debug/error                    in.partake.controller.api.debug.ErrorAPI.get()
+GET     /api/debug/errorException           in.partake.controller.api.debug.ErrorExceptionAPI.get()
+GET     /api/debug/errorDB                  in.partake.controller.api.debug.ErrorDBAPI.get()
+GET     /api/debug/errorDBException         in.partake.controller.api.debug.ErrorDBExceptionAPI.get()
+
+# Account API
+GET     /api/account/get                    in.partake.controller.api.account.GetAPI.get()
+GET     /api/account/events                 in.partake.controller.api.account.GetEventsAPI.get()
+GET     /api/account/tickets                in.partake.controller.api.account.GetTicketsAPI.get()
+GET     /api/account/images                 in.partake.controller.api.account.GetImagesAPI.get()
+GET     /api/account/messages               in.partake.controller.api.account.GetMessagesAPI.get()
+POST    /api/account/removeOpenID           in.partake.controller.api.account.RemoveOpenIDAPI.post()
+POST    /api/account/revokeCalendar         in.partake.controller.api.account.RevokeCalendarAPI.post()
+POST    /api/account/setPreference          in.partake.controller.api.account.SetPreferenceAPI.post()
+GET     /api/account/sessionToken           in.partake.controller.api.account.SessionTokenAPI.get()
+
+# Admin API
+POST    /api/admin/recreateEventIndex       in.partake.controller.api.admin.AdminEventIndexRecreationAPI.post()
+
+# User API
+GET     /api/user/get                       in.partake.controller.api.user.GetAPI.get()
+GET     /api/user/events                    in.partake.controller.api.user.GetEventsAPI.get()
+GET     /api/user/ticket                    in.partake.controller.api.user.GetTicketsAPI.get()
+GET     /api/user/search                    in.partake.controller.api.user.SearchUserAPI.get()
+
+# Image API
+POST    /api/image/create                   in.partake.controller.api.image.CreateImageAPI.post()
+
+# Event API
+GET     /api/event/get                      in.partake.controller.api.event.GetAPI.get()
+POST    /api/event/copy                     in.partake.controller.api.event.CopyAPI.post()
+POST    /api/event/modify                   in.partake.controller.api.event.ModifyAPI.post()
+POST    /api/event/modifyEnquete            in.partake.controller.api.event.ModifyEnqueteAPI.post()
+POST    /api/event/modifyTicket             in.partake.controller.api.event.ModifyTicketAPI.post()
+POST    /api/event/publish                  in.partake.controller.api.event.PublishAPI.post()
+POST    /api/event/remove                   in.partake.controller.api.event.RemoveAPI.post()
+POST    /api/event/create                   in.partake.controller.api.event.CreateAPI.post()
+GET     /api/event/search                   in.partake.controller.api.event.SearchAPI.get()
+POST    /api/event/search                   in.partake.controller.api.event.SearchAPI.post()
+POST    /api/event/sendMessage              in.partake.controller.api.event.SendMessageAPI.post()
+POST    /api/event/postComment              in.partake.controller.api.event.PostCommentAPI.post()
+POST    /api/event/removeComment            in.partake.controller.api.event.RemoveCommentAPI.post()
+GET     /api/event/getNotifications         in.partake.controller.api.event.GetNotificationsAPI.get()
+
+# Ticket API
+POST    /api/ticket/apply                   in.partake.controller.api.ticket.ApplyAPI.post()
+POST    /api/ticket/attend                  in.partake.controller.api.ticket.AttendAPI.post()
+POST    /api/ticket/removeAttendant         in.partake.controller.api.ticket.RemoveAttendantAPI.post()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
