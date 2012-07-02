@@ -6,7 +6,7 @@ import in.partake.model.dao.PartakeConnection;
 
 public class MockConnection extends PartakeConnection {
     private boolean isInTransaction;
-    
+
     public MockConnection(MockConnectionPool pool) {
         super("<mock connection>", pool, TimeUtil.getCurrentTime());
     }
@@ -27,7 +27,7 @@ public class MockConnection extends PartakeConnection {
     }
 
     @Override
-    public boolean isInTransaction() throws DAOException {
+    public boolean isInTransaction() {
         return isInTransaction;
     }
 }

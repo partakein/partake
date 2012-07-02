@@ -46,7 +46,7 @@ public class ModifyTicketAPITest extends APIControllerTest {
         assertResultOK(proxy);
 
         EventEx modified = loadEventEx(UNPUBLISHED_EVENT_ID);
-        List<EventTicket> tickets = modified.getTikcets();
+        List<EventTicket> tickets = modified.getTickets();
 
         assertThat(tickets.size(), is(1));
         assertThat(tickets.get(0).getName(), is("name"));
