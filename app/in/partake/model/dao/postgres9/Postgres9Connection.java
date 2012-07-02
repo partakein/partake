@@ -30,7 +30,6 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void beginTransaction() throws DAOException {
-        System.out.println("beginTransaction");
         try {
             connection.setAutoCommit(false);
             inTransation = true;
@@ -41,7 +40,6 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void commit() throws DAOException {
-        System.out.println("commit transaction");
         if (!inTransation)
             throw new IllegalStateException("Transaction is not acquired.");
 
@@ -55,7 +53,6 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void rollback() throws DAOException {
-        System.out.println("rollback transaction");
         if (!inTransation)
             throw new IllegalStateException("Transaction is not acquired.");
 
