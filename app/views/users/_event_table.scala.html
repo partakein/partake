@@ -78,7 +78,8 @@
     }
 
     function update(nthPage) {
-        partake.user.getEvents(userId, queryType, (nthPage - 1) * 10, 10)
+        var SIZE_PER_PAGE = 30;
+        partake.user.getEvents(userId, queryType, (nthPage - 1) * SIZE_PER_PAGE, SIZE_PER_PAGE)
         .done(function (json) {
             createTable(nthPage, json.eventStatuses);
             var lst = partakeUI.pagination($('#' + ident + '-pagination'), nthPage, json.totalEventCount, 10);
