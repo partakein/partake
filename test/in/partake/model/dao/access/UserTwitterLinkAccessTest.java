@@ -6,10 +6,9 @@ import static org.junit.Assert.assertThat;
 import in.partake.app.PartakeApp;
 import in.partake.base.PartakeException;
 import in.partake.model.IPartakeDAOs;
-import in.partake.model.access.DBAccess;
+import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
-import in.partake.model.dao.access.IUserTwitterLinkAccess;
 import in.partake.model.dto.UserTwitterLink;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class UserTwitterLinkAccessTest extends AbstractDaoTestCaseBase<IUserTwit
 
     @Test
     public void testToFindByTwitterId() throws Exception {
-        new DBAccess<Void>() {
+        new Transaction<Void>() {
             @Override
             protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
                 UserTwitterLink link1 = create(0, "hoge", 1);
@@ -53,7 +52,7 @@ public class UserTwitterLinkAccessTest extends AbstractDaoTestCaseBase<IUserTwit
 
     @Test
     public void testToFindByUserId() throws Exception {
-        new DBAccess<Void>() {
+        new Transaction<Void>() {
             @Override
             protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
                 UserTwitterLink link1 = create(0, "hoge", 1);
@@ -73,7 +72,7 @@ public class UserTwitterLinkAccessTest extends AbstractDaoTestCaseBase<IUserTwit
 
     @Test
     public void testToFindByScreenNamePrefix() throws Exception {
-        new DBAccess<Void>() {
+        new Transaction<Void>() {
             @Override
             protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
                 String[] screenNames = new String[] {
@@ -98,7 +97,7 @@ public class UserTwitterLinkAccessTest extends AbstractDaoTestCaseBase<IUserTwit
 
     @Test
     public void testToFindByScreenNamePrefixWithEscapeCharacters() throws Exception {
-        new DBAccess<Void>() {
+        new Transaction<Void>() {
             @Override
             protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
                 String[] screenNames = new String[] {
