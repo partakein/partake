@@ -25,30 +25,6 @@ public class PartakeConnectionTest extends AbstractConnectionTestCaseBase {
     }
 
     @Test
-    public void testToRetain() throws DAOException {
-        PartakeConnection con = getConnection();
-        try {
-            con.retain();
-            try {
-                // do nothing
-            } finally {
-                con.invalidate();
-            }
-        } finally {
-            con.invalidate();
-        }
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testToRetain2() throws DAOException {
-        PartakeConnection con = getConnection();
-        con.invalidate();
-
-        con.retain(); // should throw IllegalStateException.
-        Assert.fail(); // SHOULD NOT REACHED
-    }
-
-    @Test
     public void testToCommit() throws DAOException {
         PartakeConnection con = getConnection();
         try {

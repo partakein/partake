@@ -9,17 +9,17 @@ import in.partake.model.dao.PartakeConnection;
 public class Postgres9Connection extends PartakeConnection {
     private Connection connection;
     private boolean inTransation;
-    
+
     public Postgres9Connection(String name, Connection con, Postgres9ConnectionPool pool, long acquiredTime) {
         super(name, pool, acquiredTime);
         this.connection = con;
         this.inTransation = false;
     }
-    
+
     public Connection getConnection() {
         return connection;
     }
-    
+
     public void close() throws DAOException {
         try {
             connection.close();
@@ -30,6 +30,7 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void beginTransaction() throws DAOException {
+        System.out.println("beginTransaction");
         try {
             connection.setAutoCommit(false);
             inTransation = true;
@@ -40,9 +41,10 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void commit() throws DAOException {
+        System.out.println("commit transaction");
         if (!inTransation)
             throw new IllegalStateException("Transaction is not acquired.");
-        
+
         try {
             connection.commit();
             inTransation = false;
@@ -53,6 +55,7 @@ public class Postgres9Connection extends PartakeConnection {
 
     @Override
     public void rollback() throws DAOException {
+        System.out.println("rollback transaction");
         if (!inTransation)
             throw new IllegalStateException("Transaction is not acquired.");
 
@@ -65,7 +68,7 @@ public class Postgres9Connection extends PartakeConnection {
     }
 
     @Override
-    public boolean isInTransaction() throws DAOException {
+    public boolean isInTransaction() {
         return inTransation;
     }
 }
