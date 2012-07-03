@@ -73,8 +73,7 @@ public class PartakeProperties {
     public String getPartakeAppFactoryClassName() {
         String str = properties.getProperty("in.partake.app.factory");
         if (str == null)
-            str = "in.partake.app.imple.DefaultPartakeAppFactory";
-
+            str = "in.partake.service.impl.DefaultPartakeAppFactory";
         return str;
     }
 
