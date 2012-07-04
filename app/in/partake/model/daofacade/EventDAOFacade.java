@@ -54,6 +54,8 @@ public class EventDAOFacade {
         List<Event> relatedEvents = new ArrayList<Event>();
         if (event.getRelatedEventIds() != null) {
             for (String relatedEventId : event.getRelatedEventIds()) {
+                if (!Util.isUUID(relatedEventId))
+                    continue;
                 Event relatedEvent = daos.getEventAccess().find(con, relatedEventId);
                 if (relatedEvent != null)
                     relatedEvents.add(relatedEvent);
