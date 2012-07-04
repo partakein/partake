@@ -18,16 +18,27 @@ import java.util.UUID;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import play.test.FakeApplication;
+import play.test.Helpers;
+
 public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> {
     private Logger logger = Logger.getLogger(getClass());
+    private static FakeApplication application;
 
     @BeforeClass
     public static void setUpOnce() throws Exception {
-        // PartakeApp.initializeIfNotInitialized("unittest");
+        application = Helpers.fakeApplication();
+        Helpers.start(application);
+    }
+
+    @AfterClass
+    public static void tearDownOnce() throws Exception {
+        Helpers.stop(application);
     }
 
     protected abstract TestDataProvider<T> getTestDataProvider();

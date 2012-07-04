@@ -23,7 +23,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     //
 
     protected void addHeader(String key, String value) {
-    	response().getHeaders().put(key, value);
+        response().getHeaders().put(key, value);
     }
 
     // ----------------------------------------------------------------------
@@ -35,7 +35,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
      * @return
      */
     protected Result renderJSON(JSONObject obj) {
-    	return renderJSON(obj, OK);
+        return renderJSON(obj, OK);
     }
 
     protected Result renderJSON(JSONObject obj, int status) {

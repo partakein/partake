@@ -33,9 +33,7 @@ public class GetTicketsAPITest extends APIControllerTest {
         List<Pair<UUID, String>> ids = prepareEvents(20);
         prepareEnrollment(DEFAULT_USER_ID, ids);
 
-        ActionProxy proxy = getActionProxy(GET, "/api/user/tickets");
-        addParameter(proxy, "userId", DEFAULT_USER_ID);
-        addParameter(proxy, "limit", "10");
+        ActionProxy proxy = getActionProxy(GET, "/api/user/tickets?userId=" + DEFAULT_USER_ID + "&limit=10");
 
         proxy.execute();
         assertResultOK(proxy);

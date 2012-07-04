@@ -56,13 +56,4 @@ public class CategoryCalendarTest extends ActionControllerTest {
 
         assertResultNotFound(proxy);
     }
-
-    @Test
-    public void testWithoutCategory() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/calendars/category/");
-        proxy.execute();
-
-        assertResultNotFound(proxy);
-    }
-
 }

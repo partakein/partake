@@ -58,17 +58,17 @@ class PartakeActionContextImpl implements PartakeActionContext {
 
     @Override
     public void setRedirectURL(String redirectURL) {
-    	this.redirectURL = redirectURL;
+        this.redirectURL = redirectURL;
     }
 
     @Override
     public void addMessage(MessageCode mc) {
-    	messageCodes.add(mc);
+        messageCodes.add(mc);
     }
 
     @Override
     public List<MessageCode> messages() {
-    	return Collections.unmodifiableList(messageCodes);
+        return Collections.unmodifiableList(messageCodes);
     }
 }
 
@@ -189,9 +189,9 @@ public abstract class AbstractPartakeController extends Controller {
     // Parameter
 
     protected String getFormParameter(String key) {
-    	Map<String, String[]> map = request().body().asFormUrlEncoded();
-    	if (map == null)
-    		return null;
+        Map<String, String[]> map = request().body().asFormUrlEncoded();
+        if (map == null)
+            return null;
 
         String[] params = map.get(key);
         if (params == null || params.length <= 0)
@@ -201,11 +201,11 @@ public abstract class AbstractPartakeController extends Controller {
     }
 
     protected String getQueryStringParameter(String key) {
-    	Map<String, String[]> map = request().queryString();
-    	if (map == null)
-    		return null;
+        Map<String, String[]> map = request().queryString();
+        if (map == null)
+            return null;
 
-    	String[] params = map.get(key);
+        String[] params = map.get(key);
         if (params == null)
             return null;
         if (params.length <= 0)
@@ -213,13 +213,17 @@ public abstract class AbstractPartakeController extends Controller {
         return params[0];
     }
 
+    protected Map<String, String[]> getFormParameters() {
+        return request().body().asFormUrlEncoded();
+    }
+
     @Deprecated
     protected String getParameter(String key) {
-        String param = getFormParameter(key);
-        if (param != null)
-            return param;
+        String[] values = getParameters(key);
+        if (values == null || values.length == 0)
+            return null;
 
-        return getQueryStringParameter(key);
+        return values[0];
     }
 
     /**
@@ -384,10 +388,22 @@ public abstract class AbstractPartakeController extends Controller {
      * @param key
      * @return
      */
+    @Deprecated
     protected String[] getParameters(String key) {
-        return request().queryString().get(key);
+        String[] params = request().queryString().get(key);
+        if (params != null)
+            return params;
+
+        if (request().body().asFormUrlEncoded() != null)
+            return request().body().asFormUrlEncoded().get(key);
+
+        if (request().body().asMultipartFormData() != null)
+            return request().body().asMultipartFormData().asFormUrlEncoded().get(key);
+
+        return null;
     }
 
+    @Deprecated
     protected Map<String, String[]> getParameters() {
         return request().queryString();
     }

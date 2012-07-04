@@ -49,7 +49,7 @@ public class ModifyAPI extends AbstractPartakeAPI {
         UserEx user = ensureLogin();
         ensureValidSessionToken();
         String eventId = getValidEventIdParameter();
-        Map<String, String[]> params = getParameters();
+        Map<String, String[]> params = getFormParameters();
 
         ModifyTransaction transaction = new ModifyTransaction(user, eventId, params);
         transaction.execute();

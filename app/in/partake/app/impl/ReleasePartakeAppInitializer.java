@@ -30,6 +30,8 @@ public class ReleasePartakeAppInitializer extends PartakeApp implements IPartake
 
         if (dbService != null)
             dbService.initialize();
+        if (eventSearchService != null)
+            eventSearchService.initialize();
         if (daemonInitializer != null)
             daemonInitializer.initialize();
 

@@ -15,7 +15,6 @@ import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import net.fortuna.ical4j.model.Calendar;
@@ -23,25 +22,26 @@ import net.fortuna.ical4j.model.ValidationException;
 import play.mvc.Result;
 
 public class ShowCalendarAction extends AbstractCalendarAction {
-    private String calendarId;
+    private final String calendarId;
 
-    public static Result get(String calengarId) throws DAOException, PartakeException {
-        ShowCalendarAction action = new ShowCalendarAction();
-        action.calendarId = calengarId;
-        return action.execute();
+    private ShowCalendarAction(String calendarId) {
+        this.calendarId = calendarId;
+    }
+
+    public static Result get(String calendarId) throws DAOException, PartakeException {
+        return new ShowCalendarAction(calendarId).execute();
     }
 
     @Override
     protected Result doExecute() throws DAOException, PartakeException {
-    	checkIdParameterIsValid(calendarId,
-    			UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
+        checkIdParameterIsValid(calendarId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
         // TODO: CalendarLinkage should have cache. Maybe ShowCalendarTransaction should return
         // InputStream instead of Calendar?
         Calendar calendar = new ShowCalendarTransaction(calendarId).execute();
         try {
-            InputStream is = CalendarUtil.outputCalendar(calendar);
-            return renderInlineStream(is, "text/calendar; charset=utf-8");
+            byte[] body = CalendarUtil.outputCalendar(calendar);
+            return render(body, "text/calendar; charset=utf-8", "inline");
         } catch (IOException e) {
             return renderError(ServerErrorCode.CALENDAR_CREATION_FAILURE, e);
         } catch (ValidationException e) {

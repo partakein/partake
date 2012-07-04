@@ -25,8 +25,13 @@ public class EventSearchService implements IEventSearchService {
     }
 
     @Override
+    public void initialize() throws EventSearchServiceException {
+        LuceneService.initialize();
+    }
+
+    @Override
     public void cleanUp() throws EventSearchServiceException {
-        LuceneService.get().cleanUp();
+        LuceneService.destroy();
     }
 
     @Override

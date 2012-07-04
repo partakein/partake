@@ -2,7 +2,6 @@ package in.partake.model.dao;
 
 import in.partake.app.PartakeApp;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

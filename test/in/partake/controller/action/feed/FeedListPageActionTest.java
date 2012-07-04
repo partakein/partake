@@ -10,7 +10,7 @@ public class FeedListPageActionTest extends ActionControllerTest {
 
     @Test
     public void testCalendar() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/feed/");
+        ActionProxy proxy = getActionProxy(GET, "/feed");
         proxy.execute();
 
         assertResultSuccess(proxy);

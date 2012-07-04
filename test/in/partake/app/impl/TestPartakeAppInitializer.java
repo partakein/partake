@@ -39,6 +39,8 @@ public class TestPartakeAppInitializer extends PartakeTestApp implements IPartak
 
         if (dbService != null)
             dbService.initialize();
+        if (eventSearchService != null)
+            eventSearchService.initialize();
         if (daemonInitializer != null)
             daemonInitializer.initialize();
 

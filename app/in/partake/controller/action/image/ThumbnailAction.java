@@ -27,25 +27,27 @@ import play.mvc.Result;
 public class ThumbnailAction extends AbstractPartakeAction {
     static final String IMAGE_ID_PARAM_NAME = "imageId";
 
-    private String imageId;
+    private final String imageId;
+
+    public ThumbnailAction(String imageId) {
+        this.imageId = imageId;
+    }
 
     public static Result get(String imageId) throws DAOException, PartakeException {
-        ThumbnailAction action = new ThumbnailAction();
-        action.imageId = imageId;
-        return action.execute();
+        return new ThumbnailAction(imageId).execute();
     }
 
     public Result doExecute() throws DAOException, PartakeException {
-    	checkIdParameterIsValid(imageId,UserErrorCode.MISSING_IMAGEID, UserErrorCode.INVALID_IMAGEID);
+        checkIdParameterIsValid(imageId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
         UserThumbnail data = new ThumbnailAccess(imageId).execute();
         if (data != null)
-            return renderInlineStream(new ByteArrayInputStream(data.getData()), data.getType());
+            return render(data.getData(), data.getType(), "inline");
 
         // If not found, we will generate a thumbnail.
         UserThumbnail created = new ThumbnailTransaction(imageId).execute();
         if (created != null)
-            return renderInlineStream(new ByteArrayInputStream(created.getData()), created.getType());
+            return render(created.getData(), created.getType(), "inline");
 
         return renderNotFound();
     }

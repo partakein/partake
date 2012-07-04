@@ -1,6 +1,5 @@
 package in.partake.controller.action.auth;
 
-import in.partake.app.PartakeApp;
 import in.partake.base.PartakeException;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.UserEx;
@@ -15,18 +14,14 @@ import in.partake.resource.Constants;
 import in.partake.resource.MessageCode;
 import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
-import in.partake.session.OpenIDLoginInformation;
 
-import java.util.Map;
 import java.util.UUID;
 
 import org.openid4java.OpenIDException;
-import org.openid4java.discovery.DiscoveryInformation;
 
 import play.cache.Cache;
 import play.libs.OpenID;
 import play.mvc.Result;
-import scala.collection.immutable.Stream.Cons;
 
 public class VerifyForOpenIDAction extends AbstractOpenIDAction {
 
@@ -39,13 +34,13 @@ public class VerifyForOpenIDAction extends AbstractOpenIDAction {
         String sessionId = session().get(Constants.Session.ID_KEY);
         assert sessionId != null;
         if (sessionId == null)
-        	return renderInvalid(UserErrorCode.INVALID_OPENID_PURPOSE);
+            return renderInvalid(UserErrorCode.INVALID_OPENID_PURPOSE);
 
-    	String purpose = (String) Cache.get(Constants.Cache.OPENID_LOGIN_KEY_PREFIX + sessionId);
+        String purpose = (String) Cache.get(Constants.Cache.OPENID_LOGIN_KEY_PREFIX + sessionId);
 
-    	OpenID.UserInfo info = OpenID.verifiedId().get();
-    	if (info == null)
-    		return renderRedirect("/", MessageCode.MESSAGE_OPENID_LOGIN_FAILURE);
+        OpenID.UserInfo info = OpenID.verifiedId().get();
+        if (info == null)
+            return renderRedirect("/", MessageCode.MESSAGE_OPENID_LOGIN_FAILURE);
 
         try {
             if ("login".equals(purpose))

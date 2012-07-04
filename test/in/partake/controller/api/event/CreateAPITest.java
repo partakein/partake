@@ -42,8 +42,8 @@ public class CreateAPITest extends APIControllerTest {
     }
 
     private void addNecessaryEventParameters(ActionProxy proxy) {
-        addParameter(proxy, "title", "Title");
-        addParameter(proxy, "beginDate", "2013-01-01 12:00");
-        addParameter(proxy, "category", EventCategory.getCategories().get(0).getKey());
+        addFormParameter(proxy, "title", "Title");
+        addFormParameter(proxy, "beginDate", "2013-01-01 12:00");
+        addFormParameter(proxy, "category", EventCategory.getCategories().get(0).getKey());
     }
 }

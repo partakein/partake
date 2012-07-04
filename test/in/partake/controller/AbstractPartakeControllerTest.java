@@ -37,6 +37,7 @@ import in.partake.resource.ServerErrorCode;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -60,14 +61,12 @@ public abstract class AbstractPartakeControllerTest
 
     @BeforeClass
     public static void setUpOnce() throws Exception {
-    	System.out.println("********** START!");
         application = Helpers.fakeApplication();
         Helpers.start(application);
     }
 
     @AfterClass
     public static void tearDownOnce() throws Exception {
-    	System.out.println("********** STOP!");
         Helpers.stop(application);
     }
 
@@ -100,38 +99,43 @@ public abstract class AbstractPartakeControllerTest
     }
 
     protected void addFormParameter(ActionProxy proxy, String key, String value) {
-        // TODO(mayah):
-        throw new RuntimeException("Not implemented yet");
+        proxy.addFormParameter(key, value);
     }
 
     protected void addFormParameter(ActionProxy proxy, String key, String[] values) {
-        // TODO(mayah):
-        throw new RuntimeException("Not implemented yet");
+        for (String value : values)
+            addFormParameter(proxy, key, value);
     }
 
     @Deprecated
     protected void addParameter(ActionProxy proxy, String key, Object obj) {
-        throw new RuntimeException("Not implemented yet");
-//        ActionContext actionContext = proxy.getInvocation().getInvocationContext();
-//        if (obj == null || obj instanceof String || obj instanceof String[])
-//            actionContext.getParameters().put(key, obj);
-//        else
-//            actionContext.getParameters().put(key, obj.toString());
+        if (obj instanceof String)
+            addFormParameter(proxy, key, (String) obj);
+        else if (obj instanceof String[])
+            addFormParameter(proxy, key, (String[]) obj);
+        else
+            throw new RuntimeException("ASSERT_NOT_REACHED");
     }
 
     protected void addValidSessionTokenToParameter(ActionProxy proxy) {
-        throw new RuntimeException("Not implemented yet");
-//        ActionContext actionContext = proxy.getInvocation().getInvocationContext();
-//        assert actionContext.getSession() != null;
-//
-//        PartakeSession session = (PartakeSession) actionContext.getSession().get(Constants.ATTR_PARTAKE_SESSION);
-//        actionContext.getParameters().put("sessionToken", session.getCSRFPrevention().getSessionToken());
+        String validToken = proxy.session(Constants.Session.TOKEN_KEY);
+        if (StringUtils.isEmpty(validToken)) {
+            validToken = UUID.randomUUID().toString();
+            proxy.addSession(Constants.Session.TOKEN_KEY, validToken);
+        }
+
+        addFormParameter(proxy, Constants.Session.TOKEN_KEY, validToken);
     }
 
     protected void addInvalidSessionTokenToParameter(ActionProxy proxy) {
-        throw new RuntimeException("Not implemented yet");
-//        ActionContext actionContext = proxy.getInvocation().getInvocationContext();
-//        actionContext.getParameters().put("sessionToken", "INVALID-SESSION-TOKEN");
+        String validToken = proxy.session(Constants.Session.TOKEN_KEY);
+        if (StringUtils.isEmpty(validToken)) {
+            validToken = UUID.randomUUID().toString();
+            proxy.addSession(Constants.Session.TOKEN_KEY, validToken);
+        }
+
+        String invalidToken = validToken + "-invalid";
+        addFormParameter(proxy, Constants.Session.TOKEN_KEY, invalidToken);
     }
 
     // ----------------------------------------------------------------------
@@ -145,7 +149,7 @@ public abstract class AbstractPartakeControllerTest
     }
 
     protected void assertResultRedirect(ActionProxy proxy, String url) throws Exception {
-        assertThat(Helpers.status(proxy.getResult()), is(402));
+        assertThat(Helpers.status(proxy.getResult()), is(303));
 
         if (url != null)
             assertThat(Helpers.redirectLocation(proxy.getResult()), is(url));
@@ -156,7 +160,7 @@ public abstract class AbstractPartakeControllerTest
     }
 
     protected void assertResultNotFound(ActionProxy proxy) throws Exception {
-        assertThat(Helpers.status(proxy.getResult()), is(404));
+        assertThat(Helpers.redirectLocation(proxy.getResult()), Matchers.startsWith("/notfound"));
     }
 
     protected void assertResultError(ActionProxy proxy) throws Exception {

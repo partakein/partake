@@ -11,7 +11,6 @@ import in.partake.model.daofacade.CalendarDAOFacade;
 import in.partake.resource.ServerErrorCode;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ValidationException;
@@ -25,12 +24,12 @@ public abstract class AbstractCalendarAction extends AbstractPartakeAction {
     protected Result showByCategory(String categoryName) throws DAOException, PartakeException {
         assert(!StringUtils.isEmpty(categoryName));
 
-        InputStream is = new CalendarActionTransaction(categoryName).execute();
-        return renderInlineStream(is, "text/calendar; charset=utf-8");
+        byte[] body = new CalendarActionTransaction(categoryName).execute();
+        return render(body, "text/calendar; charset=utf-8", "inline");
     }
 }
 
-class CalendarActionTransaction extends DBAccess<InputStream> {
+class CalendarActionTransaction extends DBAccess<byte[]> {
     private String categoryName;
 
     CalendarActionTransaction(String categoryName) {
@@ -38,7 +37,7 @@ class CalendarActionTransaction extends DBAccess<InputStream> {
     }
 
     @Override
-    protected InputStream doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
+    protected byte[] doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
         try {
             Calendar calendar = CalendarUtil.createCalendarSkeleton();
             CalendarDAOFacade.addCalendarByCategoryName(con, daos, categoryName, calendar);

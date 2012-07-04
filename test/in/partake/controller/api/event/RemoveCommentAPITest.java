@@ -13,7 +13,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveOwnComment() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, TestDataProvider.EVENT_COMMENTOR_ID);
@@ -25,7 +25,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveInvalidComment() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.INVALID_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.INVALID_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, TestDataProvider.EVENT_COMMENTOR_ID);
@@ -38,7 +38,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveCommentByEventOwner() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
@@ -50,7 +50,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveCommentByEventEditor() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, TestDataProvider.EVENT_EDITOR_ID);
@@ -62,7 +62,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveCommentByOtherOne() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, TestDataProvider.EVENT_UNRELATED_USER_ID);
@@ -74,7 +74,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveCommentWithoutLogin() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -84,7 +84,7 @@ public class RemoveCommentAPITest extends APIControllerTest {
     @Test
     public void testToRemoveCommentWithoutValidSessionToken() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/removeComment");
-        addParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
+        addFormParameter(proxy, "commentId", TestDataProvider.COMMENTOR_COMMENT_ID);
 
         loginAs(proxy, TestDataProvider.EVENT_COMMENTOR_ID);
 

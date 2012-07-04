@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import play.mvc.Result;
 
-
+// TODO(mayah): Maybe we have to reconsider how to do this.
 public class EventPasscodeAction extends AbstractPartakeAction {
     private String eventId;
 
@@ -27,7 +27,7 @@ public class EventPasscodeAction extends AbstractPartakeAction {
         String passcode = getParameter("passcode");
 
         if (passcode == null)
-        	return render(views.html.events.passcode.render(context(), eventId));
+            return render(views.html.events.passcode.render(context(), eventId));
 
         Event event = new EventPasscodeTransaction(eventId).execute();
         if (event == null)
@@ -36,8 +36,8 @@ public class EventPasscodeAction extends AbstractPartakeAction {
         String pass = StringUtils.trim(passcode);
 
         if (!pass.equals(event.getPasscode())) {
-        	context().addMessage(MessageCode.MESSAGE_PASSCODE_INVALID);
-        	return render(views.html.events.passcode.render(context(), eventId));
+            context().addMessage(MessageCode.MESSAGE_PASSCODE_INVALID);
+            return render(views.html.events.passcode.render(context(), eventId));
         }
 
         // TODO: Reconsider Session.

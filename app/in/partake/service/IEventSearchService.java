@@ -6,7 +6,9 @@ import in.partake.model.dto.EventTicket;
 import java.util.List;
 
 public interface IEventSearchService {
+    public void initialize() throws EventSearchServiceException;
     public void cleanUp() throws EventSearchServiceException;
+
 
     public void truncate() throws EventSearchServiceException;
 

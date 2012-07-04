@@ -21,7 +21,7 @@ public class CopyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultOK(proxy);
@@ -49,7 +49,7 @@ public class CopyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_EDITOR_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultOK(proxy);
@@ -66,7 +66,7 @@ public class CopyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_UNRELATED_USER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultForbidden(proxy);
@@ -87,7 +87,7 @@ public class CopyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", INVALID_EVENT_ID);
+        addFormParameter(proxy, "eventId", INVALID_EVENT_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
@@ -97,7 +97,7 @@ public class CopyAPITest extends APIControllerTest {
     public void testToCreateWithoutSessionToken() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_SECURITY_CSRF);
@@ -108,7 +108,7 @@ public class CopyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/copy");
         loginAs(proxy, EVENT_OWNER_ID);
         addInvalidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_SECURITY_CSRF);

@@ -20,12 +20,12 @@ public class ModifyEnqueteAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modifyEnquete");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
 
-        addParameter(proxy, "ids[]", new String[] { "" });
-        addParameter(proxy, "questions[]", new String[] { "test" });
-        addParameter(proxy, "types[]", new String[] { "text" });
-        addParameter(proxy, "options[]", new String[] { "[]" });
+        addFormParameter(proxy, "ids[]", new String[] { "" });
+        addFormParameter(proxy, "questions[]", new String[] { "test" });
+        addFormParameter(proxy, "types[]", new String[] { "text" });
+        addFormParameter(proxy, "options[]", new String[] { "[]" });
 
         proxy.execute();
         assertResultOK(proxy);

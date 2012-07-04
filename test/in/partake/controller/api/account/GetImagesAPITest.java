@@ -32,11 +32,8 @@ public class GetImagesAPITest extends APIControllerTest {
 
     @Test
     public void testToGetImagesWithOffsetAndLimit() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/account/images");
+        ActionProxy proxy = getActionProxy(GET, "/api/account/images?offset=0&limit=10");
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
-
-        addParameter(proxy, "offset", "0");
-        addParameter(proxy, "limit", "10");
         proxy.execute();
 
         assertResultOK(proxy);
@@ -51,11 +48,8 @@ public class GetImagesAPITest extends APIControllerTest {
 
     @Test
     public void testToGetImagesWithOffsetAndLimit2() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/account/images");
+        ActionProxy proxy = getActionProxy(GET, "/api/account/images?offset=0&limit=5");
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
-
-        addParameter(proxy, "offset", "0");
-        addParameter(proxy, "limit", "5");
         proxy.execute();
 
         assertResultOK(proxy);
@@ -70,11 +64,8 @@ public class GetImagesAPITest extends APIControllerTest {
 
     @Test
     public void testToGetImagesWithOffsetAndLimit3() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/account/images");
+        ActionProxy proxy = getActionProxy(GET, "/api/account/images?offset=3&limit=5");
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
-
-        addParameter(proxy, "offset", "3");
-        addParameter(proxy, "limit", "5");
         proxy.execute();
 
         assertResultOK(proxy);

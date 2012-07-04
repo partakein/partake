@@ -25,14 +25,6 @@ public class ImageActionTest extends ActionControllerTest {
    }
 
     @Test
-    public void testToGetWithoutImageId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/images/");
-
-        proxy.execute();
-        assertResultNotFound(proxy);
-    }
-
-    @Test
     public void testToGetWithInvalidId() throws Exception {
         ActionProxy proxy = getActionProxy(GET, "/images/invalid");
 

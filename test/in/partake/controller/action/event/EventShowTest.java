@@ -69,17 +69,6 @@ public class EventShowTest extends ActionControllerTest {
     }
 
     @Test
-    public void testToShowWithoutId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/events/");
-
-        proxy.execute();
-        assertResultNotFound(proxy);
-
-        EventShowAction action = (EventShowAction) proxy.getAction();
-        assertThat(action.getEvent(), is(nullValue()));
-    }
-
-    @Test
     public void testToShowWithNonUUID() throws Exception {
         ActionProxy proxy = getActionProxy(GET, "/events/" + "some-invalid-event-id");
 

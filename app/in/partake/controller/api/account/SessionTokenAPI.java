@@ -1,12 +1,10 @@
 package in.partake.controller.api.account;
 
-import play.mvc.Result;
 import in.partake.base.PartakeException;
 import in.partake.controller.api.AbstractPartakeAPI;
 import in.partake.model.dao.DAOException;
-import in.partake.resource.UserErrorCode;
-import in.partake.session.PartakeSession;
 import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 public class SessionTokenAPI extends AbstractPartakeAPI {
 

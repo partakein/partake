@@ -6,7 +6,7 @@ import in.partake.controller.action.AbstractPartakeAction;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.UserEx;
 import in.partake.model.UserMessageEx;
-import in.partake.model.access.DBAccess;
+import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.daofacade.MessageDAOFacade;
@@ -29,9 +29,9 @@ public class ShowAction extends AbstractPartakeAction {
 
     public Result doExecute() throws DAOException, PartakeException {
         UserEx user = ensureLogin();
-        UUID messageId = getValidUUIDParameter("messageId", UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
+        checkIdParameterIsValid(messageId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
-        ShowActionTransaction transaction = new ShowActionTransaction(user, messageId);
+        ShowActionTransaction transaction = new ShowActionTransaction(user, UUID.fromString(messageId));
         message = transaction.execute();
 
         return render(views.html.messages.show.render(context(), message));
@@ -42,7 +42,7 @@ public class ShowAction extends AbstractPartakeAction {
     }
 }
 
-class ShowActionTransaction extends DBAccess<UserMessageEx> {
+class ShowActionTransaction extends Transaction<UserMessageEx> {
     private UserEx user;
     private UUID messageId;
 

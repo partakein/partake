@@ -16,8 +16,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -29,8 +29,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_UNRELATED_USER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -41,8 +41,8 @@ public class PostCommentAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/postComment");
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultLoginRequired(proxy);
@@ -54,8 +54,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addInvalidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_SECURITY_CSRF);
@@ -67,8 +67,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.INVALID_EVENT_ID);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "eventId", TestDataProvider.INVALID_EVENT_ID);
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
@@ -80,7 +80,7 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "comment", "comment");
+        addFormParameter(proxy, "comment", "comment");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.MISSING_EVENT_ID);
@@ -92,7 +92,7 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.MISSING_COMMENT);
@@ -104,8 +104,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.MISSING_COMMENT);
@@ -117,8 +117,8 @@ public class PostCommentAPITest extends APIControllerTest {
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", "   ");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", "   ");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.MISSING_COMMENT);
@@ -134,8 +134,8 @@ public class PostCommentAPITest extends APIControllerTest {
             buffer.append((char)((i % 26) + 'a'));
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "comment", buffer.toString());
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "comment", buffer.toString());
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_COMMENT_TOOLONG);

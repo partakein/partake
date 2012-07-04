@@ -14,8 +14,6 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import com.jolbox.bonecp.BoneCPDataSource;
-
 import play.db.DB;
 
 public class Postgres9ConnectionPool extends PartakeConnectionPool {
@@ -24,19 +22,7 @@ public class Postgres9ConnectionPool extends PartakeConnectionPool {
 
     public Postgres9ConnectionPool() {
         super();
-
-        DataSource ds = DB.getDataSource();
-
-//        try {
-//            ds =
-//            // ds = (DataSource) InitialContext.doLookup("java:/comp/env/jdbc/postgres");
-//        } catch (NamingException e) {
-//            logger.fatal("Postgres9ConnectionPool cannot be created.", e);
-//        }
-
-        dataSource = ds;
-        System.out.println(ds);
-        System.out.println(ds.hashCode());
+        dataSource = DB.getDataSource();
     }
 
     @Override
@@ -46,8 +32,8 @@ public class Postgres9ConnectionPool extends PartakeConnectionPool {
 
         long now = new Date().getTime();
         try {
-        	Connection con = dataSource.getConnection();
-        	con.setAutoCommit(false);
+            Connection con = dataSource.getConnection();
+            con.setAutoCommit(false);
             return new Postgres9Connection(name, con, this, now);
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -68,9 +54,6 @@ public class Postgres9ConnectionPool extends PartakeConnectionPool {
         } catch (DAOException e) {
             logger.warn("Connection cannot be released.", e);
         }
-
-        System.out.println("!!!!!!!!!!");
-        System.out.println(((BoneCPDataSource) dataSource).getTotalLeased());
     }
 
     @Override

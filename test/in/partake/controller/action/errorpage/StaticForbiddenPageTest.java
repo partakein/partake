@@ -10,7 +10,7 @@ import in.partake.controller.ActionProxy;
 public class StaticForbiddenPageTest extends ActionControllerTest {
     @Test
     public void testAccessWithLogin() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/prohibited");
+        ActionProxy proxy = getActionProxy(GET, "/forbidden");
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
 
         proxy.execute();
@@ -19,7 +19,7 @@ public class StaticForbiddenPageTest extends ActionControllerTest {
 
     @Test
     public void testAccessWithoutLogin() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/prohibited");
+        ActionProxy proxy = getActionProxy(GET, "/forbidden");
 
         proxy.execute();
         assertResultSuccess(proxy);

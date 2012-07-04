@@ -50,7 +50,6 @@ public class EventActivityAccessTest extends AbstractDaoTestCaseBase<IEventActiv
                     Assert.assertEquals(9 - i, activities.get(i).getCreatedAt().getTime());
                 }
 
-                // TODO Auto-generated method stub
                 return null;
             }
         }.execute();
@@ -88,7 +87,7 @@ public class EventActivityAccessTest extends AbstractDaoTestCaseBase<IEventActiv
                     Assert.assertEquals(9 - i, activities1.get(i).getCreatedAt().getTime());
                     Assert.assertEquals(9 - i, activities2.get(i).getCreatedAt().getTime());
                 }
-                // TODO Auto-generated method stub
+
                 return null;
             }
         }.execute();

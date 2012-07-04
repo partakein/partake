@@ -6,7 +6,6 @@ import in.partake.resource.MessageCode;
 import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
 
-import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -15,13 +14,19 @@ import play.mvc.Content;
 import play.mvc.Result;
 
 public abstract class AbstractPartakeAction extends AbstractPartakeController {
-	private Logger logger = Logger.getLogger(AbstractPartakeAction.class);
+    private Logger logger = Logger.getLogger(AbstractPartakeAction.class);
 
-	// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     // Renderers
 
     protected Result render(Content content) {
         return ok(content);
+    }
+
+    protected Result render(byte[] body, String contentType, String contentDisposition) {
+        response().setContentType(contentType);
+        response().setHeader("Content-Disposition", contentDisposition);
+        return ok(body);
     }
 
     @Override
@@ -30,7 +35,7 @@ public abstract class AbstractPartakeAction extends AbstractPartakeController {
             logger.info("renderInvalid", e);
 
         if (ec != null)
-        	return renderRedirect("/invalid?errorCode=" + ec.getErrorCode());
+            return renderRedirect("/invalid?errorCode=" + ec.getErrorCode());
 
         return  renderRedirect("/invalid");
     }
@@ -41,14 +46,14 @@ public abstract class AbstractPartakeAction extends AbstractPartakeController {
             logger.info("redirectError", e);
 
         if (ec != null)
-        	return renderRedirect("/error?errorCode=" + ec.getErrorCode());
+            return renderRedirect("/error?errorCode=" + ec.getErrorCode());
 
         return renderRedirect("/error");
     }
 
     protected Result renderLoginRequired() {
-    	context().setRedirectURL(request().uri());
-    	return renderRedirect("/loginRequired");
+        context().setRedirectURL(request().uri());
+        return renderRedirect("/loginRequired");
     }
 
     // TODO: renderRedirect はなにか引数を１つ取って、それを表示できるようにするべきだなあ……
@@ -87,25 +92,6 @@ public abstract class AbstractPartakeAction extends AbstractPartakeController {
      * @return
      */
     protected Result renderNotFound() {
-    	return renderRedirect("/notfound");
-    }
-
-    protected Result renderStream(InputStream stream, String contentType, String contentDisposition) {
-    	response().setContentType(contentType);
-    	response().setHeader("Content-Disposition", contentDisposition);
-    	return ok(stream);
-    }
-
-    protected Result renderAttachmentStream(InputStream stream, String contentType) {
-        return renderStream(stream, contentType, "attachment");
-    }
-
-    protected Result renderInlineStream(InputStream stream, String contentType) {
-        return renderStream(stream, contentType, "inline");
-    }
-
-    protected Result renderInlineStream(InputStream stream, String contentType, String filename) {
-        String contentDisposition = String.format("inline; filename=\"%s\"", filename);
-        return renderStream(stream, contentType, contentDisposition);
+        return renderRedirect("/notfound");
     }
 }

@@ -25,22 +25,22 @@ public class ModifyTicketAPITest extends APIControllerTest {
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
 
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
-        addParameter(proxy, "id[]", new String[] { "" });
-        addParameter(proxy, "name[]", new String[] { "name" });
-        addParameter(proxy, "applicationStart[]", new String[] { "anytime" });
-        addParameter(proxy, "applicationStartDayBeforeEvent[]", new String[] { "0" });
-        addParameter(proxy, "customApplicationStartDate[]", new String[] { "2012-01-01 00:00" });
-        addParameter(proxy, "applicationEnd[]", new String[] { "till_time_before_event" });
-        addParameter(proxy, "applicationEndDayBeforeEvent[]", new String[] { "0" });
-        addParameter(proxy, "customApplicationEndDate[]", new String[] { "2012-01-01 00:00" });
-        addParameter(proxy, "reservationEnd[]", new String[] { "till_time_before_application" });
-        addParameter(proxy, "reservationEndHourBeforeApplication[]", new String[] { "0" });
-        addParameter(proxy, "customReservationEndDate[]", new String[] { "2012-01-01 00:00" });
-        addParameter(proxy, "priceType[]", new String[] { "free" });
-        addParameter(proxy, "price[]", new String[] { "0" });
-        addParameter(proxy, "amountType[]", new String[] { "unlimited" });
-        addParameter(proxy, "amount[]", new String[] { "0" });
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "id[]", new String[] { "" });
+        addFormParameter(proxy, "name[]", new String[] { "name" });
+        addFormParameter(proxy, "applicationStart[]", new String[] { "anytime" });
+        addFormParameter(proxy, "applicationStartDayBeforeEvent[]", new String[] { "0" });
+        addFormParameter(proxy, "customApplicationStartDate[]", new String[] { "2012-01-01 00:00" });
+        addFormParameter(proxy, "applicationEnd[]", new String[] { "till_time_before_event" });
+        addFormParameter(proxy, "applicationEndDayBeforeEvent[]", new String[] { "0" });
+        addFormParameter(proxy, "customApplicationEndDate[]", new String[] { "2012-01-01 00:00" });
+        addFormParameter(proxy, "reservationEnd[]", new String[] { "till_time_before_application" });
+        addFormParameter(proxy, "reservationEndHourBeforeApplication[]", new String[] { "0" });
+        addFormParameter(proxy, "customReservationEndDate[]", new String[] { "2012-01-01 00:00" });
+        addFormParameter(proxy, "priceType[]", new String[] { "free" });
+        addFormParameter(proxy, "price[]", new String[] { "0" });
+        addFormParameter(proxy, "amountType[]", new String[] { "unlimited" });
+        addFormParameter(proxy, "amount[]", new String[] { "0" });
 
         proxy.execute();
         assertResultOK(proxy);

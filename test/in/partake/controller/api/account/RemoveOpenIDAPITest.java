@@ -21,7 +21,7 @@ public class RemoveOpenIDAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/account/removeOpenID");
 
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
-        addParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
+        addFormParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -53,7 +53,7 @@ public class RemoveOpenIDAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/account/removeOpenID");
 
         // When not login, should fail.
-        addParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
+        addFormParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -66,7 +66,7 @@ public class RemoveOpenIDAPITest extends APIControllerTest {
 
         loginAs(proxy, TestDataProvider.DEFAULT_ANOTHER_USER_ID);
 
-        addParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
+        addFormParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -80,7 +80,7 @@ public class RemoveOpenIDAPITest extends APIControllerTest {
         // Check CSRF prevention works.
         loginAs(proxy, TestDataProvider.DEFAULT_USER_ID);
 
-        addParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
+        addFormParameter(proxy, "identifier", TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER);
         addInvalidSessionTokenToParameter(proxy);
 
         proxy.execute();

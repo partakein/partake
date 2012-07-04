@@ -3,6 +3,7 @@ package in.partake.controller.action.calendar;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import in.partake.controller.ActionProxy;
 import in.partake.controller.action.ActionControllerTest;
 import in.partake.model.fixture.TestDataProvider;
 
@@ -19,8 +20,6 @@ import net.fortuna.ical4j.model.component.VEvent;
 import org.junit.Test;
 
 import play.test.Helpers;
-
-import in.partake.controller.ActionProxy;
 
 public class ShowCalendarTest extends ActionControllerTest {
 
@@ -54,13 +53,4 @@ public class ShowCalendarTest extends ActionControllerTest {
 
         assertResultNotFound(proxy);
     }
-
-    @Test
-    public void testWithoutCalendarId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/calendars/");
-        proxy.execute();
-
-        assertResultNotFound(proxy);
-    }
-
 }

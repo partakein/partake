@@ -22,7 +22,6 @@ import net.sf.json.JSONObject;
  * @author shinyak
  *
  * Note that this may contain images someone uploaded if an event editor uploaded it.
- * TODO: BinaryData should have userId.
  */
 public class GetImagesAPI extends AbstractPartakeAPI {
 

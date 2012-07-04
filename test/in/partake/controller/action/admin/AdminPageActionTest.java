@@ -9,7 +9,7 @@ public class AdminPageActionTest extends ActionControllerTest {
 
     @Test
     public void testWithAdminLogin() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/admin/");
+        ActionProxy proxy = getActionProxy(GET, "/admin");
         loginAs(proxy, ADMIN_USER_ID);
 
         proxy.execute();
@@ -18,8 +18,8 @@ public class AdminPageActionTest extends ActionControllerTest {
 
     @Test
     public void testWithLogin() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/admin/");
-        loginAs(proxy, ADMIN_USER_ID);
+        ActionProxy proxy = getActionProxy(GET, "/admin");
+        loginAs(proxy, DEFAULT_USER_ID);
 
         proxy.execute();
         assertResultForbidden(proxy);
@@ -27,7 +27,7 @@ public class AdminPageActionTest extends ActionControllerTest {
 
     @Test
     public void testWithoutLogin() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/admin/");
+        ActionProxy proxy = getActionProxy(GET, "/admin");
 
         proxy.execute();
         assertResultLoginRequired(proxy);

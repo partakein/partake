@@ -8,7 +8,6 @@ import in.partake.resource.UserErrorCode;
 import play.mvc.Result;
 
 public class EventEnqueteEditAction extends AbstractEventEditAction {
-
     private String eventId;
 
     public static Result get(String eventId) throws DAOException, PartakeException {
@@ -24,7 +23,7 @@ public class EventEnqueteEditAction extends AbstractEventEditAction {
 
         event = new EventEditTransaction(eventId).execute();
         if (event == null)
-            return renderInvalid(UserErrorCode.INVALID_EVENT_ID);
+            return renderNotFound();
 
         if (!EventEditPermission.check(event, user))
             return renderForbidden(UserErrorCode.FORBIDDEN_EVENT_EDIT);

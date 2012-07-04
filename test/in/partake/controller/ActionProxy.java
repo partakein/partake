@@ -4,17 +4,19 @@ import static play.test.Helpers.GET;
 import static play.test.Helpers.POST;
 import static play.test.Helpers.fakeRequest;
 import static play.test.Helpers.routeAndCall;
+import in.partake.base.Pair;
 import in.partake.controller.base.AbstractPartakeController;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import play.mvc.Result;
 import play.test.FakeRequest;
+import play.test.FakeRequestOperation;
 
 public class ActionProxy {
     private FakeRequest request;
@@ -42,7 +44,6 @@ public class ActionProxy {
 
     public void addSession(String key, String value) {
         session.put(key, value);
-        request.withSession(key, value);
     }
 
     public void addFormParameter(String key, String value) {
@@ -63,14 +64,31 @@ public class ActionProxy {
     public void execute() throws Exception {
         if (formParams.isEmpty())
             request.withFormUrlEncodedBody(new HashMap<String, String>());
-        for (Entry<String, List<String>> entry : formParams.entrySet()) {
-            String key = entry.getKey();
-            for (String value : entry.getValue())
-                request.withFormUrlEncodedBody(Collections.singletonMap(key, value));
+        else {
+            // Since request.withFormUrlEncodedBody takes Map<String, String>, we cannot add multiple values for one key.
+            // It should be Map<String, String[]>, I believe. However, it is converted to (String, String)* and converted
+            // to (String, Seq[String]) in scala.
+            // So if we can add multiple keys that are actually the equivalent keys, we can add multiple values actually.
+            // So IdnetityHashMap really works well here :-)  ... This is just a hack.
+            IdentityHashMap<String, String> map = new IdentityHashMap<String, String>();
+            for (Entry<String, List<String>> entry : formParams.entrySet()) {
+                for (String value : entry.getValue()) {
+                    String key = new String(entry.getKey());
+                    map.put(key, value);
+                }
+            }
+
+            request.withFormUrlEncodedBody(map);
         }
 
         if (session.isEmpty())
-        	request.withSession("", "");
+            request.withSession("", "");
+        else {
+            List<Pair<String, String>> sessions = new ArrayList<Pair<String,String>>();
+            for (Entry<String, String> entry: session.entrySet())
+                sessions.add(new Pair<String, String>(entry.getKey(), entry.getValue()));
+            FakeRequestOperation.addSession(request, sessions);
+        }
 
         result = routeAndCall(request);
     }

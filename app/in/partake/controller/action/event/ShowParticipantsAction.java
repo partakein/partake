@@ -18,7 +18,6 @@ import in.partake.model.dto.EventTicket;
 import in.partake.resource.UserErrorCode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class ShowParticipantsAction extends AbstractPartakeAction {
     @Override
     protected Result doExecute() throws DAOException, PartakeException {
         UserEx user = ensureLogin();
-        checkIdParameterIsValid(eventId, UserErrorCode.MISSING_EVENT_ID, UserErrorCode.INVALID_EVENT_ID);
+        checkIdParameterIsValid(eventId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
         ParticipantsListTransaction transaction = new ParticipantsListTransaction(user, eventId);
         transaction.execute();

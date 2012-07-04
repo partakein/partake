@@ -13,10 +13,8 @@ import in.partake.model.dto.auxiliary.EnqueteQuestion;
 import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class ShowParticipantsCSVAction extends AbstractPartakeAction {
     @Override
     protected Result doExecute() throws DAOException, PartakeException {
         UserEx user = ensureLogin();
-        String eventId = getValidEventIdParameter(UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
+        checkIdParameterIsValid(eventId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
         ParticipantsListTransaction transaction = new ParticipantsListTransaction(user, eventId);
         transaction.execute();
@@ -51,14 +49,14 @@ public class ShowParticipantsCSVAction extends AbstractPartakeAction {
         Map<String, List<String>> userTicketInfoMap = transaction.getUserTicketInfoMap();
 
         try {
-            InputStream is = createCSVInputStream(event, ticketAndHolders, userTicketInfoMap);
-            return renderAttachmentStream(is, "text/csv; charset=UTF-8");
+            byte[] body = createCSVInputStream(event, ticketAndHolders, userTicketInfoMap);
+            return render(body, "text/csv; charset=UTF-8", "attachment");
         } catch (IOException e) {
             return renderError(ServerErrorCode.ERROR_IO, e);
         }
     }
 
-    private InputStream createCSVInputStream(EventEx event, List<Pair<EventTicket, EventTicketHolderList>> ticketAndHolders, Map<String, List<String>> userTicketInfoMap) throws IOException {
+    private byte[] createCSVInputStream(EventEx event, List<Pair<EventTicket, EventTicketHolderList>> ticketAndHolders, Map<String, List<String>> userTicketInfoMap) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         CSVWriter writer = new CSVWriter(new OutputStreamWriter(baos, Charset.forName("UTF-8")));
 
@@ -72,7 +70,7 @@ public class ShowParticipantsCSVAction extends AbstractPartakeAction {
         writer.flush();
         writer.close();
 
-        return new ByteArrayInputStream(baos.toByteArray());
+        return baos.toByteArray();
     }
 
     private void writeHeader(CSVWriter writer, EventEx event) {

@@ -14,7 +14,6 @@ import in.partake.resource.ServerErrorCode;
 import in.partake.service.IEventSearchService;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +24,19 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 
 public class FeedCategoryAction extends AbstractFeedPageAction {
-    private String catgory;
+    private final String category;
 
-    public static Result get(String catgory) throws DAOException, PartakeException {
-        FeedCategoryAction action = new FeedCategoryAction();
-        action.catgory = catgory;
-        return action.execute();
+    public static Result get(String category) throws DAOException, PartakeException {
+        return new FeedCategoryAction(category).execute();
+    }
+
+    public FeedCategoryAction(String category) {
+        this.category = category;
     }
 
     @Override
     public Result doExecute() throws DAOException, PartakeException {
         // TODO: CACHE!
-
-        String category = getParameter("category");
 
         // check category is correct.
         if (!EventCategory.isValidCategoryName(category))
@@ -56,9 +55,8 @@ public class FeedCategoryAction extends AbstractFeedPageAction {
             List<String> eventIds = searchService.getRecentByCategory(category, 100);
 
             List<EventEx> events = new FeedCategoryTransaction(eventIds).execute();
-            InputStream is = createFeed(feed, events);
-
-            return renderInlineStream(is, "application/rss+xml");
+            byte[] body = createFeed(feed, events);
+            return render(body, "application/rss+xml", "inline");
         } catch (IOException e) {
             return renderError(ServerErrorCode.ERROR_IO, e);
         } catch (FeedException e) {

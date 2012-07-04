@@ -20,7 +20,7 @@ public class UserThumbnailTestDataProvider extends TestDataProvider<UserThumbnai
 
     public UserThumbnailTestDataProvider() {
         try {
-            InputStream is = getClass().getResourceAsStream("images/null.png");
+            InputStream is = getClass().getResourceAsStream("/images/null.png");
             defaultImageContent = Util.getContentOfInputStream(is);
         } catch (IOException e) {
             throw new RuntimeException(e);

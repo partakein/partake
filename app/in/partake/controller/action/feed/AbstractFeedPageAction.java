@@ -5,10 +5,8 @@ import in.partake.model.EventEx;
 import in.partake.model.dto.EventActivity;
 import in.partake.view.util.Helper;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
 public abstract class AbstractFeedPageAction extends AbstractPartakeAction{
-    protected InputStream createFeed(SyndFeed feed, List<EventEx> events) throws IOException, FeedException {
+    protected byte[] createFeed(SyndFeed feed, List<EventEx> events) throws IOException, FeedException {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
 
         for (EventEx event : events) {
@@ -49,7 +47,7 @@ public abstract class AbstractFeedPageAction extends AbstractPartakeAction{
         return outputSyndFeed(feed);
     }
 
-    protected InputStream createEventFeed(SyndFeed feed, List<EventActivity> activities) throws IOException, FeedException {
+    protected byte[] createEventFeed(SyndFeed feed, List<EventActivity> activities) throws IOException, FeedException {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         for (EventActivity activity : activities) {
             SyndContent content = new SyndContentImpl();
@@ -67,14 +65,13 @@ public abstract class AbstractFeedPageAction extends AbstractPartakeAction{
         return outputSyndFeed(feed);
     }
 
-
-    protected InputStream outputSyndFeed(SyndFeed feed) throws IOException, FeedException, UnsupportedEncodingException {
+    protected byte[] outputSyndFeed(SyndFeed feed) throws IOException, FeedException, UnsupportedEncodingException {
         SyndFeedOutput output = new SyndFeedOutput();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         output.output(feed, new OutputStreamWriter(baos, "utf-8"));
         baos.flush();
         baos.close();
 
-        return new ByteArrayInputStream(baos.toByteArray());
+        return baos.toByteArray();
     }
 }

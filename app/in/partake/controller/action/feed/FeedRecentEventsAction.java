@@ -12,7 +12,6 @@ import in.partake.resource.ServerErrorCode;
 import in.partake.service.IEventSearchService;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +42,8 @@ public class FeedRecentEventsAction extends AbstractFeedPageAction {
             List<String> eventIds = searchService.getRecent(100);
 
             List<EventEx> events = new GetEventsTransaction(eventIds).execute();
-            InputStream is = createFeed(feed, events);
-
-            return renderInlineStream(is, "application/rss+xml; charset=utf-8");
+            byte[] body = createFeed(feed, events);
+            return render(body, "application/rss+xml; charset=utf-8", "inline");
         } catch (IOException e) {
             return renderError(ServerErrorCode.ERROR_IO, e);
         } catch (FeedException e) {

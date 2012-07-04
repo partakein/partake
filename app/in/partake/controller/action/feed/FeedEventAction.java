@@ -34,7 +34,7 @@ public class FeedEventAction extends AbstractFeedPageAction {
 
     @Override
     protected Result doExecute() throws DAOException, PartakeException {
-        String feedId = getValidIdParameter("feedId", UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
+        checkIdParameterIsValid(feedId, UserErrorCode.INVALID_NOTFOUND, UserErrorCode.INVALID_NOTFOUND);
 
         FeedEventTransaction transaction = new FeedEventTransaction(feedId);
         transaction.execute();
@@ -52,10 +52,10 @@ public class FeedEventAction extends AbstractFeedPageAction {
             feed.setLink(event.getEventURL());
             feed.setDescription(event.getSummary());
 
-            InputStream is = createEventFeed(feed, transaction.getActivities());
-            if (is == null)
+            byte[] body = createEventFeed(feed, transaction.getActivities());
+            if (body == null)
                 return renderNotFound();
-            return renderInlineStream(is, "application/rss+xml");
+            return render(body, "application/rss+xml", "inline");
         } catch (IOException e) {
             throw new PartakeException(ServerErrorCode.ERROR_IO, e);
         } catch (FeedException e) {

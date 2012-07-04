@@ -4,21 +4,18 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import in.partake.controller.ActionProxy;
 import in.partake.controller.api.APIControllerTest;
-import in.partake.model.fixture.TestDataProvider;
 import in.partake.resource.UserErrorCode;
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
 
-import in.partake.controller.ActionProxy;
-
 public class GetUserAPITest extends APIControllerTest {
 
     @Test
     public void testGetUser() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/user/get");
-        addParameter(proxy, "userId", TestDataProvider.DEFAULT_USER_ID);
+        ActionProxy proxy = getActionProxy(GET, "/api/user/get?userId=" + DEFAULT_USER_ID);
 
         proxy.execute();
         assertResultOK(proxy);
@@ -44,8 +41,7 @@ public class GetUserAPITest extends APIControllerTest {
 
     @Test
     public void testGetUserWithInvalidUserId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/user/get");
-        addParameter(proxy, "userId", TestDataProvider.INVALID_USER_ID);
+        ActionProxy proxy = getActionProxy(GET, "/api/user/get?userId=" + INVALID_USER_ID);
         proxy.execute();
 
         assertResultInvalid(proxy, UserErrorCode.INVALID_USER_ID);

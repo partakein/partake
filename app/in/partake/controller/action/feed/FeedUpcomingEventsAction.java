@@ -9,7 +9,6 @@ import in.partake.resource.ServerErrorCode;
 import in.partake.service.IEventSearchService;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import play.mvc.Result;
@@ -31,7 +30,6 @@ public class FeedUpcomingEventsAction extends AbstractFeedPageAction {
     public Result doExecute() throws DAOException, PartakeException {
         // TODO: CACHE!
 
-        String category = getParameter("category");
         if (!EventCategory.isValidCategoryName(category) && !category.equals(EventCategory.getAllEventCategory()))
             return renderNotFound();
 
@@ -52,9 +50,8 @@ public class FeedUpcomingEventsAction extends AbstractFeedPageAction {
             List<String> eventIds = searchService.getUpcomingByCategory(category, 100);
 
             List<EventEx> events = new GetEventsTransaction(eventIds).execute();
-            InputStream is = createFeed(feed, events);
-
-            return renderInlineStream(is, "application/rss+xml");
+            byte[] body = createFeed(feed, events);
+            return render(body, "application/rss+xml", "inline");
         } catch (IOException e) {
             return renderError(ServerErrorCode.ERROR_IO, e);
         } catch (FeedException e) {

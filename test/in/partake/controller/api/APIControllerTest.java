@@ -74,13 +74,8 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
 
     protected void assertResultLoginRequired(ActionProxy proxy) throws Exception {
-        // status code should be 401.
-    	System.out.println(proxy.getResult());
-    	System.out.println(Helpers.header("WWW-Authenticate", proxy.getResult()));
-
         Assert.assertEquals(401, Helpers.status(proxy.getResult()));
 
-        // header should contain WWW-authenticate.
         String authenticate = (String) Helpers.header("WWW-Authenticate", proxy.getResult());
         Assert.assertNotNull(authenticate);
         Assert.assertTrue(authenticate.contains("OAuth"));

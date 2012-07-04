@@ -30,8 +30,8 @@ public class StaticInvalidPageTest extends ActionControllerTest {
 
     @Test
     public void testAccessWithErrorCode() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/invalid");
-        addParameter(proxy, "errorCode", UserErrorCode.INTENTIONAL_USER_ERROR.getErrorCode());
+        String url = "/invalid?errorCode=" + UserErrorCode.INTENTIONAL_USER_ERROR.getErrorCode();
+        ActionProxy proxy = getActionProxy(GET, url);
         proxy.execute();
         assertResultSuccess(proxy);
 
@@ -42,8 +42,8 @@ public class StaticInvalidPageTest extends ActionControllerTest {
 
     @Test
     public void testAccessWithInvalidErrorCode() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/invalid");
-        addParameter(proxy, "errorCode", "hogehoge");
+        String url = "/invalid?errorCode=hogehoge";
+        ActionProxy proxy = getActionProxy(GET, url);
         proxy.execute();
         assertResultSuccess(proxy);
 

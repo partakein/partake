@@ -18,14 +18,12 @@ public abstract class AbstractConnectionTestCaseBase {
 
     @BeforeClass
     public static void setUpOnce() throws Exception {
-    	System.out.println("********** START!");
         application = Helpers.fakeApplication();
         Helpers.start(application);
     }
 
     @AfterClass
     public static void tearDownOnce() throws Exception {
-    	System.out.println("********** STOP!");
         Helpers.stop(application);
     }
 

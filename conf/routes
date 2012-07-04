@@ -91,7 +91,7 @@ POST    /api/admin/recreateEventIndex       in.partake.controller.api.admin.Admi
 # User API
 GET     /api/user/get                       in.partake.controller.api.user.GetAPI.get()
 GET     /api/user/events                    in.partake.controller.api.user.GetEventsAPI.get()
-GET     /api/user/ticket                    in.partake.controller.api.user.GetTicketsAPI.get()
+GET     /api/user/tickets                   in.partake.controller.api.user.GetTicketsAPI.get()
 GET     /api/user/search                    in.partake.controller.api.user.SearchUserAPI.get()
 
 # Image API

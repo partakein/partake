@@ -2,10 +2,8 @@ package in.partake.base;
 
 import in.partake.model.dto.Event;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -90,11 +88,9 @@ public class CalendarUtil {
         calendar.getComponents().add(vEvent);
     }
 
-    public static InputStream outputCalendar(Calendar calendar) throws IOException, ValidationException {
+    public static byte[] outputCalendar(Calendar calendar) throws IOException, ValidationException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         new CalendarOutputter().output(calendar, baos);
-        byte[] data = baos.toByteArray();
-
-        return new ByteArrayInputStream(data);
+        return baos.toByteArray();
     }
 }

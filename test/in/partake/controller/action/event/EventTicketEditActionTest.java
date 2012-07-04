@@ -2,13 +2,11 @@ package in.partake.controller.action.event;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import in.partake.controller.ActionProxy;
 import in.partake.controller.action.ActionControllerTest;
 import in.partake.model.fixture.TestDataProvider;
-import in.partake.resource.UserErrorCode;
 
 import org.junit.Test;
-
-import in.partake.controller.ActionProxy;
 
 public class EventTicketEditActionTest extends ActionControllerTest {
 
@@ -47,16 +45,7 @@ public class EventTicketEditActionTest extends ActionControllerTest {
         loginAs(proxy, EVENT_OWNER_ID);
 
         proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
-    }
-
-    @Test
-    public void testToShowWithoutId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/events/edit/ticket/");
-        loginAs(proxy, EVENT_OWNER_ID);
-
-        proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
+        assertResultNotFound(proxy);
     }
 
     @Test
@@ -65,6 +54,6 @@ public class EventTicketEditActionTest extends ActionControllerTest {
         loginAs(proxy, EVENT_OWNER_ID);
 
         proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
+        assertResultNotFound(proxy);
     }
 }

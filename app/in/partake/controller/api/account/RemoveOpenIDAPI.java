@@ -14,7 +14,7 @@ import in.partake.resource.UserErrorCode;
 public class RemoveOpenIDAPI extends AbstractPartakeAPI {
 
     public static Result post() throws DAOException, PartakeException {
-        return new RevokeCalendarAPI().execute();
+        return new RemoveOpenIDAPI().execute();
     }
 
     @Override

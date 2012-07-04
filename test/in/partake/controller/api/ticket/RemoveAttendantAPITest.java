@@ -17,8 +17,8 @@ public class RemoveAttendantAPITest extends APIControllerTest {
     @Test
     public void testToRemoveAttendant() throws Exception {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_REMOVE_ATTENDANT);
-        addParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID.toString());
-        addParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
+        addFormParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, EVENT_OWNER_ID);
@@ -36,8 +36,8 @@ public class RemoveAttendantAPITest extends APIControllerTest {
     @Test
     public void testToRemoveAttendantWithoutLogin() throws Exception {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_REMOVE_ATTENDANT);
-        addParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
+        addFormParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -47,8 +47,8 @@ public class RemoveAttendantAPITest extends APIControllerTest {
     @Test
     public void testToRemoveAttendantWithInvalidSessionToken() throws Exception {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_REMOVE_ATTENDANT);
-        addParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
+        addFormParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
         addInvalidSessionTokenToParameter(proxy);
 
         loginAs(proxy, EVENT_OWNER_ID);
@@ -60,8 +60,8 @@ public class RemoveAttendantAPITest extends APIControllerTest {
     @Test
     public void testToRemoveAttendantWithInvalidticketId() throws Exception {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_REMOVE_ATTENDANT);
-        addParameter(proxy, "ticketId", INVALID_EVENT_TICKET_ID);
-        addParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
+        addFormParameter(proxy, "ticketId", INVALID_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "userId", EVENT_ENROLLED_USER_ID);
         addValidSessionTokenToParameter(proxy);
 
         loginAs(proxy, EVENT_OWNER_ID);

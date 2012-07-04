@@ -24,9 +24,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_ABSENT_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_ABSENT_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -50,9 +50,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "absent");
+        addFormParameter(proxy, "userId", ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "absent");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -76,9 +76,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_PRESENT_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "unknown");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_PRESENT_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "unknown");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -95,9 +95,9 @@ public class AttendAPITest extends APIControllerTest {
     public void testLoginRequired() throws Exception {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -109,9 +109,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        // addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        // addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -123,9 +123,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        // addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        // addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -137,9 +137,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        // addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        // addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -151,9 +151,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_UNRELATED_USER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -165,9 +165,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_PRESENT_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "hogehoge");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_PRESENT_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "hogehoge");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -179,9 +179,9 @@ public class AttendAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, API_EVENT_ATTEND_URL);
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
 
-        addParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
-        addParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID);
-        addParameter(proxy, "status", "present");
+        addFormParameter(proxy, "userId", TestDataProvider.ATTENDANCE_UNKNOWN_USER_ID);
+        addFormParameter(proxy, "ticketId", TestDataProvider.DEFAULT_EVENT_TICKET_ID.toString());
+        addFormParameter(proxy, "status", "present");
         addInvalidSessionTokenToParameter(proxy);
 
         proxy.execute();

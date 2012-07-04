@@ -30,6 +30,8 @@ public class DebugPartakeAppInitializer extends PartakeApp implements IPartakeAp
 
         if (dbService != null)
             dbService.initialize();
+        if (eventSearchService != null)
+            eventSearchService.initialize();
         if (daemonInitializer != null)
             daemonInitializer.initialize();
 

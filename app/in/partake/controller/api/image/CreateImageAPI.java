@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sf.json.JSONObject;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 /**
@@ -28,10 +29,6 @@ import play.mvc.Result;
  *
  */
 public class CreateImageAPI extends AbstractPartakeAPI {
-
-    private File file;
-    private String contentType;
-
     public static Result post() throws DAOException, PartakeException {
         return new CreateImageAPI().execute();
     }
@@ -40,6 +37,13 @@ public class CreateImageAPI extends AbstractPartakeAPI {
     protected Result doExecute() throws DAOException, PartakeException {
         UserEx user = ensureLogin();
         ensureValidSessionToken();
+
+        FilePart filePart = request().body().asMultipartFormData().getFile("file");
+        if (filePart == null)
+            return renderInvalid(UserErrorCode.INVALID_NOIMAGE);
+
+        File file = filePart.getFile();
+        String contentType = filePart.getContentType();
 
         if (file == null)
             return renderInvalid(UserErrorCode.INVALID_NOIMAGE);
@@ -68,15 +72,6 @@ public class CreateImageAPI extends AbstractPartakeAPI {
             return renderOKWith(obj, "text/plain");
         else
             return renderOK(obj);
-
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public void setFileContentType(String contentType) {
-        this.contentType = contentType;
     }
 }
 

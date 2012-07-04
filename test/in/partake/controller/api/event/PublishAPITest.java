@@ -16,7 +16,7 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublish() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -30,7 +30,7 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublishEventAlreadyPublished() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -40,7 +40,7 @@ public class PublishAPITest extends APIControllerTest {
     @Test
     public void testPublishWithoutLogin() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -51,7 +51,7 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublishWithEditor() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_EDITOR_ID);
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -62,7 +62,7 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublishWithUnrelatedUser() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_UNRELATED_USER_ID);
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -73,7 +73,7 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublishWithInvalidSessionToken() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
+        addFormParameter(proxy, "eventId", UNPUBLISHED_EVENT_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_SECURITY_CSRF);
@@ -83,12 +83,10 @@ public class PublishAPITest extends APIControllerTest {
     public void testPublishWithInvalidEventId() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/publish");
         loginAs(proxy, EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", INVALID_EVENT_ID);
+        addFormParameter(proxy, "eventId", INVALID_EVENT_ID);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
     }
-
-
 }

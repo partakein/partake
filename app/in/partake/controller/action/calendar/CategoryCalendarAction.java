@@ -20,7 +20,6 @@ public class CategoryCalendarAction extends AbstractCalendarAction {
 
     @Override
     protected Result doExecute() throws DAOException, PartakeException {
-        String categoryName = getParameter("category");
         if (StringUtils.isEmpty(categoryName))
             return renderNotFound();
 

@@ -20,8 +20,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
 
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", "modified");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", "modified");
 
         proxy.execute();
         assertResultLoginRequired(proxy);
@@ -33,8 +33,8 @@ public class ModifyAPITest extends APIControllerTest {
 
         loginAs(proxy, EVENT_OWNER_ID);
         addInvalidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", "modified");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", "modified");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_SECURITY_CSRF);
@@ -46,8 +46,8 @@ public class ModifyAPITest extends APIControllerTest {
 
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", INVALID_EVENT_ID);
-        addParameter(proxy, "title", "modified");
+        addFormParameter(proxy, "eventId", INVALID_EVENT_ID);
+        addFormParameter(proxy, "title", "modified");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
@@ -59,8 +59,8 @@ public class ModifyAPITest extends APIControllerTest {
 
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", "non-uuid");
-        addParameter(proxy, "title", "modified");
+        addFormParameter(proxy, "eventId", "non-uuid");
+        addFormParameter(proxy, "title", "modified");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
@@ -73,8 +73,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", "modified");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", "modified");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -88,8 +88,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", "");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "title");
@@ -100,8 +100,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", Util.randomString(101));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", Util.randomString(101));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "title");
@@ -112,8 +112,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "title", Util.randomString(100));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "title", Util.randomString(100));
 
         proxy.execute();
         assertResultOK(proxy);
@@ -126,8 +126,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "summary", "modified");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "summary", "modified");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -141,8 +141,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "summary", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "summary", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -156,8 +156,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "summary", Util.randomString(101));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "summary", Util.randomString(101));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "summary");
@@ -168,8 +168,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "summary", Util.randomString(100));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "summary", Util.randomString(100));
 
         proxy.execute();
         assertResultOK(proxy);
@@ -182,8 +182,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "category", "others");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "category", "others");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -197,8 +197,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "category", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "category", "");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "category");
@@ -209,8 +209,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "category", "invalidCategory");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "category", "invalidCategory");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "category");
@@ -223,8 +223,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "2012-08-01 00:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "2012-08-01 00:00");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -240,8 +240,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", String.valueOf(dt.getTime()));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", String.valueOf(dt.getTime()));
 
         proxy.execute();
         assertResultOK(proxy);
@@ -255,8 +255,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "invalid");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "invalid");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "beginDate");
@@ -267,8 +267,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "beginDate");
@@ -279,8 +279,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "1970-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "1970-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "beginDate");
@@ -291,8 +291,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "1900-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "1900-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "beginDate");
@@ -303,8 +303,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "beginDate", "2200-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "beginDate", "2200-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "beginDate");
@@ -317,8 +317,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "2012-08-01 00:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "2012-08-01 00:00");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -334,8 +334,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", String.valueOf(dt.getTime()));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", String.valueOf(dt.getTime()));
 
         proxy.execute();
         assertResultOK(proxy);
@@ -349,8 +349,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "invalid");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "invalid");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "endDate");
@@ -361,8 +361,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -377,8 +377,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "1970-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "1970-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "endDate");
@@ -389,8 +389,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "1900-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "1900-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "endDate");
@@ -401,8 +401,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "endDate", "2200-01-01 09:00");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "endDate", "2200-01-01 09:00");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "endDate");
@@ -415,8 +415,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "url", "http://www.example.com/hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "url", "http://www.example.com/hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -430,8 +430,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "url", "https://www.example.com/hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "url", "https://www.example.com/hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -445,8 +445,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "url", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "url", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -460,8 +460,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "url", "http://" + Util.randomString(4000));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "url", "http://" + Util.randomString(4000));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "url");
@@ -472,8 +472,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "url", "invalid://www.example.com/");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "url", "invalid://www.example.com/");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "url");
@@ -486,8 +486,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "place", "hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "place", "hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -501,8 +501,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "place", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "place", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -516,8 +516,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "place", Util.randomString(400));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "place", Util.randomString(400));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "place");
@@ -530,8 +530,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "address", "hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "address", "hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -545,8 +545,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "address", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "address", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -561,8 +561,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "address", Util.randomString(301));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "address", Util.randomString(301));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "address");
@@ -575,8 +575,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "description", "hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "description", "hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -590,8 +590,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "description", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "description", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -605,8 +605,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "description", Util.randomString(1000 * 1000 + 1));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "description", Util.randomString(1000 * 1000 + 1));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "description");
@@ -619,8 +619,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "hashTag", "#hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "hashTag", "#hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -634,8 +634,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "hashTag", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "hashTag", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -649,8 +649,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "hashTag", "#" + Util.randomString(200));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "hashTag", "#" + Util.randomString(200));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "hashTag");
@@ -661,8 +661,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "hashTag", "mogemoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "hashTag", "mogemoge");
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "hashTag");
@@ -675,8 +675,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "passcode", "hogehoge");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "passcode", "hogehoge");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -690,8 +690,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "passcode", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "passcode", "");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -705,8 +705,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "passcode", Util.randomString(21));
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "passcode", Util.randomString(21));
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "passcode");
@@ -719,8 +719,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "foreImageId", EVENT_FOREIMAGE_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "foreImageId", EVENT_FOREIMAGE_ID);
 
         proxy.execute();
         assertResultOK(proxy);
@@ -734,8 +734,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "foreImageId", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "foreImageId", "");
 
         proxy.execute();
         Event modified = loadEvent(DEFAULT_EVENT_ID);
@@ -747,8 +747,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "foreImageId", IMAGE_OWNER_IMAGE_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "foreImageId", IMAGE_OWNER_IMAGE_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "foreImageId");
@@ -761,8 +761,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "backImageId", EVENT_FOREIMAGE_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "backImageId", EVENT_FOREIMAGE_ID);
 
         proxy.execute();
         assertResultOK(proxy);
@@ -776,8 +776,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "backImageId", "");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "backImageId", "");
 
         proxy.execute();
         Event modified = loadEvent(DEFAULT_EVENT_ID);
@@ -789,8 +789,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "backImageId", IMAGE_OWNER_IMAGE_ID);
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "backImageId", IMAGE_OWNER_IMAGE_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_PARAMETERS, "backImageId");
@@ -803,8 +803,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "relatedEventIds[]", "[]");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "relatedEventIds[]", "[]");
 
         proxy.execute();
         assertResultOK(proxy);
@@ -820,8 +820,8 @@ public class ModifyAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
-        addParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addParameter(proxy, "editorIds[]", "[]");
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "editorIds[]", "[]");
 
         proxy.execute();
         assertResultOK(proxy);

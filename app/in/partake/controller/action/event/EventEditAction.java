@@ -28,7 +28,7 @@ public class EventEditAction extends AbstractEventEditAction {
 
         event = new EventEditTransaction(eventId).execute();
         if (event == null)
-            return renderInvalid(UserErrorCode.INVALID_NOTFOUND);
+            return renderNotFound();
 
         if (!EventEditPermission.check(event, user))
             return renderForbidden(UserErrorCode.FORBIDDEN_EVENT_EDIT);

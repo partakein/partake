@@ -33,14 +33,6 @@ public class ThumbnailActionTest extends ActionControllerTest {
     }
 
     @Test
-    public void testToGetWithoutImageId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/images/thumbnail/");
-
-        proxy.execute();
-        assertResultNotFound(proxy);
-    }
-
-    @Test
     public void testToGetWithInvalidId() throws Exception {
         ActionProxy proxy = getActionProxy(GET, "/images/thumbnail/invalid");
 

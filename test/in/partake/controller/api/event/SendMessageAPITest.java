@@ -15,9 +15,9 @@ public class SendMessageAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
 
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "subject", "subject");
-        addParameter(proxy, "body", "message");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "subject", "subject");
+        addFormParameter(proxy, "body", "message");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -33,9 +33,9 @@ public class SendMessageAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
 
         loginAs(proxy, TestDataProvider.EVENT_OWNER_ID);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "subject", "subject");
-        addParameter(proxy, "body", longMessage);
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "subject", "subject");
+        addFormParameter(proxy, "body", longMessage);
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -49,9 +49,9 @@ public class SendMessageAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
 
         loginAs(proxy, TestDataProvider.EVENT_EDITOR_ID);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "subject", "subject");
-        addParameter(proxy, "body", "hogehogehoge");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "subject", "subject");
+        addFormParameter(proxy, "body", "hogehogehoge");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -63,9 +63,9 @@ public class SendMessageAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
 
         loginAs(proxy, TestDataProvider.EVENT_UNRELATED_USER_ID);
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "subject", "subject");
-        addParameter(proxy, "body", "hogehogehoge");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "subject", "subject");
+        addFormParameter(proxy, "body", "hogehogehoge");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -76,9 +76,9 @@ public class SendMessageAPITest extends APIControllerTest {
     public void testToSendMessageWithoutLogin() throws Exception {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
 
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "subject", "subject");
-        addParameter(proxy, "body", "hogehogehoge");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "subject", "subject");
+        addFormParameter(proxy, "body", "hogehogehoge");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();
@@ -90,8 +90,8 @@ public class SendMessageAPITest extends APIControllerTest {
         ActionProxy proxy = getActionProxy(POST, "/api/event/sendMessage");
         loginAs(proxy, TestDataProvider.EVENT_UNRELATED_USER_ID);
 
-        addParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
-        addParameter(proxy, "body", "hogehogehoge");
+        addFormParameter(proxy, "eventId", TestDataProvider.DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "body", "hogehogehoge");
         addValidSessionTokenToParameter(proxy);
 
         proxy.execute();

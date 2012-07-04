@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 import in.partake.controller.ActionProxy;
 import in.partake.controller.action.ActionControllerTest;
 import in.partake.model.fixture.TestDataProvider;
-import in.partake.resource.UserErrorCode;
 
 import org.junit.Test;
 
@@ -46,16 +45,7 @@ public class EventPrivacyEditActionTest extends ActionControllerTest {
         loginAs(proxy, EVENT_OWNER_ID);
 
         proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
-    }
-
-    @Test
-    public void testToShowWithoutId() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/events/edit/privacy/");
-        loginAs(proxy, EVENT_OWNER_ID);
-
-        proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
+        assertResultNotFound(proxy);
     }
 
     @Test
@@ -64,6 +54,6 @@ public class EventPrivacyEditActionTest extends ActionControllerTest {
         loginAs(proxy, EVENT_OWNER_ID);
 
         proxy.execute();
-        assertResultInvalid(proxy, UserErrorCode.INVALID_EVENT_ID);
+        assertResultNotFound(proxy);
     }
 }

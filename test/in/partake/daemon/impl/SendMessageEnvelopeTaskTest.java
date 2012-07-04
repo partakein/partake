@@ -12,6 +12,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import in.partake.app.PartakeApp;
 import in.partake.app.PartakeTestApp;
+import in.partake.app.impl.TestPartakeAppInitializer;
 import in.partake.base.DateTime;
 import in.partake.base.PartakeException;
 import in.partake.base.TimeUtil;
@@ -53,6 +54,9 @@ public class SendMessageEnvelopeTaskTest extends AbstractPartakeControllerTest i
                 return null;
             }
         }.execute();
+
+        // TODO(mayah): Calling this here seems odd. We just want to initialize TwitterService mock object.
+        new TestPartakeAppInitializer().initialize();
     }
 
     @Test

@@ -26,7 +26,7 @@ public class UserImageTestDataProvider extends TestDataProvider<UserImage> {
 
     public UserImageTestDataProvider() {
         try {
-            InputStream is = getClass().getResourceAsStream("images/null.png");
+            InputStream is = getClass().getResourceAsStream("/images/null.png");
             defaultImageContent = Util.getContentOfInputStream(is);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import in.partake.base.DateTime;
 import in.partake.base.PartakeException;
+import in.partake.controller.ActionProxy;
 import in.partake.controller.api.APIControllerTest;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.access.Transaction;
@@ -25,26 +26,18 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import in.partake.controller.ActionProxy;
 
 public class GetEventsAPITest extends APIControllerTest {
     private static final int N = 20;
-    private static List<String> ids = new ArrayList<String>();
-
-    @BeforeClass
-    public static void setUpOnce() throws Exception {
-        APIControllerTest.setUpOnce();
-
-        while (ids.size() < N)
-            ids.add(UUID.randomUUID().toString());
-    }
+    private List<String> ids = new ArrayList<String>();
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
+
+        while (ids.size() < N)
+            ids.add(UUID.randomUUID().toString());
 
         // Create 20 events here.
         new Transaction<Void>() {
@@ -71,9 +64,7 @@ public class GetEventsAPITest extends APIControllerTest {
 
     @Test
     public void testToGetEventsForOwner() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/user/events");
-        addParameter(proxy, "userId", EVENT_OWNER_ID);
-        addParameter(proxy, "queryType", "owner");
+        ActionProxy proxy = getActionProxy(GET, "/api/user/events?userId=" + EVENT_OWNER_ID + "&queryType=owner");
         proxy.execute();
         assertResultOK(proxy);
 
@@ -98,9 +89,7 @@ public class GetEventsAPITest extends APIControllerTest {
 
     @Test
     public void testToGetEventsForEditor() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/user/events");
-        addParameter(proxy, "userId", EVENT_EDITOR_ID);
-        addParameter(proxy, "queryType", "editor");
+        ActionProxy proxy = getActionProxy(GET, "/api/user/events?userId=" + EVENT_EDITOR_ID + "&queryType=editor");
         proxy.execute();
         assertResultOK(proxy);
 
@@ -125,8 +114,7 @@ public class GetEventsAPITest extends APIControllerTest {
 
     @Test
     public void testToGetInvalidUserEvent() throws Exception {
-        ActionProxy proxy = getActionProxy(GET, "/api/user/events");
-        addParameter(proxy, "userId", TestDataProvider.INVALID_USER_ID);
+        ActionProxy proxy = getActionProxy(GET, "/api/user/events?userId=" + INVALID_USER_ID);
 
         proxy.execute();
         assertResultInvalid(proxy, UserErrorCode.INVALID_USER_ID);

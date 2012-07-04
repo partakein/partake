@@ -13,28 +13,14 @@ import in.partake.model.fixture.impl.UserOpenIDLinkTestDataProvider;
 import in.partake.model.fixture.impl.UserTestDataProvider;
 import in.partake.model.fixture.impl.UserTicketTestDataProvider;
 import in.partake.model.fixture.impl.UserTwitterLinkTestDataProvider;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.IEventSearchService;
 import in.partake.service.ITestService;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import org.apache.commons.dbcp.BasicDataSource;
 
 public class TestService implements ITestService {
     private static PartakeTestDataProviderSet testDataProviderSet;
 
     public void initialize() {
         testDataProviderSet = new PartakeTestDataProviderSet();
-//        try {
-//            initializeDataSource();
-//        } catch (NameAlreadyBoundException e) {
-//            // Maybe already DataSource is created.
-//        } catch (NamingException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     public PartakeTestDataProviderSet getTestDataProviderSet() {
@@ -62,23 +48,4 @@ public class TestService implements ITestService {
             }
         }.execute();
     }
-
-    private static void initializeDataSource() throws NamingException {
-        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.naming.java.javaURLContextFactory");
-
-        InitialContext ic = new InitialContext();
-        ic.createSubcontext("java:");
-        ic.createSubcontext("java:/comp");
-        ic.createSubcontext("java:/comp/env");
-        ic.createSubcontext("java:/comp/env/jdbc");
-
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName(PartakeProperties.get().getString("comp.env.jdbc.postgres.driver"));
-        ds.setUrl(PartakeProperties.get().getString("comp.env.jdbc.postgres.url"));
-        ds.setUsername(PartakeProperties.get().getString("comp.env.jdbc.postgres.user"));
-        ds.setPassword(PartakeProperties.get().getString("comp.env.jdbc.postgres.password"));
-
-        ic.bind("java:/comp/env/jdbc/postgres", ds);
-    }
-
 }
