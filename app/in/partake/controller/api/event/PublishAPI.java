@@ -9,6 +9,7 @@ import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventActivityAccess;
+import in.partake.model.daofacade.EventDAOFacade;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.EventActivity;
 import in.partake.model.dto.EventTicket;
@@ -77,6 +78,10 @@ class PublishTransaction extends Transaction<Event> {
         IEventActivityAccess eaa = daos.getEventActivityAccess();
         EventActivity activity = new EventActivity(eaa.getFreshId(con), event.getId(), "イベントが更新されました : " + event.getTitle(), event.getDescription(), event.getCreatedAt());
         eaa.put(con, activity);
+
+        // さらに、twitter bot がつぶやく (private の場合はつぶやかない)
+        if (event.isSearchable())
+            EventDAOFacade.tweetNewEventArrival(con, daos, event);
 
         this.tickets = daos.getEventTicketAccess().findEventTicketsByEventId(con, eventId);
 
