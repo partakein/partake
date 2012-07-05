@@ -17,6 +17,8 @@ public interface IEventAccess extends IAccess<Event, String> {
     public abstract int count(PartakeConnection con, EventFilterCondition condition) throws DAOException;
     public abstract DataIterator<Event> getIterator(PartakeConnection con, EventFilterCondition condition) throws DAOException;
 
+    public abstract void updateIndex(PartakeConnection con, Event event) throws DAOException;
+
     /**
      * fetch events whose owner id is <code>userId</code>.
      * @param con

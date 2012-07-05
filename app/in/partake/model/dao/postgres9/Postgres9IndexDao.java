@@ -81,10 +81,43 @@ public class Postgres9IndexDao extends Postgres9Dao {
         }
     }
 
+    public boolean exists(Postgres9Connection con, String columnName, String columnValue) throws DAOException {
+        try {
+            return exists(con.getConnection(), columnName, columnValue);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    public boolean exists2(Postgres9Connection con, String columnName1, String columnValue1, String columnName2, String columnValue2) throws DAOException {
+        try {
+            return exists2(con.getConnection(), columnName1, columnValue1, columnName2, columnValue2);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    public void update2(Postgres9Connection con, String[] columns, Object values[]) throws DAOException {
+        try {
+            update2(con.getConnection(), columns, values);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
     /** We treat the first column as primary key. */
     public void put(Postgres9Connection con, String[] columns, Object values[]) throws DAOException {
         try {
             put(con.getConnection(), columns, values);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    /** We don't treat the first column as primary key. */
+    public void insert(Postgres9Connection con, String[] columns, Object values[]) throws DAOException {
+        try {
+            insert(con.getConnection(), columns, values);
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -294,6 +327,27 @@ public class Postgres9IndexDao extends Postgres9Dao {
         }
     }
 
+    private void update2(Connection con, String[] columns, Object values[]) throws SQLException {
+        String[] questions = new String[columns.length - 2];
+        for (int i = 2; i < columns.length; ++i)
+            questions[i - 2] = columns[i] + " = ?";
+
+        String sql = "UPDATE " + indexTableName + " SET " + StringUtils.join(questions, ",") + " WHERE " + columns[0] + " = ? AND " + columns[1] + " = ?";
+
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            for (int i = 2; i < columns.length; ++i)
+                setObject(ps, i - 1, values[i]);
+
+            ps.setString(columns.length - 1, (String) values[0]);
+            ps.setString(columns.length, (String) values[1]);
+            ps.execute();
+        } finally {
+            close(ps);
+        }
+    }
+
     private void remove(Connection con, String column, String value) throws SQLException {
         String sql = "DELETE FROM " + indexTableName + " WHERE " + column + " = ?";
         PreparedStatement ps = null;
@@ -303,6 +357,22 @@ public class Postgres9IndexDao extends Postgres9Dao {
 
             ps.execute();
         } finally {
+            close(ps);
+        }
+    }
+
+    private boolean exists2(Connection con, String columnName1, String columnValue1, String columnName2, String columnValue2) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement("SELECT 1 FROM " + indexTableName + " WHERE " + columnName1 + " = ? AND " + columnName2 + " = ?");
+            ps.setString(1, columnValue1);
+            ps.setString(2, columnValue2);
+
+            rs = ps.executeQuery();
+            return rs.next();
+        } finally {
+            close(rs);
             close(ps);
         }
     }

@@ -95,6 +95,13 @@ public class Postgres9EventDao extends Postgres9Dao implements IEventAccess {
         else
             entityDao.insert(pcon, entity);
 
+        updateIndex(con, event);
+    }
+
+    @Override
+    public void updateIndex(PartakeConnection con, Event event) throws DAOException {
+        Postgres9Connection pcon = (Postgres9Connection) con;
+
         indexDao.put(pcon,
                 new String[] {"id", "ownerId", "draft", "isPrivate", "beginDate" },
                 new Object[] { event.getId(), event.getOwnerId(), event.isDraft(), !StringUtils.isEmpty(event.getPasscode()), event.getBeginDate() });
@@ -102,9 +109,15 @@ public class Postgres9EventDao extends Postgres9Dao implements IEventAccess {
         editorIndexDao.remove(pcon, "id", event.getId());
         if (event.getEditorIds() != null) {
             for (String editorId : event.getEditorIds()) {
-                editorIndexDao.put(pcon,
-                        new String[] { "id", "editorId", "draft", "isPrivate", "beginDate" },
-                        new Object[] { event.getId(), editorId, event.isDraft(), !StringUtils.isEmpty(event.getPasscode()), event.getBeginDate() });
+                if (editorIndexDao.exists2(pcon, "id", event.getId(), "editorId", editorId)) {
+                    editorIndexDao.update2(pcon,
+                            new String[] { "id", "editorId", "draft", "isPrivate", "beginDate" },
+                            new Object[] { event.getId(), editorId, event.isDraft(), !StringUtils.isEmpty(event.getPasscode()), event.getBeginDate() });
+                } else {
+                    editorIndexDao.insert(pcon,
+                            new String[] { "id", "editorId", "draft", "isPrivate", "beginDate" },
+                            new Object[] { event.getId(), editorId, event.isDraft(), !StringUtils.isEmpty(event.getPasscode()), event.getBeginDate() });
+                }
             }
         }
     }
