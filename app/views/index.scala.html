@@ -23,6 +23,66 @@
         </script>
     </div>
     <div class="span16">
+        @if(ctx.loginUser() != null) {
+        <h3>近日開催の参加予定イベント</h3>
+        <div id="upcoming-participating-events"><img src="img/spinner.gif"></div>
+        <h3>近日開催の管理イベント</h3>
+        <div id="upcoming-managing-events"><img src="img/spinner.gif"></div>
+        <script>
+        partake.account.getTickets('upcoming', 0, 10)
+        .done(function(json) {
+            var elem = $('#upcoming-participating-events');
+            if (json.ticketStatuses.length == 0) {
+                elem.html("<p>参加予定イベントはありません。</p>");
+                return;
+            }
+
+            var table = $('<table class="table"></table>');
+            table.append($('<tr><th>タイトル</th><th>開催日時</th><th>ステータス</th></tr>'));
+            for (var i = 0; i < json.ticketStatuses.length; ++i) {
+                var ticketStatus = json.ticketStatuses[i];
+                var tr = $('<tr></tr>');
+                var title = $('<td></td>').html(
+                    $('<a></a>').text(ticketStatus.event.title).attr('href', '/events/' + ticketStatus.event.id)
+                );
+                var date = $('<td></td>').text(ticketStatus.event.beginDateText);
+                var status = $('<td></td>').text(ticketStatus.status);
+                tr.append(title).append(date).append(status);
+                table.append(tr);
+            }
+            elem.html(table);
+        })
+        .fail(partake.defaultFailHandler);
+
+        partake.account.getEvents('upcomingManaging', 0, 10)
+        .done(function(json) {
+            var elem = $('#upcoming-managing-events');
+            if (json.eventStatuses.length == 0) {
+                elem.html("<p>管理しているイベントはありません。</p>");
+                return;
+            }
+
+            var table = $('<table class="table"></table>');
+            table.append($('<tr><th>タイトル</th><th>開催日時</th><th>参加人数</th></tr>'));
+            for (var i = 0; i < json.eventStatuses.length; ++i) {
+                var eventStatus = json.eventStatuses[i];
+                var tr = $('<tr></tr>');
+                var a = $('<a></a>').text(eventStatus.event.title).attr('href', '/events/' + eventStatus.event.id);
+                var title = $('<td></td>').html(a);
+                if (eventStatus.event.draft)
+                    title.append($('<span class="label">下書</span>'));
+                if (eventStatus.event.passcode && eventStatus.event.passcode != "")
+                    title.append($('<span class="label">非公開</span>'));
+                var date = $('<td></td>').text(eventStatus.event.beginDateText);
+                var status = $('<td></td>').text(eventStatus.numEnrolledUsers + eventStatus.numReservedUsers);
+                tr.append(title).append(date).append(status);
+                table.append(tr);
+            }
+            elem.html(table);
+        })
+        .fail(partake.defaultFailHandler);
+       </script>
+        } else {
         <div id="toppage-carousel" class="carousel slide">
             <div class="carousel-inner">
                 <div class="item active">
@@ -45,6 +105,7 @@
             <a class="left carousel-control" href="#toppage-carousel" data-slide="prev">‹</a>
             <a class="right carousel-control" href="#toppage-carousel" data-slide="next">›</a>
         </div>
+        }
     </div>
 </div>
 

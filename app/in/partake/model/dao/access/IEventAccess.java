@@ -29,4 +29,8 @@ public interface IEventAccess extends IAccess<Event, String> {
 
     public abstract List<Event> findByEditorUserId(PartakeConnection con, String editorUserId, EventFilterCondition condition, int offset, int limit) throws DAOException;
     public abstract int countByEditorUserId(PartakeConnection con, String editorUserId, EventFilterCondition condition) throws DAOException;
+
+    // TODO: This API should be removed later.
+    public abstract List<Event> findByOwnerIdAndEditorId(PartakeConnection con, String editorUserId, EventFilterCondition condition) throws DAOException;
+    public abstract int countEventsByOwnerIdAndEditorId(PartakeConnection con, String editorUserId, EventFilterCondition condition) throws DAOException;
 }

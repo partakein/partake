@@ -86,7 +86,7 @@
 
     function update(nthPage) {
         var SIZE_PER_PAGE = 30;
-        partake.account.getTickets((nthPage - 1) * SIZE_PER_PAGE, SIZE_PER_PAGE)
+        partake.account.getTickets('all', (nthPage - 1) * SIZE_PER_PAGE, SIZE_PER_PAGE)
         .done(function (json) {
             createTable(nthPage, json.ticketStatuses);
             var lst = partakeUI.pagination($('#' + ident + '-pagination'), nthPage, json.totalTicketCount, 10);

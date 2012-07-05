@@ -267,6 +267,48 @@ public class Postgres9EventDao extends Postgres9Dao implements IEventAccess {
         }
     }
 
+    @Override
+    public int countEventsByOwnerIdAndEditorId(PartakeConnection con, String userId, EventFilterCondition criteria) throws DAOException {
+        String condition = conditionClauseForCriteria(criteria);
+        Postgres9StatementAndResultSet psars = editorIndexDao.select((Postgres9Connection) con,
+                "SELECT count(1) FROM (" +
+                    "SELECT id FROM " + INDEX_TABLE_NAME + " WHERE ownerId = ? " + condition +
+                    " UNION " +
+                    "SELECT id FROM " + EDITOR_INDEX_TABLE_NAME + " WHERE editorId = ? " + condition +
+                ") as a",
+                new Object[] { userId, userId });
+        try {
+            ResultSet rs = psars.getResultSet();
+            if (rs.next())
+                return rs.getInt(1);
+            else
+                return 0;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            psars.close();
+        }
+    }
+
+    @Override
+    public List<Event> findByOwnerIdAndEditorId(PartakeConnection con, String userId, EventFilterCondition criteria) throws DAOException {
+        String condition = conditionClauseForCriteria(criteria);
+        Postgres9StatementAndResultSet psars = editorIndexDao.select((Postgres9Connection) con,
+                "SELECT id FROM " + INDEX_TABLE_NAME + " WHERE ownerId = ? " + condition +
+                " UNION " +
+                "SELECT id FROM " + EDITOR_INDEX_TABLE_NAME + " WHERE editorId = ? " + condition,
+                new Object[] { userId, userId });
+
+        Postgres9IdMapper<Event> idMapper = new Postgres9IdMapper<Event>((Postgres9Connection) con, mapper, entityDao);
+
+        try {
+            DataIterator<Event> it = new Postgres9DataIterator<Event>(idMapper, psars);
+            return DAOUtil.convertToList(it);
+        } finally {
+            psars.close();
+        }
+    }
+
     private String conditionClauseForCriteria(EventFilterCondition criteria) {
         switch (criteria) {
         case ALL_EVENTS:
@@ -281,6 +323,8 @@ public class Postgres9EventDao extends Postgres9Dao implements IEventAccess {
             return " AND isPrivate = false";
         case PUBLISHED_PUBLIC_EVENT_ONLY:
             return " AND draft = false AND isPrivate = false";
+        case UPCOMING_EVENT_ONLY:
+            return " AND beginDate >= CURRENT_TIMESTAMP";
         }
 
         return "";

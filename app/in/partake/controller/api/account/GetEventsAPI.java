@@ -19,6 +19,8 @@ import in.partake.model.dto.auxiliary.ParticipationStatus;
 import in.partake.resource.UserErrorCode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import play.mvc.Result;
@@ -122,6 +124,31 @@ class GetEventsTransaction extends DBAccess<Void> {
         } else if ("editor".equalsIgnoreCase(queryType)) {
             this.numTotalEvents = eventDao.countByEditorUserId(con, user.getId(), EventFilterCondition.PUBLISHED_EVENT_ONLY);
             this.eventsRetrieved = eventDao.findByEditorUserId(con, user.getId(), EventFilterCondition.PUBLISHED_EVENT_ONLY, offset, limit);
+        } else if ("upcomingManaging".equalsIgnoreCase(queryType)) {
+            // TODO(mayah): This is work around ugly patch. Maybe we should have sortType besides queryType?
+            this.numTotalEvents = eventDao.countEventsByOwnerIdAndEditorId(con, user.getId(), EventFilterCondition.UPCOMING_EVENT_ONLY);
+            this.eventsRetrieved = eventDao.findByOwnerIdAndEditorId(con, user.getId(), EventFilterCondition.UPCOMING_EVENT_ONLY);
+
+            // Sort by beginDate.
+            Collections.sort(this.eventsRetrieved, new Comparator<Event>() {
+                @Override
+                public int compare(Event e1, Event e2) {
+                    if (e1 == null)
+                        return 1;
+                    if (e2 == null)
+                        return -1;
+
+                    long t1 = e1.getBeginDate().getTime();
+                    long t2 = e2.getBeginDate().getTime();
+                    if (t1 < t2)
+                        return -1;
+                    else if (t1 == t2)
+                        return 0;
+                    else
+                        return 1;
+                }
+            });
+            this.eventsRetrieved = this.eventsRetrieved.subList(Util.ensureRange(offset, 0, eventsRetrieved.size()), Util.ensureRange(offset + limit, 0, eventsRetrieved.size()));
         } else {
             throw new PartakeException(UserErrorCode.INVALID_ARGUMENT);
         }

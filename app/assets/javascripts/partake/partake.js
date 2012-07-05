@@ -31,8 +31,9 @@
             return $.get('/api/account/events', arg);
         },
 
-        getTickets: function(offset, limit) {
+        getTickets: function(queryType, offset, limit) {
             var arg = {
+                queryType: queryType,
                 offset: offset,
                 limit: limit
             };
