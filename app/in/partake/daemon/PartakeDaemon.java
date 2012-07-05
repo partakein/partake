@@ -25,14 +25,15 @@ class PartakeDaemonTask extends TimerTask {
             return;
         }
 
-        logger.info("Daemon task will start...");
-        try {
-            for (IPartakeDaemonTask task : daemon.getTasks())
+        for (IPartakeDaemonTask task: daemon.getTasks()) {
+            logger.info(task.getName() + " will start...");
+            try {
                 task.run();
-        } catch (Exception e) {
-            logger.warn("PartakeTask throws an exception", e);
+                logger.info(task.getName() + " has finished without an error.");
+            } catch (Exception e) {
+                logger.error(task.getName() + " has encountered an error. This should be immediately fixed.");
+            }
         }
-        logger.info("Daemon tasks have finished.");
     }
 }
 

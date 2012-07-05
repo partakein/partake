@@ -3,6 +3,7 @@ package in.partake.daemon.impl;
 import in.partake.base.DateTime;
 import in.partake.base.PartakeException;
 import in.partake.base.TimeUtil;
+import in.partake.base.Util;
 import in.partake.daemon.IPartakeDaemonTask;
 import in.partake.model.UserTicketEx;
 import in.partake.model.EventEx;
@@ -27,7 +28,15 @@ import in.partake.model.dto.auxiliary.NotificationType;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 class SendParticipationStatusChangeNotificationsTask extends Transaction<Void> implements IPartakeDaemonTask {
+    private static final Logger logger = Logger.getLogger(SendParticipationStatusChangeNotificationsTask.class);
+
+    @Override
+    public String getName() {
+        return "SendParticipationStatusChangeNotificationsTask";
+    }
 
     @Override
     public void run() throws Exception {
@@ -48,17 +57,30 @@ class SendParticipationStatusChangeNotificationsTask extends Transaction<Void> i
         try {
             while (it.hasNext()) {
                 Event e = it.next();
-                if (e == null) { continue; }
+                if (e == null)
+                    continue;
                 String eventId = e.getId();
-                if (eventId == null) { continue; }
+                if (eventId == null)
+                    continue;
+                if (!Util.isUUID(eventId)) {
+                    logger.warn("eventId is not UUID.... Should not happen. : " + eventId);
+                    continue;
+                }
+
                 EventEx event = EventDAOFacade.getEventEx(con, daos, eventId);
-                if (event == null) { continue; }
+                if (event == null)
+                    continue;
 
-                if (!now.isBefore(event.getBeginDate())) { continue; }
+                if (!now.isBefore(event.getBeginDate()))
+                    continue;
 
-                List<EventTicket> tickets = daos.getEventTicketAccess().findEventTicketsByEventId(con, eventId);
-                for (EventTicket ticket : tickets)
-                    sendChangeNotificationImpl(con, daos, ticket, eventId, event);
+                try {
+                    List<EventTicket> tickets = daos.getEventTicketAccess().findEventTicketsByEventId(con, eventId);
+                    for (EventTicket ticket : tickets)
+                        sendChangeNotificationImpl(con, daos, ticket, eventId, event);
+                } catch (Exception exn) {
+                    logger.error("SendParticipationStatusChangeNotificationsTask threw an exception", exn);
+                }
             }
         } finally {
             it.close();

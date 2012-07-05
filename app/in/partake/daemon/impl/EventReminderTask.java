@@ -34,6 +34,11 @@ class EventReminderTask extends Transaction<Void> implements IPartakeDaemonTask 
     private static final Logger logger = Logger.getLogger(EventReminderTask.class);
 
     @Override
+    public String getName() {
+        return "EventRedminerTask";
+    }
+
+    @Override
     public void run() throws Exception {
         this.execute();
     }

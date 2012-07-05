@@ -37,6 +37,11 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
     private static final Logger logger = Logger.getLogger(SendMessageEnvelopeTask.class);
 
     @Override
+    public String getName() {
+        return "SendMessageEnvelopeTask";
+    }
+
+    @Override
     public void run() throws Exception {
         this.execute();
     }
