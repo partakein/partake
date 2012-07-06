@@ -195,7 +195,7 @@ public class EventDAOFacade {
     public static void tweetNewEventArrival(PartakeConnection con, IPartakeDAOs daos, Event event) throws DAOException {
         String hashTag = event.getHashTag() != null ? event.getHashTag() : "";
         String messagePrefix = "[PARTAKE] 新しいイベントが追加されました :";
-        String eventURL = event.getUrl(); // always 20
+        String eventURL = event.getEventURL(); // Always 20
         int length = (messagePrefix.length() + 1) + (20 + 1) + (hashTag.length() + 1);
         String title = Util.shorten(event.getTitle(), 140 - length);
 
@@ -217,7 +217,7 @@ public class EventDAOFacade {
         }
 
         String twitterMessageId = daos.getTwitterMessageAccess().getFreshId(con);
-        TwitterMessage twitterMessage = new TwitterMessage(twitterMessageId, userId, twitterMessageId, MessageDelivery.INQUEUE, TimeUtil.getCurrentDateTime(), null);
+        TwitterMessage twitterMessage = new TwitterMessage(twitterMessageId, userId, message, MessageDelivery.INQUEUE, TimeUtil.getCurrentDateTime(), null);
         daos.getTwitterMessageAccess().put(con, twitterMessage);
 
         String envelopeId = daos.getMessageEnvelopeAccess().getFreshId(con);
