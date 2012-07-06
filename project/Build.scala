@@ -1,14 +1,15 @@
 import sbt._
 import Keys._
 import PlayProject._
+import de.johoop.jacoco4sbt.JacocoPlugin._
 
 object ApplicationBuild extends Build {
 
     val appName         = "PartakePlay"
     val appVersion      = "0.3-SNAPSHOT"
 
-    // TODO(mayah): We should share this information with ivy.xml... we should be able to call externalIvyFile()
-    // somewhere, but it conceals play libraries. Too bad.
+    lazy val s = Defaults.defaultSettings ++ Seq(jacoco.settings:_*)
+
     val appDependencies = Seq(
         // Add your project dependencies here,
         "commons-lang" % "commons-lang" % "2.6",
@@ -32,9 +33,10 @@ object ApplicationBuild extends Build {
         "org.hamcrest" % "hamcrest-all" % "1.1"
     )
 
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
+    val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s).settings(
         // Add your own project settings here
-        externalIvySettings()
+        externalIvySettings(),
+        parallelExecution in jacoco.Config := false
     )
 
 }
