@@ -118,11 +118,7 @@ function render(json) {
         if (event.foreImageId)
             $('#' + prefix + '-image').attr('src', '/images/thumbnail/' + event.foreImageId);
         else
-            $('#' + prefix + '-image').attr('src', '/images/no-image.png');
-        
-        // fix image path match Playframework
-        var imgSrc = $('#' + prefix + '-image').attr('src');
-        $('#' + prefix + '-image').attr('src', '@routes.Assets.at("' + imgSrc + '")');
+            $('#' + prefix + '-image').attr('src', '@routes.Assets.at("/images/no-image.png")');
         
         $('#' + prefix + '-title').attr('href', '/events/' + event.id);
         $('#' + prefix + '-title').text(event.title);
