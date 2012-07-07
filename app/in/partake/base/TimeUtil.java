@@ -10,12 +10,21 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.TimeZone;
 
+import net.fortuna.ical4j.model.TimeZoneRegistry;
+import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
+
 /**
  * Time utility functions.
  *
  * @author shinyak
  */
 public final class TimeUtil {
+    public static final TimeZone JST_TIMEZONE;
+    static {
+        TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+        JST_TIMEZONE = registry.getTimeZone("Asia/Tokyo");
+    }
+
     private static DateTime currentDateTime;
 
     private TimeUtil() {

@@ -1,6 +1,7 @@
 package in.partake.view.util;
 
 import in.partake.base.DateTime;
+import in.partake.base.TimeUtil;
 import in.partake.base.Util;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.EventTicket;
@@ -171,6 +172,7 @@ public final class Helper {
     public static String readableDate(Date d) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(d);
+        cal.setTimeZone(TimeUtil.JST_TIMEZONE);
 
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
