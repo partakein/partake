@@ -36,7 +36,7 @@
             var tr = $('<tr></tr>');
 
             if (event.isPrivate)
-                $('<td><img src="/images/private.png" title="非公開イベント" /></td>').appendTo(tr);
+                $('<td><img src="@routes.Assets.at("/images/private.png")" title="非公開イベント" /></td>').appendTo(tr);
             else
                 $('<td>&nbsp;</td>').appendTo(tr);
 

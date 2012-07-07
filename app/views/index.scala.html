@@ -25,9 +25,9 @@
     <div class="span16">
         @if(ctx.loginUser() != null) {
         <h3>近日開催の参加予定イベント</h3>
-        <div id="upcoming-participating-events"><img src="img/spinner.gif"></div>
+        <div id="upcoming-participating-events"><img src="@routes.Assets.at("img/spinner.gif")"></div>
         <h3>近日開催の管理イベント</h3>
-        <div id="upcoming-managing-events"><img src="img/spinner.gif"></div>
+        <div id="upcoming-managing-events"><img src="@routes.Assets.at("img/spinner.gif")"></div>
         <script>
         partake.account.getTickets('upcoming', 0, 10)
         .done(function(json) {
