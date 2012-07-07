@@ -8,13 +8,7 @@
 
     @additionalHeader
 
-    @* TODO: combine them all *@
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-1.8.16.custom.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-timepicker-addon.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/partake-all.css")'>
-    <!--[if IE ]"
-    <link rel="stylesheet" type="text/css" href="/css/fixie.css">
-    <![endif]-->
+    @internal.stylesheet(ctx)
 
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
 

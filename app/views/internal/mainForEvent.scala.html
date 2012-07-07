@@ -16,14 +16,7 @@
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
     }
 
-    @* TODO: combine them all *@
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-1.8.16.custom.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-timepicker-addon.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-fileupload.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/partake-all.css")'>
-    <!--[if IE ]"
-    <link rel="stylesheet" type="text/css" href="/css/fixie.css">
-    <![endif]-->
+    @internal.stylesheet(ctx)
     @if(event.getBackImageId() != null) {
     <style>
         body {
