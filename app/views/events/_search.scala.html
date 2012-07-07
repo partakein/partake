@@ -119,6 +119,11 @@ function render(json) {
             $('#' + prefix + '-image').attr('src', '/images/thumbnail/' + event.foreImageId);
         else
             $('#' + prefix + '-image').attr('src', '/images/no-image.png');
+        
+        // fix image path match Playframework
+        var imgSrc = $('#' + prefix + '-image').attr('src');
+        $('#' + prefix + '-image').attr('src', '@routes.Assets.at("' + imgSrc + '")');
+        
         $('#' + prefix + '-title').attr('href', '/events/' + event.id);
         $('#' + prefix + '-title').text(event.title);
         $('#' + prefix + '-summary').text(event.summary);

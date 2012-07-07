@@ -22,7 +22,7 @@
 
 <div class="page-header">
     <h1>
-    	@if(event.isPrivate()) {<img src="@routes.Assets.at("/images/private.png") title="非公開イベント" />}
+    	@if(event.isPrivate()) {<img src="@routes.Assets.at("images/private.png")" title="非公開イベント" />}
 		@event.getTitle()
         @if(event.isDraft()) {<span class="label label-important">このイベントはまだ公開されていません</span>}
     </h1>
