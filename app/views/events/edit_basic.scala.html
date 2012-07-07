@@ -357,8 +357,10 @@ $(function() {
                     <li class="span6"><img id="selected-image" src="@routes.Assets.at("/images/no-image.png")" alt=""></li>
                 </ul>
                 <form enctype="multipart/form-data">
-                    <label for="fileupload"><input type="button" class="btn btn-danger invisible-if-ie" value="新しく画像をアップロード"/></label>
-                    <input id="fileupload" type="file" name="file" class="invisible-if-not-ie" />
+                    <span class="btn btn-danger btn fileinput-button">
+                        <span>新しく画像をアップロード</span>
+                        <input id="fileupload" type="file" name="file" />
+                    </span>
                 </form>
             </div>
             <div class="span12">
