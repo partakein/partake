@@ -111,7 +111,7 @@ POST    /api/event/search                   in.partake.controller.api.event.Sear
 POST    /api/event/sendMessage              in.partake.controller.api.event.SendMessageAPI.post()
 POST    /api/event/postComment              in.partake.controller.api.event.PostCommentAPI.post()
 POST    /api/event/removeComment            in.partake.controller.api.event.RemoveCommentAPI.post()
-GET     /api/event/getNotifications         in.partake.controller.api.event.GetNotificationsAPI.get()
+GET     /api/event/notifications            in.partake.controller.api.event.GetNotificationsAPI.get()
 
 # Ticket API
 POST    /api/ticket/apply                   in.partake.controller.api.ticket.ApplyAPI.post()
