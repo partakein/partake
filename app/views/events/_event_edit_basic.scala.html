@@ -28,18 +28,20 @@
                 value="@if(event.getEndDate() != null){ @TimeUtil.formatForEvent(event.getEndDate()) } else { @TimeUtil.formatForEvent(TimeUtil.getCurrentDateTime().nDayAfter(1)) }" />
     </div>
     <script>
-    $('#endDataInput').datetimepicker({
-        dateFormat: 'yy-mm-dd'
-    });
-    function checkEndDate() {
-        if ($("#usesEndDate").is(":checked")) {
-            $("#endDataInput").removeAttr('disabled');
-        } else {
-            $("#endDataInput").attr('disabled', '');
+    $(document).ready(function() {
+        $('#endDataInput').datetimepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        function checkEndDate() {
+            if ($("#usesEndDate").is(":checked")) {
+                $("#endDataInput").removeAttr('disabled');
+            } else {
+                $("#endDataInput").attr('disabled', '');
+            }
         }
-    }
-    checkEndDate();
-    $("#usesEndDate").change(checkEndDate);
+        checkEndDate();
+        $("#usesEndDate").change(checkEndDate);
+    });
     </script>
 </div>
 
@@ -73,15 +75,17 @@
         </script>
     </div>
     <script>
-    function updateBackImageChooser() {
-        var v = $('#back-image-checkbox').is(':checked');
-        if (v)
-            $('#back-image-chooser').fadeIn("fast");
-        else
-            $('#back-image-chooser').fadeOut("fast");
-    }
-    $('input[name="backImage"]').change(updateBackImageChooser);
-    updateBackImageChooser();
+    $(document).ready({
+        function updateBackImageChooser() {
+            var v = $('#back-image-checkbox').is(':checked');
+            if (v)
+                $('#back-image-chooser').fadeIn("fast");
+            else
+                $('#back-image-chooser').fadeOut("fast");
+        }
+        $('input[name="backImage"]').change(updateBackImageChooser);
+        updateBackImageChooser();
+    })
     </script>
 </div>
 

@@ -176,55 +176,56 @@
         <a href="#" id="create-event-dialog-submit" class="btn btn-danger">新規イベントを保存</a>
     </div>
     <script>
-    $('#create-event-form-begin-date-input').datetimepicker({
-        dateFormat: 'yy-mm-dd'
-    });
-    $('#create-event-form-end-date-input').datetimepicker({
-        dateFormat: 'yy-mm-dd'
-    });
-    $('.disable-keypress-submit').keypress(function(e) {
-        if (e.which == 13) { // If enterkey is pressed.
-            return false;
-        }
-        return true;
-    });
-    $('#create-event-dialog-submit').click(function(e) {
-        var title = $('#create-event-form-title').val();
-        var beginDate = $('#create-event-form-begin-date-input').val();
-        var usesEndDate = $('#create-event-form-end-date-checkbox').is(':checked');
-        var endDate = usesEndDate ? $('create-event-form-end-date-input').val() : null;
+    $(document).ready(function() {
+        $('#create-event-form-begin-date-input').datetimepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $('#create-event-form-end-date-input').datetimepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $('.disable-keypress-submit').keypress(function(e) {
+            if (e.which == 13) { // If enterkey is pressed.
+                return false;
+            }
+            return true;
+        });
+        $('#create-event-dialog-submit').click(function(e) {
+            var title = $('#create-event-form-title').val();
+            var beginDate = $('#create-event-form-begin-date-input').val();
+            var usesEndDate = $('#create-event-form-end-date-checkbox').is(':checked');
+            var endDate = usesEndDate ? $('create-event-form-end-date-input').val() : null;
 
-        partake.event.create(title, beginDate, endDate)
-        .done(function (json) {
-            location.href = '/events/edit/basic/' + json.eventId;
-        })
-        .fail(partake.defaultFailHandler);
-
-    });
+            partake.event.create(title, beginDate, endDate)
+            .done(function (json) {
+                location.href = '/events/edit/basic/' + json.eventId;
+            })
+            .fail(partake.defaultFailHandler);
+        });
+    }
     </script>
 </div>
 
 @if(doesShowMessage) {
 <div class="container"><div class="message">
-	@for(messageCode <- ctx.messages()) {
-		@if(messageCode.getLevel() == MessageLevel.INFO) {
-			<div class="alert alert-info fade in">
-                <a class="close" data-dismiss="alert" href="#">&times;</a>
-                @messageCode.getMessage()
-			</div>
-		}
-		@if(messageCode.getLevel() == MessageLevel.WARNING) {
-			<div class="alert alert-warning fade in">
+    @for(messageCode <- ctx.messages()) {
+        @if(messageCode.getLevel() == MessageLevel.INFO) {
+            <div class="alert alert-info fade in">
                 <a class="close" data-dismiss="alert" href="#">&times;</a>
                 @messageCode.getMessage()
             </div>
-		}
-		@if(messageCode.getLevel() == MessageLevel.ERROR) {
-			<div class="alert alert-error fade in">
+        }
+        @if(messageCode.getLevel() == MessageLevel.WARNING) {
+            <div class="alert alert-warning fade in">
                 <a class="close" data-dismiss="alert" href="#">&times;</a>
                 @messageCode.getMessage()
             </div>
-		}
-	}
+        }
+        @if(messageCode.getLevel() == MessageLevel.ERROR) {
+            <div class="alert alert-error fade in">
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                @messageCode.getMessage()
+            </div>
+        }
+    }
 </div></div>
 }

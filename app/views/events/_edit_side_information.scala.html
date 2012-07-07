@@ -7,18 +7,18 @@
 <h3>主催者</h3>
 <p><a href="/users/@event.getOwnerId()">
     <img src="@event.getOwner().getProfileImageURL()" class="profile-image" alt="" width="20" height="20" />
-   	@if(event.getOwner().getTwitterLinkage().getName() != null) {
-   		@Html(Helper.escapeTwitterResponse(event.getOwner().getTwitterLinkage().getName()))
+    @if(event.getOwner().getTwitterLinkage().getName() != null) {
+        @Html(Helper.escapeTwitterResponse(event.getOwner().getTwitterLinkage().getName()))
         (@event.getOwner().getScreenName())
     } else {
-    	@event.getOwner().getScreenName()
+        @event.getOwner().getScreenName()
     }
 </a></p>
 
 <h3>編集者</h3>
 <div id="editor-show">
     <div id="editor-content">
-    	@if(event.getEditors() != null) { @for(editor <- event.getEditors()) {
+        @if(event.getEditors() != null) { @for(editor <- event.getEditors()) {
             <div>
                 <a href="/users/@event.getId()"><img src="@editor.getProfileImageURL()" height="20" width="20">@editor.getScreenName()</a>
                 <input type="hidden" name="editorId" value="@editor.getId()">
@@ -42,14 +42,14 @@
 <script>
 var initialEditors = [
 @if(event.getEditors() != null) {
-	@event.getEditors().zipWithIndex.map { editorWithIndex =>
-		@if(editorWithIndex._2 != 0) {,}
-		{
-			id: '@editorWithIndex._1.getId()',
-	        screenName: '@editorWithIndex._1.getScreenName()',
-			profileImageURL: '@editorWithIndex._1.getProfileImageURL()'
-		}
-	}
+    @event.getEditors().zipWithIndex.map { editorWithIndex =>
+        @if(editorWithIndex._2 != 0) {,}
+        {
+            id: '@editorWithIndex._1.getId()',
+            screenName: '@editorWithIndex._1.getScreenName()',
+            profileImageURL: '@editorWithIndex._1.getProfileImageURL()'
+        }
+    }
 }];
 
 $('#editor-edit').click(function(e) {
@@ -175,27 +175,30 @@ $('#editor-input').autocomplete({
 </div>
 </form>
 <script>
-$('#date-begin-input, #date-end-input').datetimepicker({
-    dateFormat: 'yy-mm-dd'
-});
-$('#date-submit').click(function(e) {
-    var id = removeSuffix($(enclosingForm(this)).attr("id"), "-form");
+$(document).ready(function() {
+    $('#date-begin-input, #date-end-input').datetimepicker({
+        dateFormat: 'yy-mm-dd'
+    });
 
-    var arg = {};
-    arg.beginDate = $('#date-begin-input').val();
-    if ($('#date-end-use-input').is(':checked')) {
-        arg.endDate = $('#date-end-input').val();
-    } else {
-        arg.endDate = '';
-    }
+    $('#date-submit').click(function(e) {
+        var id = removeSuffix($(enclosingForm(this)).attr("id"), "-form");
 
-    partake.event.modify(eventId, arg)
-    .done(function (json) {
-        $('#date-content').text(json.eventDuration);
-        $('#' + id + '-form').hide();
-        $('#' + id + '-show').show();
-    })
-    .fail(partake.defaultFailHandler);
+        var arg = {};
+        arg.beginDate = $('#date-begin-input').val();
+        if ($('#date-end-use-input').is(':checked')) {
+            arg.endDate = $('#date-end-input').val();
+        } else {
+            arg.endDate = '';
+        }
+
+        partake.event.modify(eventId, arg)
+        .done(function (json) {
+            $('#date-content').text(json.eventDuration);
+            $('#' + id + '-form').hide();
+            $('#' + id + '-show').show();
+        })
+        .fail(partake.defaultFailHandler);
+    });
 });
 </script>
 
@@ -311,7 +314,7 @@ $('#url-submit').click(function(e) {
 <div id="related-show">
     <ul id="related-content">
     @for(relatedEvent <- event.getRelatedEvents()) {
-    	<li><a href="@relatedEvent.getEventURL()">@relatedEvent.getTitle()</a></li>
+        <li><a href="@relatedEvent.getEventURL()">@relatedEvent.getTitle()</a></li>
     }
     </ul>
     <p><span id="related-edit" class="label label-edit edit-button">関連イベントを編集</span></p>
@@ -362,10 +365,10 @@ $('#related-submit').click(function(e) {
 
 @if(event.getRelatedEventIds() != null) {
 var relatedEventIds = [
-	@event.getRelatedEventIds().zipWithIndex.map { relatedEventIdWithIndex =>
-		@if(relatedEventIdWithIndex._2 != 0) {,}
-		@relatedEventIdWithIndex._1
-	}
+    @event.getRelatedEventIds().zipWithIndex.map { relatedEventIdWithIndex =>
+        @if(relatedEventIdWithIndex._2 != 0) {,}
+        @relatedEventIdWithIndex._1
+    }
 ];
 } else {
 var relatedEventIds = [];
