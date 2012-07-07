@@ -19,7 +19,7 @@ var enrollments = @{
 		if (entry.getKey() != null && entry.getValue() != null)
             userTicketMapJSON.put(entry.getKey().toString(), JSONObject.fromObject(entry.getValue().toJSON()));
 	}
-	userTicketMapJSON.toString()
+	Html(userTicketMapJSON.toString())
 };
 
 // ----- Enquete data
@@ -45,7 +45,7 @@ var reservationForbiddenMap = @{
 	val reservationForbiddenMap = new JSONObject()
 	for (ticket <- event.getTickets())
 		reservationForbiddenMap.put(ticket.getId(), TicketReservationEnd.TILL_NONE.equals(ticket.getReservationEnd()))
-	reservationForbiddenMap.toString()
+	Html(reservationForbiddenMap.toString())
 }
 
 var reservationTimeoverMap = @{
@@ -54,7 +54,7 @@ var reservationTimeoverMap = @{
         val b = TimeUtil.getCurrentDateTime().isAfter(ticket.acceptsReservationTill(event))
         reservationTimeoverMap.put(ticket.getId().toString(), b);
 	}
-	reservationTimeoverMap.toString()
+	Html(reservationTimeoverMap.toString())
 }
 
 $('.button-apply-ticket').click(function(e) {
