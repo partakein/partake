@@ -152,15 +152,6 @@ class ModifyTicketTransaction extends Transaction<Void> {
                 if (ticket.getId() != null)
                     throw new PartakeException(UserErrorCode.INVALID_PARAMETERS);
                 ticket.setId(daos.getEventTicketAccess().getFreshId(con));
-            } else if (!forDraft) {
-                // If the event has been published, ticket amount should be preserved.
-                if (originalTicket.isAmountInfinite()) {
-                    if (!ticket.isAmountInfinite())
-                        throw new PartakeException(UserErrorCode.INVALID_PARAMETERS);
-                } else {
-                    if (!ticket.isAmountInfinite() && ticket.getAmount() < originalTicket.getAmount())
-                        throw new PartakeException(UserErrorCode.INVALID_PARAMETERS);
-                }
             }
         }
 
