@@ -223,6 +223,7 @@ public final class Helper {
         if (areSameDay(beginDate, endDate)) {
             GregorianCalendar cal = new GregorianCalendar();
             cal.setTime(endDate);
+            cal.setTimeZone(TimeUtil.JST_TIMEZONE);
 
             return readableDate(beginDate) +
             String.format(" - %02d:%02d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
