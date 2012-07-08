@@ -2,15 +2,11 @@
   event: in.partake.model.EventEx,
   ticketAndHolders: List[in.partake.base.Pair[in.partake.model.dto.EventTicket, in.partake.model.EventTicketHolderList]],
   userTicketInfoMap: Map[String, List[String]],
-  index: Int)
+  index: Int,
+  ps: List[in.partake.model.UserTicketEx])
 @import in.partake.model._
 @import in.partake.model.dto.auxiliary._
 @import org.apache.commons.lang._
-@ps = @{ new ArrayList[UserTicketEx]() }
-@{
-	ps.addAll(ticketAndHolders.get(index).getSecond().getEnrolledParticipations())
-	ps.addAll(ticketAndHolders.get(index).getSecond().getSpareParticipations())
-}
 
 <table class="table table-striped">
     <colgroup>
@@ -84,7 +80,7 @@
 			@for(enquete <- event.getEnquetes()) {
 				@defining(p.getEnqueteAnswers().get(enquete.getId())) { answers =>
 					@if(answers != null && !answers.isEmpty()) {
-						@StringUtils.join(answers.iterator(), ',')
+						<td>@StringUtils.join(answers.iterator(), ',')</td>
 					}
 				}
             }

@@ -25,7 +25,7 @@
 <div class="tabbable">
     <ul class="nav nav-pills nav-stacked-if-phone">
     	@ticketAndHolders.zipWithIndex.map { ticketAndHolderWithIndex =>
-            <li @if(ticketAndHolderWithIndex._2 == 0) {class='active'}
+            <li @if(ticketAndHolderWithIndex._2 == 0) {class='active'}>
             	<a href="#ticket@ticketAndHolderWithIndex._2" data-toggle="tab">@ticketAndHolderWithIndex._1.getFirst().getName()</a>
             </li>
     	}
@@ -33,7 +33,13 @@
     <div class="tab-content">
     	@ticketAndHolders.zipWithIndex.map { ticketAndHolderWithIndex =>
             <div id="ticket@ticketAndHolderWithIndex._2" class="tab-pane @if(ticketAndHolderWithIndex._2 == 0) {active}">
-            	@events.participants._show_participants_table(ctx, event, ticketAndHolders, userTicketInfoMap, ticketAndHolderWithIndex._2)
+            	@{
+            	    val ps = new ArrayList[in.partake.model.UserTicketEx]() 
+            	    val index = ticketAndHolderWithIndex._2
+            	    ps.addAll(ticketAndHolders.get(index).getSecond().getEnrolledParticipations())
+            	    ps.addAll(ticketAndHolders.get(index).getSecond().getSpareParticipations())
+            	    events.participants._show_participants_table(ctx, event, ticketAndHolders, userTicketInfoMap, index, ps)
+            	}
             </div>
     	}
     </div>
