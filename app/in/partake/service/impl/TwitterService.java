@@ -1,10 +1,9 @@
 package in.partake.service.impl;
 
+import in.partake.app.PartakeConfiguration;
 import in.partake.model.dto.UserTwitterLink;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.ITwitterService;
 import in.partake.session.TwitterLoginInformation;
-
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -14,7 +13,7 @@ import twitter4j.auth.RequestToken;
 public class TwitterService implements ITwitterService {
     public TwitterLoginInformation createLoginInformation(String redirectURL) throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
-        String callbackURL = PartakeProperties.get().getTopPath() + "/auth/verifyForTwitter";
+        String callbackURL = PartakeConfiguration.toppath() + "/auth/verifyForTwitter";
         RequestToken requestToken = twitter.getOAuthRequestToken(callbackURL);
 
         return new TwitterLoginInformation(twitter, requestToken, redirectURL);

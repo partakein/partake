@@ -4,7 +4,6 @@ import in.partake.app.IPartakeAppInitializer;
 import in.partake.app.PartakeApp;
 import in.partake.daemon.PartakeDaemon;
 import in.partake.daemon.impl.DaemonInitializer;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.IDBService;
 import in.partake.service.IDaemonInitializer;
 import in.partake.service.IEventSearchService;
@@ -19,8 +18,6 @@ public class ReleasePartakeAppInitializer extends PartakeApp implements IPartake
 
     @Override
     public void initialize() throws Exception {
-        PartakeProperties.get().reset("release");
-
         dbService = createDBService();
         eventSearchService = createEventSearchService();
         twitterService = createTwitterService();

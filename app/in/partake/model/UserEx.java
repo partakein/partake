@@ -1,12 +1,13 @@
 package in.partake.model;
 
+import in.partake.app.PartakeConfiguration;
+import in.partake.base.SafeJSONable;
+import in.partake.model.dto.User;
+import in.partake.model.dto.UserTwitterLink;
+
 import java.util.Set;
 
 import net.sf.json.JSONObject;
-import in.partake.base.SafeJSONable;
-import in.partake.model.dto.UserTwitterLink;
-import in.partake.model.dto.User;
-import in.partake.resource.PartakeProperties;
 
 /**
  * user with related data.
@@ -35,7 +36,7 @@ public class UserEx extends User implements SafeJSONable {
 
     public boolean isAdministrator() {
         String screenName = twitterLinkage.getScreenName();
-        Set<String> adminScreenNames = PartakeProperties.get().getTwitterAdminNames();
+        Set<String> adminScreenNames = PartakeConfiguration.administratorScreenNames();
         return adminScreenNames.contains(screenName);
     }
 

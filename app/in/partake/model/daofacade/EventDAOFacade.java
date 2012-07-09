@@ -1,5 +1,7 @@
 package in.partake.model.daofacade;
 
+import in.partake.app.PartakeApp;
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.TimeUtil;
 import in.partake.base.Util;
 import in.partake.model.EventCommentEx;
@@ -20,7 +22,6 @@ import in.partake.model.dto.TwitterMessage;
 import in.partake.model.dto.User;
 import in.partake.model.dto.UserTwitterLink;
 import in.partake.model.dto.auxiliary.MessageDelivery;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.EventSearchServiceException;
 import in.partake.service.IEventSearchService;
 
@@ -200,7 +201,8 @@ public class EventDAOFacade {
         String title = Util.shorten(event.getTitle(), 140 - length);
 
         String message = messagePrefix + " " + title + " " + eventURL + " " + hashTag;
-        long twitterId = PartakeProperties.get().getTwitterBotTwitterId();
+
+        long twitterId = PartakeConfiguration.twitterBotId();
         if (twitterId < 0) {
             logger.info("No bot id.");
             return;

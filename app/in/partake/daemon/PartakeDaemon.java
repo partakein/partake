@@ -1,6 +1,6 @@
 package in.partake.daemon;
 
-import in.partake.resource.PartakeProperties;
+import in.partake.app.PartakeConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ class PartakeDaemonTask extends TimerTask {
 
     @Override
     public void run() {
-        if (!PartakeProperties.get().isEnabledTwitterDaemon()) {
+        if (!PartakeConfiguration.isTwitterDaemonEnabled()) {
             logger.debug("Twitter daemon task is disabled.");
             return;
         }

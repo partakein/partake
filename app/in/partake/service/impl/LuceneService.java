@@ -1,9 +1,9 @@
 package in.partake.service.impl;
 
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dto.auxiliary.EventCategory;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.EventSearchServiceException;
 
 import java.io.File;
@@ -79,7 +79,7 @@ public class LuceneService {
 
     private LuceneService() {
         try {
-            File indexDirFile = new File(PartakeProperties.get().getLuceneIndexDirectory());
+            File indexDirFile = new File(PartakeConfiguration.luneceIndexDir());
             Directory indexDir = FSDirectory.open(indexDirFile);
 
             // create index.

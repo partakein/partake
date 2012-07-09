@@ -6,7 +6,6 @@ import in.partake.app.PartakeTestApp;
 import in.partake.daemon.impl.DaemonInitializer;
 import in.partake.model.dto.UserTwitterLink;
 import in.partake.model.fixture.TestDataProvider;
-import in.partake.resource.PartakeProperties;
 import in.partake.service.IDBService;
 import in.partake.service.IDaemonInitializer;
 import in.partake.service.IEventSearchService;
@@ -27,8 +26,6 @@ public class TestPartakeAppInitializer extends PartakeTestApp implements IPartak
 
     @Override
     public void initialize() throws Exception {
-        PartakeProperties.get().reset("test");
-
         dbService = createDBService();
         eventSearchService = createEventSearchService();
         twitterService = createTwitterService();

@@ -1,5 +1,7 @@
 package in.partake.model.dto;
 
+import in.partake.app.PartakeApp;
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.DateTime;
 import in.partake.base.TimeUtil;
 import in.partake.base.Util;
@@ -7,7 +9,6 @@ import in.partake.model.UserEx;
 import in.partake.model.dto.auxiliary.EnqueteQuestion;
 import in.partake.model.dto.auxiliary.EventCategory;
 import in.partake.resource.Constants;
-import in.partake.resource.PartakeProperties;
 import in.partake.view.util.Helper;
 
 import java.text.DateFormat;
@@ -617,7 +618,7 @@ public class Event extends PartakeModel<Event> {
     }
 
     public String getEventURL() {
-        String topPath = PartakeProperties.get().getTopPath();
+        String topPath = PartakeConfiguration.toppath();
         String thispageURL = topPath + "/events/" + getId();
         return thispageURL;
     }

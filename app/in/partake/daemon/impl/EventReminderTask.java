@@ -1,29 +1,29 @@
 package in.partake.daemon.impl;
 
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.DateTime;
 import in.partake.base.PartakeException;
 import in.partake.base.TimeUtil;
 import in.partake.daemon.IPartakeDaemonTask;
-import in.partake.model.UserTicketEx;
 import in.partake.model.EventEx;
 import in.partake.model.EventTicketHolderList;
 import in.partake.model.IPartakeDAOs;
+import in.partake.model.UserTicketEx;
 import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.daofacade.EnrollmentDAOFacade;
 import in.partake.model.daofacade.EventDAOFacade;
-import in.partake.model.dto.UserTicket;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.EventTicket;
 import in.partake.model.dto.EventTicketNotification;
 import in.partake.model.dto.MessageEnvelope;
 import in.partake.model.dto.UserNotification;
+import in.partake.model.dto.UserTicket;
 import in.partake.model.dto.auxiliary.MessageDelivery;
 import in.partake.model.dto.auxiliary.NotificationType;
 import in.partake.model.dto.auxiliary.ParticipationStatus;
-import in.partake.resource.PartakeProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ class EventReminderTask extends Transaction<Void> implements IPartakeDaemonTask 
 
     @Override
     protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
-        String topPath = PartakeProperties.get().getTopPath();
+        String topPath = PartakeConfiguration.toppath();
         DateTime now = TimeUtil.getCurrentDateTime();
 
         // TODO: 開始時刻が現在時刻より後の event のみを取り出したい、というかリマインダーを送るべりイベントのみを取り出したい

@@ -1,5 +1,5 @@
 @(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, calendarLink: in.partake.model.dto.UserCalendarLink)
-@import in.partake.resource.PartakeProperties
+@import in.partake.app.PartakeConfiguration
 <h2>カレンダー</h2>
 
 <p>自分の参加・管理イベントを ics ファイル (カレンダー) で受信することが出来ます。</p>
@@ -9,9 +9,9 @@
     <div class="control-group">
         <label class="control-label">カレンダー URL</label>
         <div class="controls">
-        	@if(calendarLink != null) {
-        		<input id="calendarURL" type="text" value="@PartakeProperties.get().getTopPath()/calendars/@(calendarLink.getId()).ics" class="span12" />
-        	} else {
+            @if(calendarLink != null) {
+                <input id="calendarURL" type="text" value="@PartakeConfiguration.toppath()/calendars/@(calendarLink.getId()).ics" class="span12" />
+            } else {
                 <input id="calendarURL" type="text" value="あなたのカレンダー ID はまだ生成されていません。" class="span12" />
             }
         </div>
@@ -43,7 +43,7 @@ function callRevokeCalendar() {
     })
     .done(function (json) {
         if (json.calendarId) {
-            $('#calendarURL').val('@in.partake.resource.PartakeProperties.get().getTopPath()/calendars/' + json.calendarId + '.ics');
+            $('#calendarURL').val('@PartakeConfiguration.toppath()/calendars/' + json.calendarId + '.ics');
         } else {
             location.reload();
         }

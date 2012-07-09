@@ -1,6 +1,7 @@
 package in.partake.controller.action.auth;
 
 import in.partake.app.PartakeApp;
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.PartakeException;
 import in.partake.base.TimeUtil;
 import in.partake.controller.action.AbstractPartakeAction;
@@ -13,7 +14,6 @@ import in.partake.model.dto.User;
 import in.partake.model.dto.UserTwitterLink;
 import in.partake.resource.Constants;
 import in.partake.resource.MessageCode;
-import in.partake.resource.PartakeProperties;
 import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
 import in.partake.service.ITwitterService;
@@ -67,7 +67,7 @@ public class VerifyForTwitterAction extends AbstractPartakeAction {
         // TODO(mayah): We should not put these values here.
         String errorPagePaths[] = new String[] { "/error", "/notfound", "/invalid", "/prohibited", "/forbidden", "/loginRequired" };
         for (String errorPagePath : errorPagePaths) {
-            String errorPageURL = PartakeProperties.get().getTopPath() + errorPagePath;
+            String errorPageURL = PartakeConfiguration.toppath() + errorPagePath;
             if (redirectURL.startsWith(errorPageURL))
                 return renderRedirect("/", messageCode);
         }

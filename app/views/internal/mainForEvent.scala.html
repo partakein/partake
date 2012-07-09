@@ -33,11 +33,7 @@
     }
 
     @internal.javascript(ctx)
-
-    @* If google analytics is installed, analytics code will be shown here. *@
-    @if(in.partake.resource.PartakeProperties.get().getGoogleAnalyticsCode() != null) {
-        @internal.googleCodeSnippet()
-    }
+    @internal.googleCodeSnippet()
     <title>PARTAKE</title>
 </head>
 <body @if(ctx.loginUser() != null && EventEditPermission.check(event, ctx.loginUser)) { class="with-sub-nav" }>

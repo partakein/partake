@@ -1,6 +1,7 @@
 package in.partake.controller.action.feed;
 
 import in.partake.app.PartakeApp;
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.PartakeException;
 import in.partake.model.EventEx;
 import in.partake.model.IPartakeDAOs;
@@ -9,7 +10,6 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.daofacade.EventDAOFacade;
 import in.partake.model.dto.auxiliary.EventCategory;
-import in.partake.resource.PartakeProperties;
 import in.partake.resource.ServerErrorCode;
 import in.partake.service.IEventSearchService;
 
@@ -47,7 +47,7 @@ public class FeedCategoryAction extends AbstractFeedPageAction {
         feed.setEncoding("utf-8");
 
         feed.setTitle("Recent 100 events - " + EventCategory.getReadableCategoryName(category) + " - [PARTAKE]");
-        feed.setLink(PartakeProperties.get().getTopPath() + "/");
+        feed.setLink(PartakeConfiguration.toppath() + "/");
         feed.setDescription("最近登録されたイベントを(最大100)フィードします。");
 
         try {

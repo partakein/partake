@@ -10,11 +10,7 @@
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.ico")">
 
     @internal.javascript(ctx)
-
-    @* If google analytics is installed, analytics code will be shown here. *@
-    @if(in.partake.resource.PartakeProperties.get().getGoogleAnalyticsCode() != null) {
-        @internal.googleCodeSnippet()
-    }
+    @internal.googleCodeSnippet()
     <title>@title - [PARTAKE]</title>
 </head>
 <body>

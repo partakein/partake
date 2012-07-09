@@ -20,6 +20,8 @@ public class PartakeGlobalSettings extends GlobalSettings {
     public void beforeStart(Application app) {
         logger.info("PartakeGlobalSettings will start.");
         super.beforeStart(app);
+
+        PartakeConfiguration.set(app.configuration());
     }
 
     @Override
