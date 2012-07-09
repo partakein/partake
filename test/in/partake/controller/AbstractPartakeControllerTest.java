@@ -3,6 +3,7 @@ package in.partake.controller;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import in.partake.AbstractPartakeTestWithApplication;
 import in.partake.app.PartakeTestApp;
 import in.partake.base.PartakeException;
 import in.partake.base.PartakeParamNamesConstants;
@@ -39,14 +40,12 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matchers;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
-import play.test.FakeApplication;
 import play.test.Helpers;
 
 public abstract class AbstractPartakeControllerTest
+    extends AbstractPartakeTestWithApplication
     implements TestDataProviderConstants, PartakeActionURLConstants, PartakeParamNamesConstants {
 
     enum HttpMethod {
@@ -56,19 +55,6 @@ public abstract class AbstractPartakeControllerTest
 
     protected final HttpMethod GET = HttpMethod.GET;
     protected final HttpMethod POST = HttpMethod.POST;
-
-    private static FakeApplication application;
-
-    @BeforeClass
-    public static void setUpOnce() throws Exception {
-        application = Helpers.fakeApplication();
-        Helpers.start(application);
-    }
-
-    @AfterClass
-    public static void tearDownOnce() throws Exception {
-        Helpers.stop(application);
-    }
 
     // Make setUp called before each test.
     @Before

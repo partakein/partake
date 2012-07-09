@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import play.Application;
 import play.GlobalSettings;
-import play.mvc.Result;
 import play.mvc.Http.RequestHeader;
+import play.mvc.Result;
 import play.mvc.Results;
 
 public class PartakeGlobalSettings extends GlobalSettings {
@@ -27,9 +27,6 @@ public class PartakeGlobalSettings extends GlobalSettings {
         logger.info("PartakeGlobalSettings is starting.");
 
         super.onStart(app);
-
-        if (app.isTest())
-            inTestMode = true;
 
         try {
             initializer = createInitializer(app);

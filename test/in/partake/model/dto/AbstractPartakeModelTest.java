@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
+import in.partake.AbstractPartakeTestWithApplication;
 import in.partake.model.fixture.TestDataProvider;
 
 import java.lang.reflect.Constructor;
@@ -18,28 +19,11 @@ import java.util.UUID;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import play.test.FakeApplication;
-import play.test.Helpers;
-
-public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> {
+public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> extends AbstractPartakeTestWithApplication {
     private Logger logger = Logger.getLogger(getClass());
-    private static FakeApplication application;
-
-    @BeforeClass
-    public static void setUpOnce() throws Exception {
-        application = Helpers.fakeApplication();
-        Helpers.start(application);
-    }
-
-    @AfterClass
-    public static void tearDownOnce() throws Exception {
-        Helpers.stop(application);
-    }
 
     protected abstract TestDataProvider<T> getTestDataProvider();
     protected abstract T copy(T t);

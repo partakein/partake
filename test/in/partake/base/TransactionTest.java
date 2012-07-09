@@ -1,5 +1,6 @@
 package in.partake.base;
 
+import in.partake.AbstractPartakeTestWithApplication;
 import in.partake.app.PartakeApp;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.access.DBAccess;
@@ -8,27 +9,9 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import junit.framework.Assert;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import play.test.FakeApplication;
-import play.test.Helpers;
-
-public class TransactionTest {
-    private static FakeApplication application;
-
-    @BeforeClass
-    public static void setUpOnce() throws Exception {
-        application = Helpers.fakeApplication();
-        Helpers.start(application);
-    }
-
-    @AfterClass
-    public static void tearDownOnce() throws Exception {
-        Helpers.stop(application);
-    }
-
+public class TransactionTest extends AbstractPartakeTestWithApplication {
     @Test
     public void testWithDoingNothing() throws Exception {
         new Transaction<Void>() {
