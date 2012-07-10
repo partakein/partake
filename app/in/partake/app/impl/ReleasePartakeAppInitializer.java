@@ -27,6 +27,8 @@ public class ReleasePartakeAppInitializer extends PartakeApp implements IPartake
 
         if (dbService != null)
             dbService.initialize();
+        if (twitterService != null)
+            twitterService.initialize();
         if (eventSearchService != null)
             eventSearchService.initialize();
         if (daemonInitializer != null)

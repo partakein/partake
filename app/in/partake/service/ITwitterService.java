@@ -5,6 +5,8 @@ import in.partake.session.TwitterLoginInformation;
 import twitter4j.TwitterException;
 
 public interface ITwitterService {
+    public void initialize();
+
     public TwitterLoginInformation createLoginInformation(String redirectURL) throws TwitterException;
     public UserTwitterLink createTwitterLinkageFromLoginInformation(TwitterLoginInformation information, String verifier) throws TwitterException;
 

@@ -60,6 +60,14 @@ public class PartakeConfiguration {
         return configuration.getString("partake.analytics.google");
     }
 
+    public static String twitter4jConsumerKey() {
+        return configuration.getString("twitter4j.oauth.consumerKey");
+    }
+
+    public static String twitter4jConsumerSecret() {
+        return configuration.getString("twitter4j.oauth.consumerSecret");
+    }
+
     private static Set<String> parseAdministratorScreenNames() {
         String adminNames = configuration.getString("partake.admin.screennames");
         if (adminNames == null) {
