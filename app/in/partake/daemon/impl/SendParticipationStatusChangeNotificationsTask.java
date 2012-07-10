@@ -28,11 +28,9 @@ import in.partake.model.dto.auxiliary.NotificationType;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 class SendParticipationStatusChangeNotificationsTask extends Transaction<Void> implements IPartakeDaemonTask {
-    private static final Logger logger = Logger.getLogger(SendParticipationStatusChangeNotificationsTask.class);
-
     @Override
     public String getName() {
         return "SendParticipationStatusChangeNotificationsTask";
@@ -63,7 +61,7 @@ class SendParticipationStatusChangeNotificationsTask extends Transaction<Void> i
                 if (eventId == null)
                     continue;
                 if (!Util.isUUID(eventId)) {
-                    logger.warn("eventId is not UUID.... Should not happen. : " + eventId);
+                    Logger.warn("eventId is not UUID.... Should not happen. : " + eventId);
                     continue;
                 }
 
@@ -79,7 +77,7 @@ class SendParticipationStatusChangeNotificationsTask extends Transaction<Void> i
                     for (EventTicket ticket : tickets)
                         sendChangeNotificationImpl(con, daos, ticket, eventId, event);
                 } catch (Exception exn) {
-                    logger.error("SendParticipationStatusChangeNotificationsTask threw an exception", exn);
+                    Logger.error("SendParticipationStatusChangeNotificationsTask threw an exception", exn);
                 }
             }
         } finally {

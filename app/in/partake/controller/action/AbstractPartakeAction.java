@@ -8,13 +8,11 @@ import in.partake.resource.UserErrorCode;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
+import play.Logger;
 import play.mvc.Content;
 import play.mvc.Result;
 
 public abstract class AbstractPartakeAction extends AbstractPartakeController {
-    private Logger logger = Logger.getLogger(AbstractPartakeAction.class);
 
     // ----------------------------------------------------------------------
     // Renderers
@@ -32,7 +30,7 @@ public abstract class AbstractPartakeAction extends AbstractPartakeController {
     @Override
     protected Result renderInvalid(UserErrorCode ec, Map<String, String> additionalInfo, Throwable e) {
         if (e != null)
-            logger.info("renderInvalid", e);
+            Logger.info("renderInvalid", e);
 
         if (ec != null)
             return renderRedirect("/invalid?errorCode=" + ec.getErrorCode());
@@ -43,7 +41,7 @@ public abstract class AbstractPartakeAction extends AbstractPartakeController {
     @Override
     protected Result renderError(ServerErrorCode ec, Map<String, String> additionalInfo, Throwable e) {
         if (e != null)
-            logger.info("redirectError", e);
+            Logger.info("redirectError", e);
 
         if (ec != null)
             return renderRedirect("/error?errorCode=" + ec.getErrorCode());

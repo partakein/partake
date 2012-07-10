@@ -1,6 +1,5 @@
 package in.partake.model.dto;
 
-import in.partake.app.PartakeApp;
 import in.partake.app.PartakeConfiguration;
 import in.partake.base.DateTime;
 import in.partake.base.TimeUtil;

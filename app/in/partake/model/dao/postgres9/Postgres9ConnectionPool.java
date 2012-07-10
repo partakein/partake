@@ -12,12 +12,10 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
+import play.Logger;
 import play.db.DB;
 
 public class Postgres9ConnectionPool extends PartakeConnectionPool {
-    private static final Logger logger = Logger.getLogger(Postgres9ConnectionPool.class);
     private final DataSource dataSource;
 
     public Postgres9ConnectionPool() {
@@ -44,7 +42,7 @@ public class Postgres9ConnectionPool extends PartakeConnectionPool {
     protected void releaseConnectionImpl(PartakeConnection connection) {
         assert (connection instanceof Postgres9Connection);
         if (!(connection instanceof Postgres9Connection)) {
-            logger.warn("connection is not Postgres9Connection.");
+            Logger.warn("connection is not Postgres9Connection.");
             return;
         }
 
@@ -52,7 +50,7 @@ public class Postgres9ConnectionPool extends PartakeConnectionPool {
         try {
             con.close();
         } catch (DAOException e) {
-            logger.warn("Connection cannot be released.", e);
+            Logger.warn("Connection cannot be released.", e);
         }
     }
 

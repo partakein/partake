@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -73,8 +73,6 @@ class PartakeActionContextImpl implements PartakeActionContext {
 }
 
 public abstract class AbstractPartakeController extends Controller {
-    private static final Logger logger = Logger.getLogger(AbstractPartakeController.class);
-
     private PartakeActionContextImpl ctx;
 
     // ----------------------------------------------------------------------
@@ -91,7 +89,7 @@ public abstract class AbstractPartakeController extends Controller {
 
     private final Result executeInternal() {
         long begin = System.currentTimeMillis();
-        logger.info("processing... " + request().uri());
+        Logger.info("processing... " + request().uri());
 
         try {
             ensureContext();
@@ -106,7 +104,7 @@ public abstract class AbstractPartakeController extends Controller {
             return renderError(ServerErrorCode.UNKNOWN_ERROR, null, e);
         } finally {
             long end = System.currentTimeMillis();
-            logger.info(request().uri() + " took "+ (end - begin) + "[msec] to process.");
+            Logger.info(request().uri() + " took "+ (end - begin) + "[msec] to process.");
         }
     }
 

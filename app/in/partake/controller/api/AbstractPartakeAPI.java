@@ -10,12 +10,11 @@ import java.util.Map.Entry;
 
 import net.sf.json.JSONObject;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 import play.mvc.Result;
 
 public abstract class AbstractPartakeAPI extends AbstractPartakeController {
-    private static final Logger logger = Logger.getLogger(AbstractPartakeAPI.class);
     // TODO(mayah): UTF8 should be shared around the project, I believe.
     private static final Charset UTF8 = Charset.forName("utf-8");
 
@@ -87,8 +86,8 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
         assert errorCode != null;
 
         final String reasonString = errorCode.toString() + ":" + errorCode.getReasonString();
-        if (e != null) { logger.error(reasonString, e); }
-        else { logger.error(reasonString); }
+        if (e != null) { Logger.error(reasonString, e); }
+        else { Logger.error(reasonString); }
 
         JSONObject obj = new JSONObject();
         obj.put("result", "error");
@@ -108,7 +107,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
         assert ec != null;
 
         if (e != null)
-            logger.info("renderInvalid", e);
+            Logger.info("renderInvalid", e);
 
         JSONObject obj = new JSONObject();
         obj.put("result", "invalid");

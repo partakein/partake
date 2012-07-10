@@ -2,11 +2,9 @@ package in.partake.model.dao;
 
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 public abstract class PartakeConnectionPool {
-    private static final Logger logger = Logger.getLogger(PartakeConnectionPool.class);
-
     // 同じ thread が複数の connection を取ると deadlock の可能性がある。その場合には警告されるため、修正すること。
     private ThreadLocal<Integer> numAcquiredConnection;
     private ThreadLocal<String>  firstConnectionName;
@@ -39,16 +37,16 @@ public abstract class PartakeConnectionPool {
             numAcquiredConnection.set(numAcquiredConnection.get() + 1);
         }
         if (numAcquiredConnection.get() > 1) {
-            logger.warn(name + " : The same thread has taken multiple connections. This may cause a bug. ");
+            Logger.warn(name + " : The same thread has taken multiple connections. This may cause a bug. ");
             if (firstConnectionName.get() != null) {
-                logger.warn(firstConnectionName.get() + " is the first connection.");
+                Logger.warn(firstConnectionName.get() + " is the first connection.");
             }
         }
         if (firstConnectionName.get() == null) {
             firstConnectionName.set(name);
         }
 
-        logger.debug("borrowing... " + name + " : " + numAcquiredConnection.get());
+        Logger.debug("borrowing... " + name + " : " + numAcquiredConnection.get());
         return getConnectionImpl(name);
     }
 
@@ -60,7 +58,7 @@ public abstract class PartakeConnectionPool {
         Date now = new Date();
 
         if (connection.getAcquiredTime() + tenSeconds < now.getTime()) {
-            logger.warn("connection [" + connection.getName() + "] have been acquired for " + (now.getTime() - connection.getAcquiredTime()) + " milliseconds.");
+            Logger.warn("connection [" + connection.getName() + "] have been acquired for " + (now.getTime() - connection.getAcquiredTime()) + " milliseconds.");
         }
 
         numAcquiredConnection.set(numAcquiredConnection.get() - 1);
@@ -68,7 +66,7 @@ public abstract class PartakeConnectionPool {
             firstConnectionName.set(null);
         }
 
-        logger.debug("releasing... " + connection.getName() + " : " + numAcquiredConnection.get());
+        Logger.debug("releasing... " + connection.getName() + " : " + numAcquiredConnection.get());
         releaseConnectionImpl(connection);
     }
 

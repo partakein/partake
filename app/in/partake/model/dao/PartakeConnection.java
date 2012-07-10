@@ -1,10 +1,8 @@
 package in.partake.model.dao;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 public abstract class PartakeConnection {
-    private static final Logger logger = Logger.getLogger(PartakeConnection.class);
-
     private String name;
     private PartakeConnectionPool pool;
     private long acquiredTime;
@@ -36,9 +34,9 @@ public abstract class PartakeConnection {
      */
     public synchronized void invalidate() {
         if (isInTransaction())
-            logger.error("You called invalidate() for connection being in connection.");
+            Logger.error("You called invalidate() for connection being in connection.");
         if (invalidated)
-            logger.error("You called invalidate() for already invalidated connection.");
+            Logger.error("You called invalidate() for already invalidated connection.");
 
         this.invalidated = true;
         pool.releaseConnection(this);
@@ -49,7 +47,7 @@ public abstract class PartakeConnection {
     // もしサブクラスでもfinalizeを実装したいなんて残念なことになったら、このクラスにFinalizer Guardianを使うこと。
     protected final void finalize() throws Throwable {
         if (!invalidated) {
-            logger.error("RESOURCE LEAK! : Connection [" + getName() + "] was not invalidated.");
+            Logger.error("RESOURCE LEAK! : Connection [" + getName() + "] was not invalidated.");
             invalidate();
         }
 

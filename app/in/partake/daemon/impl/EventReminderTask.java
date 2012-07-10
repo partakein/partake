@@ -28,11 +28,9 @@ import in.partake.model.dto.auxiliary.ParticipationStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 class EventReminderTask extends Transaction<Void> implements IPartakeDaemonTask {
-    private static final Logger logger = Logger.getLogger(EventReminderTask.class);
-
     @Override
     public String getName() {
         return "EventRedminerTask";
@@ -108,7 +106,7 @@ class EventReminderTask extends Transaction<Void> implements IPartakeDaemonTask 
             String envelopeId = daos.getMessageEnvelopeAccess().getFreshId(con);
             MessageEnvelope envelope = MessageEnvelope.createForUserNotification(envelopeId, notificationId, invalidAfter);
             daos.getMessageEnvelopeAccess().put(con, envelope);
-            logger.info("sendEnvelope : " + userId + " : " + notificationType);
+            Logger.info("sendEnvelope : " + userId + " : " + notificationType);
         }
     }
 
@@ -178,7 +176,7 @@ class EventReminderTask extends Transaction<Void> implements IPartakeDaemonTask 
             String envelopeId = daos.getMessageEnvelopeAccess().getFreshId(con);
             MessageEnvelope envelope = MessageEnvelope.createForUserNotification(envelopeId, notificationId, invalidAfter);
             daos.getMessageEnvelopeAccess().put(con, envelope);
-            logger.info("sendEnvelope : " + userId + " : " + notificationType);
+            Logger.info("sendEnvelope : " + userId + " : " + notificationType);
         }
     }
 }

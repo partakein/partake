@@ -2,22 +2,19 @@ package in.partake.app;
 
 import in.partake.app.impl.DebugPartakeAppInitializer;
 import in.partake.app.impl.ReleasePartakeAppInitializer;
-
-import org.apache.log4j.Logger;
-
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
 import play.mvc.Http.RequestHeader;
 import play.mvc.Result;
 import play.mvc.Results;
 
 public class PartakeGlobalSettings extends GlobalSettings {
-    private static final Logger logger = Logger.getLogger(PartakeGlobalSettings.class);
     private IPartakeAppInitializer initializer;
 
     @Override
     public void beforeStart(Application app) {
-        logger.info("PartakeGlobalSettings will start.");
+        Logger.info("PartakeGlobalSettings will start.");
         super.beforeStart(app);
 
         PartakeConfiguration.set(app.configuration());
@@ -25,7 +22,7 @@ public class PartakeGlobalSettings extends GlobalSettings {
 
     @Override
     public void onStart(Application app) {
-        logger.info("PartakeGlobalSettings is starting.");
+        Logger.info("PartakeGlobalSettings is starting.");
 
         super.onStart(app);
 
@@ -39,12 +36,12 @@ public class PartakeGlobalSettings extends GlobalSettings {
 
     @Override
     public void onStop(Application app) {
-        logger.info("PartakeGlobalSettings is stopping.");
+        Logger.info("PartakeGlobalSettings is stopping.");
 
         try {
             initializer.cleanUp();
         } catch (Exception exceptionShouldBeIgnored) {
-            logger.warn("Unintentional exception is thrown.", exceptionShouldBeIgnored);
+            Logger.warn("Unintentional exception is thrown.", exceptionShouldBeIgnored);
         }
 
         super.onStop(app);

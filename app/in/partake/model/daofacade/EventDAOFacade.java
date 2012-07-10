@@ -1,6 +1,5 @@
 package in.partake.model.daofacade;
 
-import in.partake.app.PartakeApp;
 import in.partake.app.PartakeConfiguration;
 import in.partake.base.TimeUtil;
 import in.partake.base.Util;
@@ -28,11 +27,9 @@ import in.partake.service.IEventSearchService;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 public class EventDAOFacade {
-    private static final Logger logger = Logger.getLogger(EventDAOFacade.class);
-
     public static EventEx getEventEx(PartakeConnection con, IPartakeDAOs daos, String eventId) throws DAOException {
         Event event = daos.getEventAccess().find(con, eventId);
         if (event == null) { return null; }
@@ -204,17 +201,17 @@ public class EventDAOFacade {
 
         long twitterId = PartakeConfiguration.twitterBotId();
         if (twitterId < 0) {
-            logger.info("No bot id.");
+            Logger.info("No bot id.");
             return;
         }
         UserTwitterLink linkage = daos.getTwitterLinkageAccess().findByTwitterId(con, twitterId);
         if (linkage == null) {
-            logger.info("twitter bot does have partake user id. Login using the account once to create the user id.");
+            Logger.info("twitter bot does have partake user id. Login using the account once to create the user id.");
             return;
         }
         String userId = linkage.getUserId();
         if (userId == null) {
-            logger.info("twitter bot does have partake user id. Login using the account once to create the user id.");
+            Logger.info("twitter bot does have partake user id. Login using the account once to create the user id.");
             return;
         }
 
@@ -226,6 +223,6 @@ public class EventDAOFacade {
         MessageEnvelope envelope = MessageEnvelope.createForTwitterMessage(envelopeId, twitterMessageId, null);
         daos.getMessageEnvelopeAccess().put(con, envelope);
 
-        logger.info("bot will tweet: " + message);
+        Logger.info("bot will tweet: " + message);
     }
 }

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cjk.CJKAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -39,11 +38,12 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import play.Logger;
+
 /**
  * @author shinyak
  */
 public class LuceneService {
-    private static Logger logger = Logger.getLogger(LuceneService.class);
     private static volatile LuceneService instance;
 
     private IndexWriter indexWriter;
@@ -56,7 +56,7 @@ public class LuceneService {
     }
 
     public static void initialize() throws EventSearchServiceException {
-        logger.info("LuceneService is being initialized.");
+        Logger.info("LuceneService is being initialized.");
 
         if (instance != null)
             return;
@@ -64,7 +64,7 @@ public class LuceneService {
     }
 
     public static void destroy() throws EventSearchServiceException {
-        logger.info("LuceneService is being destructed.");
+        Logger.info("LuceneService is being destructed.");
         if (instance == null)
             return;
 
@@ -89,7 +89,7 @@ public class LuceneService {
             indexSearcher = new IndexSearcher(indexReader);
             analyzer = new CJKAnalyzer(Version.LUCENE_30);
         } catch (IOException e) {
-            logger.error("LuceneService cannot be initialized", e);
+            Logger.error("LuceneService cannot be initialized", e);
             indexWriter = null;
             indexReader = null;
             indexSearcher = null;

@@ -4,13 +4,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import play.Logger;
 
 import play.Configuration;
 
 public class PartakeConfiguration {
-    private static final Logger logger = Logger.getLogger(PartakeConfiguration.class);
-
     private static Configuration configuration;
     private static String toppath;
     private static Set<String> administratorScreenNames;
@@ -65,7 +63,7 @@ public class PartakeConfiguration {
     private static Set<String> parseAdministratorScreenNames() {
         String adminNames = configuration.getString("partake.admin.screennames");
         if (adminNames == null) {
-            logger.warn("partake.admin.screennames is not found in the current configuration file");
+            Logger.warn("partake.admin.screennames is not found in the current configuration file");
             return Collections.emptySet();
         }
 
@@ -77,7 +75,7 @@ public class PartakeConfiguration {
         }
 
         if (result.isEmpty())
-            logger.warn("partake.admin.screennames is empty");
+            Logger.warn("partake.admin.screennames is empty");
 
         return result;
     }

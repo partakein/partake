@@ -18,13 +18,12 @@ import java.util.UUID;
 
 import net.sf.json.JSONObject;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> extends AbstractPartakeTestWithApplication {
-    private Logger logger = Logger.getLogger(getClass());
+import play.Logger;
 
+public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> extends AbstractPartakeTestWithApplication {
     protected abstract TestDataProvider<T> getTestDataProvider();
     protected abstract T copy(T t);
 
@@ -41,7 +40,7 @@ public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> extend
             if (!checkDestructiveMethod(method) || method.getDeclaringClass().equals(Object.class))
                 continue;
 
-            logger.debug(String.format("Test for %s#%s starts.", model.getClass().getName(), method.getName()));
+            Logger.debug(String.format("Test for %s#%s starts.", model.getClass().getName(), method.getName()));
             Object[] args = createArgsFor(method);
 
             try {

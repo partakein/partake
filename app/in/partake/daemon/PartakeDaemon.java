@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.log4j.Logger;
-
+import play.Logger;
 
 class PartakeDaemonTask extends TimerTask {
-    private static final Logger logger = Logger.getLogger(PartakeDaemonTask.class);
     private final PartakeDaemon daemon;
 
     public PartakeDaemonTask(PartakeDaemon daemon) {
@@ -21,24 +19,23 @@ class PartakeDaemonTask extends TimerTask {
     @Override
     public void run() {
         if (!PartakeConfiguration.isTwitterDaemonEnabled()) {
-            logger.debug("Twitter daemon task is disabled.");
+            Logger.debug("Twitter daemon task is disabled.");
             return;
         }
 
         for (IPartakeDaemonTask task: daemon.getTasks()) {
-            logger.info(task.getName() + " will start...");
+            Logger.info(task.getName() + " will start...");
             try {
                 task.run();
-                logger.info(task.getName() + " has finished without an error.");
+                Logger.info(task.getName() + " has finished without an error.");
             } catch (Exception e) {
-                logger.error(task.getName() + " has encountered an error. This should be immediately fixed.");
+                Logger.error(task.getName() + " has encountered an error. This should be immediately fixed.");
             }
         }
     }
 }
 
 public class PartakeDaemon {
-    private static final Logger logger = Logger.getLogger(PartakeDaemon.class);
     private static final int TIMER_INTERVAL_IN_MILLIS = 30000; // 30 secs. TODO: magic number!
 
     private static PartakeDaemon instance = new PartakeDaemon();
@@ -55,14 +52,14 @@ public class PartakeDaemon {
     }
 
     public void schedule() {
-        logger.info("Daemons are scheduling...");
+        Logger.info("Daemons are scheduling...");
         // initial wait is required because application initialization might not be finished.
         timer.schedule(new PartakeDaemonTask(this), TIMER_INTERVAL_IN_MILLIS, TIMER_INTERVAL_IN_MILLIS);
     }
 
     public void cancel() {
         timer.cancel();
-        logger.info("Scheduled twitter daemons have been cancelled.");
+        Logger.info("Scheduled twitter daemons have been cancelled.");
     }
 
     public void addTask(IPartakeDaemonTask task) {

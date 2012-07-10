@@ -22,14 +22,12 @@ import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
+import play.Logger;
 
 import com.twitter.Regex;
 
 
 public final class Util {
-    private static final Logger logger = Logger.getLogger(Util.class);
     private static final Random random = new Random();
 
     private static final Pattern REMOVETAG_PATTERN = Pattern.compile("(<!--.+?-->)|(<.+?>)", Pattern.DOTALL | Pattern.MULTILINE);
@@ -195,7 +193,7 @@ public final class Util {
             try {
                 reader.close();
             } catch (IOException ignore) {
-                logger.warn("Reader#close throw IOException, but it's ignored.", ignore);
+                Logger.warn("Reader#close throw IOException, but it's ignored.", ignore);
             }
         }
     }
@@ -292,7 +290,7 @@ public final class Util {
                                  .replaceAll("\\%29", ")")
                                  .replaceAll("\\%7E", "~");
         } catch (UnsupportedEncodingException e) {
-            logger.warn("safely returns empty string.", e);
+            Logger.warn("safely returns empty string.", e);
             return "";
         }
     }

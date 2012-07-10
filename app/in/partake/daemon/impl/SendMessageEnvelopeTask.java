@@ -18,24 +18,21 @@ import in.partake.model.dto.Event;
 import in.partake.model.dto.EventTicket;
 import in.partake.model.dto.Message;
 import in.partake.model.dto.MessageEnvelope;
-import in.partake.model.dto.UserTwitterLink;
 import in.partake.model.dto.TwitterMessage;
 import in.partake.model.dto.UserNotification;
 import in.partake.model.dto.UserPreference;
 import in.partake.model.dto.UserReceivedMessage;
+import in.partake.model.dto.UserTwitterLink;
 import in.partake.model.dto.auxiliary.MessageDelivery;
 
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
+import play.Logger;
 import twitter4j.TwitterException;
 
 class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemonTask {
-    private static final Logger logger = Logger.getLogger(SendMessageEnvelopeTask.class);
-
     @Override
     public String getName() {
         return "SendMessageEnvelopeTask";
@@ -60,7 +57,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
                 // InvalidAfter 後であれば、message を update して envelope を消去
                 // TODO: Refine this code!
                 if (envelope.getInvalidAfter() != null && envelope.getInvalidAfter().isBefore(TimeUtil.getCurrentDateTime())) {
-                    logger.warn("run : envelope id " + envelope.getId() + " could not be sent : Time out.");
+                    Logger.warn("run : envelope id " + envelope.getId() + " could not be sent : Time out.");
                     if (envelope.getUserMessageId() != null) {
                         UserReceivedMessage userMessage = daos.getUserReceivedMessageAccess().find(con, UUID.fromString(envelope.getUserMessageId()));
                         if (userMessage != null) {
@@ -97,7 +94,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
 
                 // tryAfter 前であれば送らない。
                 if (envelope.getTryAfter() != null && !envelope.getTryAfter().isBefore(TimeUtil.getCurrentDateTime())) {
-                    logger.debug("run : envelope id " + envelope.getId() + " should be sent after " + envelope.getTryAfter());
+                    Logger.debug("run : envelope id " + envelope.getId() + " should be sent after " + envelope.getTryAfter());
                     continue;
                 }
 
@@ -109,7 +106,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
                     sendUserNotification(con, daos, it, envelope);
                 else {
                     // Hmm... shouldn't happen.
-                    logger.error("Shouldn't happen");
+                    Logger.error("Shouldn't happen");
                     assert false;
                     it.remove();
                 }
@@ -151,7 +148,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
 
         UserTwitterLink twitterLinkage = receiver.getTwitterLinkage();
         if (twitterLinkage == null || !twitterLinkage.isAuthorized()) {
-            logger.warn("sendDirectMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
+            Logger.warn("sendDirectMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
             didSendUserMessage(con, daos, it, envelope, userMessage, MessageDelivery.FAIL);
             return;
         }
@@ -194,9 +191,9 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             PartakeApp.getTwitterService().sendDirectMesage(
                     twitterLinkage.getAccessToken(), twitterLinkage.getAccessTokenSecret(), twitterId, messageBody);
             didSendUserMessage(con, daos, it, envelope, userMessage, MessageDelivery.SUCCESS);
-            logger.info("sendDirectMessage : direct message has been sent to " + twitterLinkage.getScreenName());
+            Logger.info("sendDirectMessage : direct message has been sent to " + twitterLinkage.getScreenName());
         } catch (NumberFormatException e) {
-            logger.error("twitterId has not a number.", e);
+            Logger.error("twitterId has not a number.", e);
             didSendUserMessage(con, daos, it, envelope, userMessage, MessageDelivery.FAIL);
         } catch (TwitterException e) {
             if (updateEnvelopeByTwitterException(con, daos, receiver, envelope, it, e))
@@ -218,7 +215,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
         TwitterMessage message = daos.getTwitterMessageAccess().find(con, envelope.getTwitterMessageId());
 
         if (message == null) {
-            logger.warn("SendMessageEnvelopeTask.sendTwitterMessage : message was null.");
+            Logger.warn("SendMessageEnvelopeTask.sendTwitterMessage : message was null.");
 
             // Since the message was null, we cannot update the message status. So we silently remove this MessageEnvelope.
             it.remove();
@@ -227,14 +224,14 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
 
         UserEx sender = UserDAOFacade.getUserEx(con, daos, message.getUserId());
         if (sender == null) {
-            logger.warn("sendTwitterMessage : sender is null.");
+            Logger.warn("sendTwitterMessage : sender is null.");
             failedSendingTwitterMessage(con, daos, it, envelope, message);
             return;
         }
 
         UserTwitterLink twitterLinkage = sender.getTwitterLinkage();
         if (twitterLinkage == null || !twitterLinkage.isAuthorized()) {
-            logger.warn("sendTwitterMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
+            Logger.warn("sendTwitterMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
             failedSendingTwitterMessage(con, daos, it, envelope, message);
             return;
         }
@@ -276,14 +273,14 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
 
         UserEx sender = UserDAOFacade.getUserEx(con, daos, notification.getUserId());
         if (sender == null) {
-            logger.warn("sendTwitterMessage : sender is null.");
+            Logger.warn("sendTwitterMessage : sender is null.");
             failedSendingUserNotification(con, daos, it, envelope, notification);
             return;
         }
 
         UserTwitterLink twitterLinkage = sender.getTwitterLinkage();
         if (twitterLinkage == null || !twitterLinkage.isAuthorized()) {
-            logger.warn("sendTwitterMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
+            Logger.warn("sendTwitterMessage : envelope id " + envelope.getId() + " could not be sent : No access token");
             failedSendingUserNotification(con, daos, it, envelope, notification);
             return;
         }
@@ -388,7 +385,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
     private boolean updateEnvelopeByTwitterException(PartakeConnection con, IPartakeDAOs daos,
             UserEx user, MessageEnvelope envelope, DataIterator<MessageEnvelope> it, TwitterException e) throws DAOException {
         if (e.isCausedByNetworkIssue()) {
-            logger.warn("Twitter Unreachable?", e);
+            Logger.warn("Twitter Unreachable?", e);
             // Retry after 10 minutes later.
             DateTime retryAfter = new DateTime(TimeUtil.getCurrentTime() + 600 * 1000);
             MessageEnvelope newEnvelope = new MessageEnvelope(envelope);
@@ -398,7 +395,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
         }
 
         if (e.exceededRateLimitation()) {
-            logger.warn("Twitter Rate Limination : " + envelope.getId() + " was failed to deliver.", e);
+            Logger.warn("Twitter Rate Limination : " + envelope.getId() + " was failed to deliver.", e);
             DateTime retryAfter = new DateTime(TimeUtil.getCurrentTime() + e.getRetryAfter() * 1000);
 
             MessageEnvelope newEnvelope = new MessageEnvelope(envelope);
@@ -409,7 +406,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
 
         if (e.getStatusCode() == HttpServletResponse.SC_UNAUTHORIZED) {
             markAsUnauthorizedUser(con, daos, user);
-            logger.info("Unauthorized User : " + envelope.getId() + " was failed to deliver.", e);
+            Logger.info("Unauthorized User : " + envelope.getId() + " was failed to deliver.", e);
 
             // We cannot send envelopes to unauthorized user.
             it.remove();
@@ -417,7 +414,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
         }
 
         // Unknown error. Retry.
-        logger.warn("Unknown Error : " + envelope.getId() + " was failed to deliver.", e);
+        Logger.warn("Unknown Error : " + envelope.getId() + " was failed to deliver.", e);
         // Retry after 5 minutes later.
         DateTime retryAfter = new DateTime(TimeUtil.getCurrentTime() + 600 * 1000);
         MessageEnvelope newEnvelope = new MessageEnvelope(envelope);
@@ -435,7 +432,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             // TODO UserExが参照するTwitterLinkageが更新されたため、UserExのキャッシュを破棄あるいは更新する必要がある
             access.put(con, linkage);
         } catch (DAOException ignore) {
-            logger.warn("DAOException is thrown but it's ignored.", ignore);
+            Logger.warn("DAOException is thrown but it's ignored.", ignore);
         }
     }
 }
