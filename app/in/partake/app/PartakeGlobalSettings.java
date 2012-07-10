@@ -14,7 +14,6 @@ import play.mvc.Results;
 public class PartakeGlobalSettings extends GlobalSettings {
     private static final Logger logger = Logger.getLogger(PartakeGlobalSettings.class);
     private IPartakeAppInitializer initializer;
-    boolean inTestMode;
 
     @Override
     public void beforeStart(Application app) {
