@@ -39,7 +39,8 @@ public class PartakeGlobalSettings extends GlobalSettings {
         Logger.info("PartakeGlobalSettings is stopping.");
 
         try {
-            initializer.cleanUp();
+            if (initializer != null)
+                initializer.cleanUp();
         } catch (Exception exceptionShouldBeIgnored) {
             Logger.warn("Unintentional exception is thrown.", exceptionShouldBeIgnored);
         }
