@@ -169,7 +169,6 @@ public class EventDAOFacade {
     public static List<EventCommentEx> getCommentsExByEvent(PartakeConnection con, IPartakeDAOs daos, String eventId) throws DAOException {
         List<EventCommentEx> result = new ArrayList<EventCommentEx>();
 
-        con.beginTransaction();
         DataIterator<EventComment> iterator = daos.getCommentAccess().getCommentsByEvent(con, eventId);
         try {
             if (iterator == null) { return result; }
