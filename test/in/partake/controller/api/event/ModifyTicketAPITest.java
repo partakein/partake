@@ -2,6 +2,7 @@ package in.partake.controller.api.event;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import in.partake.controller.ActionProxy;
 import in.partake.controller.api.APIControllerTest;
 import in.partake.model.EventEx;
 import in.partake.model.dto.EventTicket;
@@ -14,8 +15,6 @@ import in.partake.model.dto.auxiliary.TicketReservationEnd;
 import java.util.List;
 
 import org.junit.Test;
-
-import in.partake.controller.ActionProxy;
 
 public class ModifyTicketAPITest extends APIControllerTest {
 
@@ -137,5 +136,41 @@ public class ModifyTicketAPITest extends APIControllerTest {
         assertThat(tickets.get(0).getPriceType(), is(TicketPriceType.FREE));
         assertThat(tickets.get(0).getAmountType(), is(TicketAmountType.LIMITED));
         assertThat(tickets.get(0).getAmount(), is(10));
+    }
+
+    @Test
+    public void shouldDeleteTickdetIfNoParticipants() throws Exception {
+        removeUserTicketsByEventId(DEFAULT_EVENT_ID);
+
+        ActionProxy proxy = getActionProxy(POST, API_EVENT_MODIFY_TICKET);
+        loginAs(proxy, EVENT_OWNER_ID);
+        addValidSessionTokenToParameter(proxy);
+
+        addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
+        addFormParameter(proxy, "id[]", new String[] {});
+        addFormParameter(proxy, "name[]", new String[] {});
+        addFormParameter(proxy, "applicationStart[]", new String[] {});
+        addFormParameter(proxy, "applicationStartDayBeforeEvent[]", new String[] {});
+        addFormParameter(proxy, "customApplicationStartDate[]", new String[] {});
+        addFormParameter(proxy, "applicationEnd[]", new String[] {});
+        addFormParameter(proxy, "applicationEndDayBeforeEvent[]", new String[] {});
+        addFormParameter(proxy, "customApplicationEndDate[]", new String[] {});
+        addFormParameter(proxy, "reservationEnd[]", new String[] {});
+        addFormParameter(proxy, "reservationEndHourBeforeApplication[]", new String[] {});
+        addFormParameter(proxy, "customReservationEndDate[]", new String[] {});
+        addFormParameter(proxy, "priceType[]", new String[] {});
+        addFormParameter(proxy, "price[]", new String[] {});
+
+        // Changed to limited.
+        addFormParameter(proxy, "amountType[]", new String[] {});
+        addFormParameter(proxy, "amount[]", new String[] {});
+
+        proxy.execute();
+        assertResultOK(proxy);
+
+        EventEx modified = loadEventEx(DEFAULT_EVENT_ID);
+        List<EventTicket> tickets = modified.getTickets();
+
+        assertThat(tickets.size(), is(0));
     }
 }

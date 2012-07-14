@@ -16,6 +16,7 @@ public interface IUserTicketAccess extends IAccess<UserTicket, String> {
 
     public List<UserTicket> findByTicketId(PartakeConnection con, UUID eventTicketId, int offset, int limit) throws DAOException;
     public int countByTicketId(PartakeConnection con, UUID eventTicketId, ParticipationStatus status) throws DAOException;
+    public int countByTicketId(PartakeConnection con, UUID eventTicketId) throws DAOException;
 
     public List<UserTicket> findByEventId(PartakeConnection con, String eventId, int offset, int limit) throws DAOException;
     public int countByEventId(PartakeConnection con, String eventId, ParticipationStatus status) throws DAOException;

@@ -302,6 +302,21 @@ public abstract class AbstractPartakeControllerTest
         }.execute();
     }
 
+    protected void removeUserTicketsByEventId(final String eventId) throws DAOException, PartakeException {
+        new Transaction<Void>() {
+            @Override
+            protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
+                List<UserTicket> tickets = daos.getEnrollmentAccess().findByEventId(con, eventId, 0, Integer.MAX_VALUE);
+                for (UserTicket ticket : tickets) {
+                    System.out.println(ticket);
+                    daos.getEnrollmentAccess().removeByEventTicketIdAndUserId(con, ticket.getTicketId(), ticket.getUserId());
+                }
+
+                return null;
+            }
+        }.execute();
+    }
+
     protected List<EventTicketNotification> loadEventTicketNotificationsByEventId(final UUID ticketId) throws Exception {
         return new DBAccess<List<EventTicketNotification>>() {
             @Override

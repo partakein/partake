@@ -42,8 +42,8 @@ public class ModifyTicketAPI extends AbstractPartakeAPI {
         ensureValidSessionToken();
         String eventId = getValidEventIdParameter();
 
-        String[] ids = ensureParameters("id[]", UserErrorCode.INVALID_ARGUMENT);
-        int N = ids.length;
+        String[] ids = getParameters("id[]");
+        int N = ids != null ? ids.length : 0;
 
         String[] names = ensureParameters("name[]", N, UserErrorCode.INVALID_ARGUMENT);
         String[] startDateTypes = ensureParameters("applicationStart[]", N, UserErrorCode.INVALID_ARGUMENT);
@@ -135,6 +135,7 @@ class ModifyTicketTransaction extends Transaction<Void> {
         // |tickets| should contain all the original ticket.
         for (EventTicket ticket : tickets) {
             EventTicket originalTicket = null;
+
             for (int i = 0; i < originalTickets.size(); ++i) {
                 if (!originalTickets.get(i).getId().equals(ticket.getId()))
                     continue;
@@ -156,10 +157,12 @@ class ModifyTicketTransaction extends Transaction<Void> {
         }
 
         // If the event has already been published, all ticket should be preserved.
+        // However, it's OK to remove the ticket that no participants.
         if (!forDraft) {
             for (int i = 0; i < processed.length; ++i) {
-                if (!processed[i])
-                    throw new PartakeException(UserErrorCode.INVALID_PARAMETERS);
+                UUID eventTicketId = originalTickets.get(i).getId();
+                if (!processed[i] && daos.getEnrollmentAccess().countByTicketId(con, eventTicketId) > 0)
+                    throw new PartakeException(UserErrorCode.INVALID_TICKET_REMOVAL_ENROLLED);
             }
         }
 

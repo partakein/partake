@@ -374,7 +374,14 @@ public abstract class AbstractPartakeController extends Controller {
     }
 
     protected String[] ensureParameters(String key, int n, UserErrorCode ec) throws PartakeException {
-        String[] params = ensureParameters(key, ec);
+        String[] params = getParameters(key);
+        if (params == null) {
+            if (n == 0)
+                return new String[0];
+            else
+                throw new PartakeException(ec);
+        }
+
         if (params.length != n)
             throw new PartakeException(ec);
 

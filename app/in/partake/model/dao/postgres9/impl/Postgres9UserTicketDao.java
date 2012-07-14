@@ -185,6 +185,13 @@ public class Postgres9UserTicketDao extends Postgres9Dao implements IUserTicketA
     }
 
     @Override
+    public int countByTicketId(PartakeConnection con, UUID eventTicketId) throws DAOException {
+        return indexDao.count((Postgres9Connection) con,
+                new String[] { "ticketId" },
+                new Object[] { eventTicketId.toString() });
+    }
+
+    @Override
     public int countByEventId(PartakeConnection con, String eventId, ParticipationStatus status) throws DAOException {
         return indexDao.count((Postgres9Connection) con,
                 new String[] { "eventId", "status" },

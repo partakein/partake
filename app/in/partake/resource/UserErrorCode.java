@@ -46,6 +46,7 @@ public enum UserErrorCode {
     INVALID_TICKET_ID("invalid.ticket.id"),
     MISSING_TICKET_ID("invalid.ticket.id.missing"),
     INVALID_TICKET_DUPLICATE_ID("invalid.ticket.id.duplicate"),
+    INVALID_TICKET_REMOVAL_ENROLLED("invalid.ticket.removal.enrolled"),
 
     // TICKET APPLICATION
     INVALID_APPLICATION_RESERVATION_TIMEOVER("invalid.application.reservation.timeover"),
