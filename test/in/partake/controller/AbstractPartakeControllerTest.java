@@ -227,6 +227,14 @@ public abstract class AbstractPartakeControllerTest
         }.execute();
     }
 
+    protected EventTicket loadEventTicket(final UUID eventTicketId) throws DAOException, PartakeException {
+        return new Transaction<EventTicket>() {
+            protected EventTicket doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
+                return daos.getEventTicketAccess().find(con, eventTicketId);
+            };
+        }.execute();
+    }
+
     protected void storeEventTicket(final EventTicket ticket) throws DAOException, PartakeException {
         new Transaction<Void>() {
             protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException ,PartakeException {

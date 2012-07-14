@@ -21,10 +21,16 @@ import in.partake.model.UserEx;
 import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
+import in.partake.model.dto.Event;
+import in.partake.model.dto.EventTicket;
 import in.partake.model.dto.MessageEnvelope;
 import in.partake.model.dto.TwitterMessage;
+import in.partake.model.dto.UserNotification;
+import in.partake.model.dto.UserTicket;
 import in.partake.model.dto.auxiliary.MessageDelivery;
+import in.partake.model.dto.auxiliary.NotificationType;
 import in.partake.model.fixture.TestDataProviderConstants;
+import in.partake.view.util.Helper;
 
 import java.io.IOException;
 import java.util.List;
@@ -359,7 +365,81 @@ public class SendMessageEnvelopeTaskTest extends AbstractPartakeControllerTest i
         assertThat(loadTwitterMessage(TWITTER_MESSAGE_INQUEUE_ID).getDelivery(), is(MessageDelivery.FAIL));
     }
 
-    // -----
+    // ----------------------------------------------------------------------
+
+    @Test
+    public void testToBuildUserNotificationMessageBodyForOnedayBeforeReminder() throws Exception{
+        UserNotification notification = loadUserNotification(USER_NOTIFICATION_INQUEUE_ID);
+        Event event = loadEvent(DEFAULT_EVENT_ID);
+        EventTicket ticket = loadEventTicket(DEFAULT_EVENT_TICKET_ID);
+
+        UserNotification userNotification = new UserNotification(notification);
+        userNotification.setNotificationType(NotificationType.EVENT_ONEDAY_BEFORE_REMINDER);
+
+        String messageBody = SendMessageEnvelopeTask.buildUserNotificationMessageBody(userNotification, event, ticket);
+        String expected = String.format("[PRTK] 「title」は%sに開始です。あなたの参加は確定しています。 http://127.0.0.1:9000/events/00000000-0000-0002-0000-000000000000", Helper.readableDate(event.getBeginDate()));
+        assertThat(messageBody, is(expected));
+    }
+
+    @Test
+    public void testToBuildUserNotificationMessageBodyForOnedayBeforeReservationReminder() throws Exception{
+        UserNotification notification = loadUserNotification(USER_NOTIFICATION_INQUEUE_ID);
+        Event event = loadEvent(DEFAULT_EVENT_ID);
+        EventTicket ticket = loadEventTicket(DEFAULT_EVENT_TICKET_ID);
+
+        UserNotification userNotification = new UserNotification(notification);
+        userNotification.setNotificationType(NotificationType.ONE_DAY_BEFORE_REMINDER_FOR_RESERVATION);
+
+        String messageBody = SendMessageEnvelopeTask.buildUserNotificationMessageBody(userNotification, event, ticket);
+        String expected = String.format("[PRTK] 「title」の締め切りは%sです。参加・不参加を確定してください。 http://127.0.0.1:9000/events/00000000-0000-0002-0000-000000000000", Helper.readableDate(event.getBeginDate()));
+        assertThat(messageBody, is(expected));
+    }
+
+    @Test
+    public void testToBuildUserNotificationMessageBodyForHalfdayBeforeReservationReminder() throws Exception{
+        UserNotification notification = loadUserNotification(USER_NOTIFICATION_INQUEUE_ID);
+        Event event = loadEvent(DEFAULT_EVENT_ID);
+        EventTicket ticket = loadEventTicket(DEFAULT_EVENT_TICKET_ID);
+
+        UserNotification userNotification = new UserNotification(notification);
+        userNotification.setNotificationType(NotificationType.HALF_DAY_BEFORE_REMINDER_FOR_RESERVATION);
+
+        String messageBody = SendMessageEnvelopeTask.buildUserNotificationMessageBody(userNotification, event, ticket);
+        String expected = String.format("[PRTK] 「title」の締め切りは%sです。参加・不参加を確定してください。 http://127.0.0.1:9000/events/00000000-0000-0002-0000-000000000000", Helper.readableDate(event.getBeginDate()));
+        assertThat(messageBody, is(expected));
+    }
+
+    @Test
+    public void testToBuildUserNotificationMessageBodyForEnrolledReminder() throws Exception{
+        UserNotification notification = loadUserNotification(USER_NOTIFICATION_INQUEUE_ID);
+        Event event = loadEvent(DEFAULT_EVENT_ID);
+        EventTicket ticket = loadEventTicket(DEFAULT_EVENT_TICKET_ID);
+
+        UserNotification userNotification = new UserNotification(notification);
+        userNotification.setNotificationType(NotificationType.BECAME_TO_BE_ENROLLED);
+
+        String messageBody = SendMessageEnvelopeTask.buildUserNotificationMessageBody(userNotification, event, ticket);
+        String expected = "[PRTK] 「title」で補欠から参加者へ繰り上がりました。 http://127.0.0.1:9000/events/00000000-0000-0002-0000-000000000000";
+        assertThat(messageBody, is(expected));
+    }
+
+    @Test
+    public void testToBuildUserNotificationMessageBodyForCancelledReminder() throws Exception{
+        UserNotification notification = loadUserNotification(USER_NOTIFICATION_INQUEUE_ID);
+        Event event = loadEvent(DEFAULT_EVENT_ID);
+        EventTicket ticket = loadEventTicket(DEFAULT_EVENT_TICKET_ID);
+
+        UserNotification userNotification = new UserNotification(notification);
+        userNotification.setNotificationType(NotificationType.BECAME_TO_BE_CANCELLED);
+
+        String messageBody = SendMessageEnvelopeTask.buildUserNotificationMessageBody(userNotification, event, ticket);
+        String expected = "[PRTK] 「title」で参加者から補欠へ繰り下がりました。 http://127.0.0.1:9000/events/00000000-0000-0002-0000-000000000000";
+        assertThat(messageBody, is(expected));
+    }
+
+
+
+    // ----------------------------------------------------------------------
 
     private void storeTwitterMessage(final TwitterMessage message) throws Exception {
         new Transaction<Void>() {
