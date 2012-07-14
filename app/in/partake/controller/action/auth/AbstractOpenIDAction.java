@@ -21,6 +21,7 @@ public abstract class AbstractOpenIDAction extends AbstractPartakeAction {
         assert sessionId != null;
         Cache.set(Constants.Cache.OPENID_LOGIN_KEY_PREFIX + sessionId, purpose, LOGIN_TIMEOUT_SEC);
 
-        return renderRedirect(OpenID.redirectURL(identifier, CALLBACK_URL).get());
+        String redirectURL = OpenID.redirectURL(identifier, CALLBACK_URL).get();
+        return renderRedirect(redirectURL);
     }
 }

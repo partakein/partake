@@ -17,7 +17,9 @@ GET     /loginRequired                      in.partake.controller.action.errorpa
 GET     /auth/loginByTwitter                in.partake.controller.action.auth.LoginByTwitterAction.get()
 GET     /auth/verifyForTwitter              in.partake.controller.action.auth.VerifyForTwitterAction.get()
 GET     /auth/loginByOpenID                 in.partake.controller.action.auth.LoginByOpenIDAction.get()
+POST    /auth/loginByOpenID                 in.partake.controller.action.auth.LoginByOpenIDAction.get()
 GET     /auth/connectWithOpenID             in.partake.controller.action.auth.ConnectWithOpenIDAction.get()
+POST    /auth/connectWithOpenID             in.partake.controller.action.auth.ConnectWithOpenIDAction.get()
 GET     /auth/verifyOpenID                  in.partake.controller.action.auth.VerifyForOpenIDAction.get()
 GET     /auth/logout                        in.partake.controller.action.auth.LogoutAction.get()
 

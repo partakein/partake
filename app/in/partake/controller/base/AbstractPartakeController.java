@@ -114,7 +114,6 @@ public abstract class AbstractPartakeController extends Controller {
         final String userId = session().get(Constants.Session.USER_ID_KEY);
 
         impl.currentURL = request().uri();
-        impl.redirectURL = request().uri(); // If no redirectURL is set, it's the same as currentURL.
         if (userId != null) {
             impl.loginUser = new DBAccess<UserEx>() {
                 @Override
@@ -128,6 +127,12 @@ public abstract class AbstractPartakeController extends Controller {
             session().put(Constants.Session.ID_KEY, UUID.randomUUID().toString());
         if (!session().containsKey(Constants.Session.TOKEN_KEY))
             session().put(Constants.Session.TOKEN_KEY, UUID.randomUUID().toString());
+
+        impl.messageCodes = new ArrayList<MessageCode>();
+        if (flash().get(Constants.Flash.MESSAGE_ID) != null) {
+            MessageCode code = MessageCode.safeValueOf(flash().get(Constants.Flash.MESSAGE_ID));
+            impl.messageCodes.add(code);
+        }
 
         impl.sessionToken = session().get(Constants.Session.TOKEN_KEY);
         this.ctx = impl;
