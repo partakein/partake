@@ -23,6 +23,9 @@ public enum UserErrorCode {
     INVALID_NOTFOUND("invalid.notfound", 404),
     INVALID_NONMULTIPART_REQUEST("invalid.request.nonmultipart"),
 
+    // ADMIN
+    INVALID_ADMIN_SETTING_KEY("invalid.admin.setting.key"),
+
     // EVENT
     INVALID_EVENT_ID("invalid.event.id"),
     MISSING_EVENT_ID("invalid.event.id.missing"),

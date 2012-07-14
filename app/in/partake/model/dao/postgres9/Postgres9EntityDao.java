@@ -189,16 +189,7 @@ public class Postgres9EntityDao extends Postgres9Dao {
 
     /** Removes all entities. All data might be lost. You should call this very carefully. */
     public void truncate(Postgres9Connection pcon) throws DAOException {
-        Connection con = pcon.getConnection();
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement("DELETE FROM " + tableName);
-            ps.execute();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(ps);
-        }
+        removeAll(pcon, tableName);
     }
 
     public DataIterator<Postgres9Entity> getIterator(Postgres9Connection pcon) throws DAOException {

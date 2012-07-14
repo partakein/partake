@@ -87,6 +87,7 @@ GET     /api/account/sessionToken           in.partake.controller.api.account.Se
 
 # Admin API
 POST    /api/admin/recreateEventIndex       in.partake.controller.api.admin.AdminEventIndexRecreationAPI.post()
+POST    /api/admin/modifySetting            in.partake.controller.api.admin.AdminModifySettingAPI.post()
 
 # User API
 GET     /api/user/get                       in.partake.controller.api.user.GetAPI.get()

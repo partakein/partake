@@ -1,4 +1,6 @@
-@(ctx: in.partake.controller.PartakeActionContext, countUser: Int, countEvent: Int, countPublicEvent: Int, countPrivateEvent: Int, countPublishedEvent: Int, countDraftEvent: Int)@internal.main(ctx, "Administrator Mode") {
+@(ctx: in.partake.controller.PartakeActionContext,
+  configurationMap: Map[String, String],
+  countUser: Int, countEvent: Int, countPublicEvent: Int, countPrivateEvent: Int, countPublishedEvent: Int, countDraftEvent: Int)@internal.main(ctx, "Administrator Mode") {
 <div class="container"><div class="content-body">
 
 <div class="page-header">
@@ -20,11 +22,38 @@
             <dt>published event</dt><dd>@countPublishedEvent</dd>
             <dt>draft event</dt><dd>@countDraftEvent</dd>
         </dl>
-
-    </div>
-    <div class="span12">
         <h2>いろんなリンク</h2>
         <p><a href="/admin/recreateEventIndex">Luceneインデックス の再生成</a></p>
+    </div>
+    <div class="span12">
+        <h2>設定</h2>
+            <p>Note: ここに乗っているデータは DB から取得したものであり、configuration file によるものではありません。</p>
+            @for(key <- in.partake.resource.ConfigurationKeyConstants.configurationkeySet) {
+                <form class="form-horizontal"><fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="input01">@key</label>
+                    <div class="controls">
+                        <input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
+                        <input type="text" class="span8" name="key" value="@if(configurationMap.get(key) != null) { @configurationMap.get(key) }"  onclick="return false;">
+                        <input type="button" value="設定" class="btn" onclick="modifySetting($(this).form(), '@key')">
+                        <span class="text-info"></span>
+                    </div>
+                </div>
+                </fieldset></form>
+            }
+            <script>
+            function modifySetting(form, key) {
+                var value = form.find("*[name=key]").val();
+                partake.admin.modifySetting(key, value)
+                .done(function() {
+                    var statusSpan = form.find(".text-info");
+                    $(statusSpan).hide();
+                    $(statusSpan).text('保存しました');
+                    $(statusSpan).fadeIn(500);
+                })
+                .fail(partake.defaultFailHandler);
+            }
+            </script>
     </div>
 </div>
 

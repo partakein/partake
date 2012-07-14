@@ -1,5 +1,6 @@
 package in.partake.model;
 
+import in.partake.model.dao.access.IConfigurationItemAccess;
 import in.partake.model.dao.access.IUserCalendarLinkageAccess;
 import in.partake.model.dao.access.IEventCommentAccess;
 import in.partake.model.dao.access.IUserTicketAccess;
@@ -23,6 +24,7 @@ import in.partake.model.dao.access.IUserReceivedMessageAccess;
 import in.partake.model.dao.access.IUserSentMessageAccess;
 
 public interface IPartakeDAOs {
+    public IConfigurationItemAccess getConfiguraitonItemAccess();
     public IUserCalendarLinkageAccess getCalendarAccess();
     public IEventCommentAccess getCommentAccess();
     public IUserTicketAccess getEnrollmentAccess();

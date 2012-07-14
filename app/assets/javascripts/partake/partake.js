@@ -303,7 +303,17 @@
                 sessionToken: partake.sessionToken
             };
             return $.post('/api/admin/recreateEventIndex', arg);
+        },
+
+        modifySetting: function(key, value) {
+            var arg = {
+                sessionToken: partake.sessionToken,
+                key: key,
+                value: value
+            };
+            return $.post('/api/admin/modifySetting', arg);
         }
+
     };
 
     // ----------------------------------------------------------------------

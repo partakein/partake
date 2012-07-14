@@ -1,7 +1,5 @@
 package in.partake.app;
 
-import in.partake.app.impl.DebugPartakeAppInitializer;
-import in.partake.app.impl.ReleasePartakeAppInitializer;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -10,14 +8,12 @@ import play.mvc.Result;
 import play.mvc.Results;
 
 public class PartakeGlobalSettings extends GlobalSettings {
-    private IPartakeAppInitializer initializer;
-
     @Override
     public void beforeStart(Application app) {
         Logger.info("PartakeGlobalSettings will start.");
         super.beforeStart(app);
 
-        PartakeConfiguration.set(app.configuration());
+        PartakeApp.setInstance(createPartakeApp(app));
     }
 
     @Override
@@ -27,9 +23,12 @@ public class PartakeGlobalSettings extends GlobalSettings {
         super.onStart(app);
 
         try {
-            initializer = createInitializer(app);
-            initializer.initialize();
+            PartakeApp.instance().createServices();
+            PartakeApp.instance().initializeDBService();
+            PartakeApp.instance().loadConfiguration(app.configuration());
+            PartakeApp.instance().initializeOtherServices();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -39,8 +38,7 @@ public class PartakeGlobalSettings extends GlobalSettings {
         Logger.info("PartakeGlobalSettings is stopping.");
 
         try {
-            if (initializer != null)
-                initializer.cleanUp();
+            PartakeApp.instance().cleanUp();
         } catch (Exception exceptionShouldBeIgnored) {
             Logger.warn("Unintentional exception is thrown.", exceptionShouldBeIgnored);
         }
@@ -53,18 +51,14 @@ public class PartakeGlobalSettings extends GlobalSettings {
         return Results.redirect("/notfound");
     }
 
-    private IPartakeAppInitializer createInitializer(Application app) {
-        if (app.isDev())
-            return new DebugPartakeAppInitializer();
-
-        if (app.isProd())
-            return new ReleasePartakeAppInitializer();
-
-        if (app.isTest()) {
+    private PartakeApp createPartakeApp(Application app) {
+        if (app.isDev() || app.isProd())
+            return new PartakeApp();
+        else {
             // We cannot get class from test unless test mode. So we use reflection here.
             try {
-                Class<?> initializer = Class.forName("in.partake.app.impl.TestPartakeAppInitializer");
-                return (IPartakeAppInitializer) initializer.newInstance();
+                Class<?> clazz = Class.forName("in.partake.app.PartakeTestApp");
+                return (PartakeApp) clazz.newInstance();
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("class TestPartakeAppInitializer is not found", e);
             } catch (InstantiationException e) {
@@ -73,8 +67,5 @@ public class PartakeGlobalSettings extends GlobalSettings {
                 throw new RuntimeException("class TestPartakeAppInitializer cannot be accessed", e);
             }
         }
-
-        assert false;
-        throw new RuntimeException("ASSERT NOT REACHED");
     }
 }

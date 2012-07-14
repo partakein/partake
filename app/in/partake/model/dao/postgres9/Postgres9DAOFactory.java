@@ -3,48 +3,50 @@ package in.partake.model.dao.postgres9;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.PartakeDAOFactory;
-import in.partake.model.dao.access.IUserCalendarLinkageAccess;
-import in.partake.model.dao.access.IEventCommentAccess;
-import in.partake.model.dao.access.IUserTicketAccess;
+import in.partake.model.dao.access.IConfigurationItemAccess;
 import in.partake.model.dao.access.IEventAccess;
 import in.partake.model.dao.access.IEventActivityAccess;
+import in.partake.model.dao.access.IEventCommentAccess;
 import in.partake.model.dao.access.IEventFeedAccess;
 import in.partake.model.dao.access.IEventMessageAccess;
 import in.partake.model.dao.access.IEventTicketAccess;
 import in.partake.model.dao.access.IEventTicketNotificationAccess;
-import in.partake.model.dao.access.IUserImageAccess;
 import in.partake.model.dao.access.IMessageAccess;
 import in.partake.model.dao.access.IMessageEnvelopeAccess;
-import in.partake.model.dao.access.IUserOpenIDLinkAccess;
-import in.partake.model.dao.access.IUserThumbnailAccess;
-import in.partake.model.dao.access.IUserTwitterLinkAccess;
 import in.partake.model.dao.access.ITwitterMessageAccess;
 import in.partake.model.dao.access.IUserAccess;
+import in.partake.model.dao.access.IUserCalendarLinkageAccess;
+import in.partake.model.dao.access.IUserImageAccess;
 import in.partake.model.dao.access.IUserNotificationAccess;
+import in.partake.model.dao.access.IUserOpenIDLinkAccess;
 import in.partake.model.dao.access.IUserPreferenceAccess;
 import in.partake.model.dao.access.IUserReceivedMessageAccess;
 import in.partake.model.dao.access.IUserSentMessageAccess;
-import in.partake.model.dao.postgres9.impl.Postgres9UserCalendarLinkDao;
-import in.partake.model.dao.postgres9.impl.Postgres9EventCommentDao;
-import in.partake.model.dao.postgres9.impl.Postgres9UserTicketDao;
+import in.partake.model.dao.access.IUserThumbnailAccess;
+import in.partake.model.dao.access.IUserTicketAccess;
+import in.partake.model.dao.access.IUserTwitterLinkAccess;
+import in.partake.model.dao.postgres9.impl.Postgres9ConfigurationItemDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventActivityDao;
+import in.partake.model.dao.postgres9.impl.Postgres9EventCommentDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventFeedDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventMessageDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventNotificationDao;
 import in.partake.model.dao.postgres9.impl.Postgres9EventTicketDao;
-import in.partake.model.dao.postgres9.impl.Postgres9UserImageDao;
 import in.partake.model.dao.postgres9.impl.Postgres9MessageDao;
 import in.partake.model.dao.postgres9.impl.Postgres9MessageEnvelopeDao;
-import in.partake.model.dao.postgres9.impl.Postgres9UserOpenIDLinkDao;
-import in.partake.model.dao.postgres9.impl.Postgres9UserThumbnailDao;
-import in.partake.model.dao.postgres9.impl.Postgres9UserTwitterLinkDao;
 import in.partake.model.dao.postgres9.impl.Postgres9TwitterMessageDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserCalendarLinkDao;
 import in.partake.model.dao.postgres9.impl.Postgres9UserDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserImageDao;
 import in.partake.model.dao.postgres9.impl.Postgres9UserNotificationDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserOpenIDLinkDao;
 import in.partake.model.dao.postgres9.impl.Postgres9UserPreferenceDao;
 import in.partake.model.dao.postgres9.impl.Postgres9UserReceivedMessageDao;
 import in.partake.model.dao.postgres9.impl.Postgres9UserSentMessageDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserThumbnailDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserTicketDao;
+import in.partake.model.dao.postgres9.impl.Postgres9UserTwitterLinkDao;
 
 public class Postgres9DAOFactory extends PartakeDAOFactory {
     public Postgres9DAOFactory() {
@@ -54,6 +56,11 @@ public class Postgres9DAOFactory extends PartakeDAOFactory {
     @Override
     public void initialize(PartakeConnection con) throws DAOException {
         super.initialize(con);
+    }
+
+    @Override
+    protected IConfigurationItemAccess createConfiguraitonItemAccess() {
+        return new Postgres9ConfigurationItemDao();
     }
 
     @Override

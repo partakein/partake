@@ -42,6 +42,19 @@ public abstract class Postgres9Dao {
         return builder.toString();
     }
 
+    protected void removeAll(Postgres9Connection pcon, String tableName) throws DAOException {
+        Connection con = pcon.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement("DELETE FROM " + tableName);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(ps);
+        }
+    }
+
     /** Checks the existence of table.
      * @return true if the specified table exists.
      */
@@ -74,6 +87,9 @@ public abstract class Postgres9Dao {
             throw new DAOException(e);
         }
     }
+
+
+
 
     /** Closes PreparedStatement silently. */
     protected void close(PreparedStatement ps) {
@@ -110,6 +126,8 @@ public abstract class Postgres9Dao {
             // squash!
         }
     }
+
+    // ----------------------------------------------------------------------
 
     private void executeSQL(Connection pcon, String sql) throws SQLException {
         PreparedStatement ps = null;

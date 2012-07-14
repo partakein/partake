@@ -1,33 +1,39 @@
 package in.partake.model.dao.mock;
 
 import in.partake.model.dao.PartakeDAOFactory;
-import in.partake.model.dao.access.IUserCalendarLinkageAccess;
-import in.partake.model.dao.access.IEventCommentAccess;
-import in.partake.model.dao.access.IUserTicketAccess;
+import in.partake.model.dao.access.IConfigurationItemAccess;
 import in.partake.model.dao.access.IEventAccess;
 import in.partake.model.dao.access.IEventActivityAccess;
+import in.partake.model.dao.access.IEventCommentAccess;
 import in.partake.model.dao.access.IEventFeedAccess;
 import in.partake.model.dao.access.IEventMessageAccess;
 import in.partake.model.dao.access.IEventTicketAccess;
 import in.partake.model.dao.access.IEventTicketNotificationAccess;
-import in.partake.model.dao.access.IUserImageAccess;
 import in.partake.model.dao.access.IMessageAccess;
 import in.partake.model.dao.access.IMessageEnvelopeAccess;
-import in.partake.model.dao.access.IUserOpenIDLinkAccess;
-import in.partake.model.dao.access.IUserThumbnailAccess;
-import in.partake.model.dao.access.IUserTwitterLinkAccess;
 import in.partake.model.dao.access.ITwitterMessageAccess;
 import in.partake.model.dao.access.IUserAccess;
+import in.partake.model.dao.access.IUserCalendarLinkageAccess;
+import in.partake.model.dao.access.IUserImageAccess;
 import in.partake.model.dao.access.IUserNotificationAccess;
+import in.partake.model.dao.access.IUserOpenIDLinkAccess;
 import in.partake.model.dao.access.IUserPreferenceAccess;
 import in.partake.model.dao.access.IUserReceivedMessageAccess;
 import in.partake.model.dao.access.IUserSentMessageAccess;
+import in.partake.model.dao.access.IUserThumbnailAccess;
+import in.partake.model.dao.access.IUserTicketAccess;
+import in.partake.model.dao.access.IUserTwitterLinkAccess;
 
 import org.mockito.Mockito;
 
 public class MockDaoFactory extends PartakeDAOFactory {
 
     public MockDaoFactory() {
+    }
+
+    @Override
+    protected IConfigurationItemAccess createConfiguraitonItemAccess() {
+        return Mockito.mock(IConfigurationItemAccess.class);
     }
 
     @Override

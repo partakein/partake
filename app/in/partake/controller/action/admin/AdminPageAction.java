@@ -1,5 +1,8 @@
 package in.partake.controller.action.admin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import in.partake.base.PartakeException;
 import in.partake.controller.action.AbstractPartakeAction;
 import in.partake.model.IPartakeDAOs;
@@ -9,6 +12,8 @@ import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventAccess;
 import in.partake.model.dao.access.IUserAccess;
 import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dto.ConfigurationItem;
+import in.partake.resource.ConfigurationKeyConstants;
 import play.mvc.Result;
 
 public class AdminPageAction extends AbstractPartakeAction {
@@ -29,7 +34,9 @@ public class AdminPageAction extends AbstractPartakeAction {
         int countDraftEvent = transaction.getCountDraftEvent();
         int countPublishedEvent = transaction.getCountPublishedEvent();
 
-        return render(views.html.admin.index.render(context(), countUser, countEvent, countPublicEvent, countPrivateEvent, countPublishedEvent, countDraftEvent));
+        Map<String, String> configurationMap = transaction.getConfigurationMap();
+
+        return render(views.html.admin.index.render(context(), configurationMap, countUser, countEvent, countPublicEvent, countPrivateEvent, countPublishedEvent, countDraftEvent));
     }
 }
 
@@ -42,6 +49,8 @@ class AdminCountAccess extends DBAccess<Void> {
     private int countDraftEvent;
     private int countPublishedEvent;
 
+    private Map<String, String> configurationMap;
+
     @Override
     protected Void doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
         IUserAccess userAccess = daos.getUserAccess();
@@ -53,6 +62,14 @@ class AdminCountAccess extends DBAccess<Void> {
         countPrivateEvent = eventAccess.count(con, EventFilterCondition.PRIVATE_EVENT_ONLY);
         countDraftEvent = eventAccess.count(con, EventFilterCondition.DRAFT_EVENT_ONLY);
         countPublishedEvent = eventAccess.count(con, EventFilterCondition.PUBLISHED_EVENT_ONLY);
+
+        configurationMap = new HashMap<String, String>();
+        for (String key : ConfigurationKeyConstants.configurationkeySet) {
+            ConfigurationItem item = daos.getConfiguraitonItemAccess().find(con, key);
+            if (item != null)
+                configurationMap.put(item.key(), item.value());
+        }
+
         return null;
     }
 
@@ -78,5 +95,9 @@ class AdminCountAccess extends DBAccess<Void> {
 
     public int getCountPublishedEvent() {
         return countPublishedEvent;
+    }
+
+    public Map<String, String> getConfigurationMap() {
+        return configurationMap;
     }
 }

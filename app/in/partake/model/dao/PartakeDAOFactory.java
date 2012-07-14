@@ -2,6 +2,7 @@ package in.partake.model.dao;
 
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.dao.access.IAccess;
+import in.partake.model.dao.access.IConfigurationItemAccess;
 import in.partake.model.dao.access.IUserCalendarLinkageAccess;
 import in.partake.model.dao.access.IEventCommentAccess;
 import in.partake.model.dao.access.IUserTicketAccess;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class PartakeDAOFactory implements IPartakeDAOs {
+    private final IConfigurationItemAccess configurationItemAccess;
     private final IUserCalendarLinkageAccess calendarLinkageAccess;
     private final IEventCommentAccess commentAccess;
     private final IUserTicketAccess enrollmentAccess;
@@ -57,6 +59,7 @@ public abstract class PartakeDAOFactory implements IPartakeDAOs {
     protected PartakeDAOFactory() {
         daos = new ArrayList<IAccess<?, ?>>();
 
+        addDao(configurationItemAccess = createConfiguraitonItemAccess());
         addDao(calendarLinkageAccess = createCalendarLinkageAccess());
         addDao(commentAccess         = createCommentAccess());
         addDao(enrollmentAccess      = createEnrollmentAccess());
@@ -101,6 +104,10 @@ public abstract class PartakeDAOFactory implements IPartakeDAOs {
 
     // ----------------------------------------------------------------------
     // accessors
+
+    public final IConfigurationItemAccess getConfiguraitonItemAccess() {
+        return configurationItemAccess;
+    }
 
     public final IUserCalendarLinkageAccess getCalendarAccess() {
         return calendarLinkageAccess;
@@ -194,6 +201,7 @@ public abstract class PartakeDAOFactory implements IPartakeDAOs {
         return this.userSentMessageAccess;
     }
 
+    protected abstract IConfigurationItemAccess createConfiguraitonItemAccess();
     protected abstract IUserCalendarLinkageAccess createCalendarLinkageAccess();
     protected abstract IEventCommentAccess createCommentAccess();
     protected abstract IUserTicketAccess createEnrollmentAccess();
