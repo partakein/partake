@@ -27,9 +27,9 @@ object ApplicationBuild extends Build {
         "com.twitter" % "twitter-text" % "1.4.10",
         "net.sf.json-lib" % "json-lib" % "2.4" classifier "jdk15",
 
-        "junit" % "junit" % "4.8.2",
-        "org.mockito" % "mockito-all" % "1.8.1",
-        "org.hamcrest" % "hamcrest-all" % "1.1"
+        "junit" % "junit" % "4.8.2" % "test",
+        "org.mockito" % "mockito-all" % "1.8.1" % "test",
+        "org.hamcrest" % "hamcrest-all" % "1.1" % "test"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s).settings(
