@@ -18,7 +18,7 @@
         <label class="control-label">検索語句</label>
         <div class="controls">
             <input type="text" id="search-term" name="searchTerm" />
-            <input id="search-form-button" type="button" class="btn btn-primary" alt="Search" value="Search" />
+            <input id="search-form-button" type="submit" class="btn btn-primary" alt="Search" value="Search" />
         </div>
     </div>
     <div class="control-group">
@@ -147,11 +147,9 @@ function doSearch() {
     .fail(partake.defaultFailHandler);
 }
 
-$('#search-term').keypress(function(e) {
-    if (e.which == 13) { // If enterkey is pressed.
-        doSearch();
-        return false;
-    }
+$('#search-form').submit(function(e) {
+    doSearch();
+    return false;
 });
 
 $(function() {
