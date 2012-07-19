@@ -1,4 +1,5 @@
 conf/twitter4j.properties
+bin/
 logs
 project/project
 project/target

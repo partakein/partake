@@ -1,11 +1,11 @@
 @(ctx: in.partake.controller.PartakeActionContext,
   event: in.partake.model.EventEx,
   user: in.partake.model.UserEx,
-  tickets: List[in.partake.model.dto.EventTicket],
-  userTicketMap: Map[UUID, in.partake.model.dto.UserTicket],
-  ticketHolderListMap: Map[UUID, in.partake.model.EventTicketHolderList],
-  comments: List[in.partake.model.EventCommentEx],
-  eventMessages: List[in.partake.model.EventMessageEx])
+  tickets: java.util.List[in.partake.model.dto.EventTicket],
+  userTicketMap: java.util.Map[java.util.UUID, in.partake.model.dto.UserTicket],
+  ticketHolderListMap: java.util.Map[java.util.UUID, in.partake.model.EventTicketHolderList],
+  comments: java.util.List[in.partake.model.EventCommentEx],
+  eventMessages: java.util.List[in.partake.model.EventMessageEx])
 @import net.sf.json.JSONObject
 @import in.partake.model.dto.auxiliary._
 @import in.partake.base.TimeUtil
@@ -14,47 +14,47 @@
 @* TODO: We need refactoring here. *@
 // ----- Enrollment Data
 var enrollments = @{
-	val userTicketMapJSON = new JSONObject()
-	for (entry <- userTicketMap.entrySet()) {
-		if (entry.getKey() != null && entry.getValue() != null)
+    val userTicketMapJSON = new JSONObject()
+    for (entry <- userTicketMap.entrySet()) {
+        if (entry.getKey() != null && entry.getValue() != null)
             userTicketMapJSON.put(entry.getKey().toString(), JSONObject.fromObject(entry.getValue().toJSON()));
-	}
-	Html(userTicketMapJSON.toString())
+    }
+    Html(userTicketMapJSON.toString())
 };
 
 // ----- Enquete data
 var enqueteIds = [
     @if(event.getEnquetes() != null) {
-    	@event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
-			@if(enqueteWithIndex._2 != 0) {,}
-			"@enqueteWithIndex._1.getId().toString()"
-    	}
+        @event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
+            @if(enqueteWithIndex._2 != 0) {,}
+            "@enqueteWithIndex._1.getId().toString()"
+        }
     }
 ];
 var enqueteTypes = [
     @if(event.getEnquetes() != null) {
-    	@event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
-			@if(enqueteWithIndex._2 != 0) {,}
-			"@enqueteWithIndex._1.getAnswerType().toString()"
-    	}
+        @event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
+            @if(enqueteWithIndex._2 != 0) {,}
+            "@enqueteWithIndex._1.getAnswerType().toString()"
+        }
     }
 ];
 
 // ----- Reservation Acceptance
 var reservationForbiddenMap = @{
-	val reservationForbiddenMap = new JSONObject()
-	for (ticket <- event.getTickets())
-		reservationForbiddenMap.put(ticket.getId(), TicketReservationEnd.TILL_NONE.equals(ticket.getReservationEnd()))
-	Html(reservationForbiddenMap.toString())
+    val reservationForbiddenMap = new JSONObject()
+    for (ticket <- event.getTickets())
+        reservationForbiddenMap.put(ticket.getId(), TicketReservationEnd.TILL_NONE.equals(ticket.getReservationEnd()))
+    Html(reservationForbiddenMap.toString())
 }
 
 var reservationTimeoverMap = @{
-	val reservationTimeoverMap = new JSONObject()
-	for (ticket <- event.getTickets()) {
+    val reservationTimeoverMap = new JSONObject()
+    for (ticket <- event.getTickets()) {
         val b = TimeUtil.getCurrentDateTime().isAfter(ticket.acceptsReservationTill(event))
         reservationTimeoverMap.put(ticket.getId().toString(), b);
-	}
-	Html(reservationTimeoverMap.toString())
+    }
+    Html(reservationTimeoverMap.toString())
 }
 
 $('.button-apply-ticket').click(function(e) {
@@ -104,35 +104,35 @@ $('.button-apply-ticket').click(function(e) {
         <label class="control-label" for="event-enroll-dialog-comment">参加コメント</label>
         <textarea id="event-enroll-dialog-comment" name="comment" class="span14" rows="4">よろしくお願いします。</textarea>
 
-		@if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+        @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
             <h3>アンケート</h3>
             <p>このイベントにはアンケートが設定されています。</p>
 
-			@for(question <- event.getEnquetes()) {
-	            <fieldset>
-	            <label>@question.getText()</label>
-	            @* TODO: We should use pattern match here, but I couldn't resolve compilation error when I tried... *@
-	            @defining(question.getAnswerType()) { answerType =>
-					@answerType match {
-						case EnqueteAnswerType.TEXT => {
-							<input type="text" class="span14" name="enqueteAnswer-@question.getId().toString()">
-						}
-						case EnqueteAnswerType.TEXTAREA => {
-							<textarea name="enqueteAnswer-@question.getId().toString()" class="span14" rows="4"></textarea>
-						}
-						case EnqueteAnswerType.CHECKBOX => {
-							@for(option <- question.getOptions()) {
-								<label class="checkbox"><input type="checkbox" name="enqueteAnswer-@question.getId().toString()" value="@option">@option</label>
-							}
-						}
-						case EnqueteAnswerType.RADIOBUTTON => {
-							@for(option <- question.getOptions()) {
-		                    	<label class="radio"><input type="radio" name="enqueteAnswer-@question.getId().toString()" value="@option">@option</label>
-							}
-						}
-		            }
-	            }
-	            </fieldset>
+            @for(question <- event.getEnquetes()) {
+                <fieldset>
+                <label>@question.getText()</label>
+                @* TODO: We should use pattern match here, but I couldn't resolve compilation error when I tried... *@
+                @defining(question.getAnswerType()) { answerType =>
+                    @answerType match {
+                        case EnqueteAnswerType.TEXT => {
+                            <input type="text" class="span14" name="enqueteAnswer-@question.getId().toString()">
+                        }
+                        case EnqueteAnswerType.TEXTAREA => {
+                            <textarea name="enqueteAnswer-@question.getId().toString()" class="span14" rows="4"></textarea>
+                        }
+                        case EnqueteAnswerType.CHECKBOX => {
+                            @for(option <- question.getOptions()) {
+                                <label class="checkbox"><input type="checkbox" name="enqueteAnswer-@question.getId().toString()" value="@option">@option</label>
+                            }
+                        }
+                        case EnqueteAnswerType.RADIOBUTTON => {
+                            @for(option <- question.getOptions()) {
+                                <label class="radio"><input type="radio" name="enqueteAnswer-@question.getId().toString()" value="@option">@option</label>
+                            }
+                        }
+                    }
+                }
+                </fieldset>
             }
         }
     </form></div>

@@ -7,11 +7,11 @@ GET     /termofuse                          in.partake.controller.action.toppage
 GET     /contact                            in.partake.controller.action.toppage.StaticContactPageAction.get()
 
 # Error
-GET     /error                              in.partake.controller.action.errorpage.StaticErrorPageAction.get()
-GET     /invalid                            in.partake.controller.action.errorpage.StaticInvalidPageAction.get()
-GET     /notfound                           in.partake.controller.action.errorpage.StaticNotFoundPageAction.get()
-GET     /forbidden                          in.partake.controller.action.errorpage.StaticForbiddenPageAction.get()
-GET     /loginRequired                      in.partake.controller.action.errorpage.StaticLoginRequiredPageAction.get()
+GET     /error                              controllers.action.errorpage.ErrorPageAction.run()
+GET     /invalid                            controllers.action.errorpage.InvalidPageAction.run()
+GET     /notfound                           controllers.action.errorpage.NotFoundPageAction.run()
+GET     /forbidden                          controllers.action.errorpage.ForbiddenPageAction.run()
+GET     /loginRequired                      controllers.action.errorpage.LoginRequiredPageAction.run()
 
 # Authentication
 GET     /auth/loginByTwitter                in.partake.controller.action.auth.LoginByTwitterAction.get()

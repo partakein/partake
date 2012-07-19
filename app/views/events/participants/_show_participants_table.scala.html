@@ -1,9 +1,9 @@
 @(ctx: in.partake.controller.PartakeActionContext,
   event: in.partake.model.EventEx,
-  ticketAndHolders: List[in.partake.base.Pair[in.partake.model.dto.EventTicket, in.partake.model.EventTicketHolderList]],
-  userTicketInfoMap: Map[String, List[String]],
+  ticketAndHolders: java.util.List[in.partake.base.Pair[in.partake.model.dto.EventTicket, in.partake.model.EventTicketHolderList]],
+  userTicketInfoMap: java.util.Map[String, java.util.List[String]],
   index: Int,
-  ps: List[in.partake.model.UserTicketEx])
+  ps: java.util.List[in.partake.model.UserTicketEx])
 @import in.partake.model._
 @import in.partake.model.dto.auxiliary._
 @import org.apache.commons.lang._
@@ -13,16 +13,16 @@
         <col width="30px"><col width="60px"><col width="100px"><col width="80px"><col width="300px"><col width="150px"><col width="150px">
         @* Another ticket information if any *@
         @for(i <- 0 until ticketAndHolders.size()) {
-        	@if(i != index) {
-        		<col width="200px">
-        	}
-		}
+            @if(i != index) {
+                <col width="200px">
+            }
+        }
 
-		@* Enquete information if any *@
-		@if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
-			@for(i <- 0 until event.getEnquetes().size()) {
-				<col width="200px">
-			}
+        @* Enquete information if any *@
+        @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
+            @for(i <- 0 until event.getEnquetes().size()) {
+                <col width="200px">
+            }
         }
     </colgroup>
     <thead>
@@ -39,23 +39,23 @@
             }
         </tr>
         <tr>
-        	@* Another ticket information if any *@
-        	@for(i <- 0 until ticketAndHolders.size()) {
-				@if(i != index) {
-					<th>@ticketAndHolders.get(i).getFirst().getName()</th>
-				}
-        	}
+            @* Another ticket information if any *@
+            @for(i <- 0 until ticketAndHolders.size()) {
+                @if(i != index) {
+                    <th>@ticketAndHolders.get(i).getFirst().getName()</th>
+                }
+            }
             @* Enquete information if any *@
             @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
-            	@for(enquete <- event.getEnquetes()) {
-            		<th>@enquete.getText()</th>
-            	}
+                @for(enquete <- event.getEnquetes()) {
+                    <th>@enquete.getText()</th>
+                }
             }
         </tr>
     </thead>
     <tbody>
 
-	@ps.zipWithIndex.map { pWithIndex => @defining(pWithIndex._1) { p =>
+    @ps.zipWithIndex.map { pWithIndex => @defining(pWithIndex._1) { p =>
     <tr id="attendant-@p.getUserId()">
         <td>[<a onclick="removeAttendant('@p.getUserId()', '@p.getTicketId().toString()')">&times;</a>]</td>
         <td>@pWithIndex._2</td>
@@ -71,18 +71,18 @@
         </form></td>
         @* Another ticket information if any *@
         @for(i <- 0 until ticketAndHolders.size()) {
-			@if(i != index) {
-				<td>@if(userTicketInfoMap.get(p.getUserId())(i) != null) { @(userTicketInfoMap.get(p.getUserId())(i)) } else { - }</td>
-			}
+            @if(i != index) {
+                <td>@if(userTicketInfoMap.get(p.getUserId()).get(i) != null) { @(userTicketInfoMap.get(p.getUserId()).get(i)) } else { - }</td>
+            }
         }
         @* Enquete information if any *@
         @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
-			@for(enquete <- event.getEnquetes()) {
-				@defining(p.getEnqueteAnswers().get(enquete.getId())) { answers =>
-					@if(answers != null && !answers.isEmpty()) {
-						<td>@StringUtils.join(answers.iterator(), ',')</td>
-					}
-				}
+            @for(enquete <- event.getEnquetes()) {
+                @defining(p.getEnqueteAnswers().get(enquete.getId())) { answers =>
+                    @if(answers != null && !answers.isEmpty()) {
+                        <td>@StringUtils.join(answers.iterator(), ',')</td>
+                    }
+                }
             }
         }
     </tr>

@@ -1,8 +1,8 @@
 @(ctx: in.partake.controller.PartakeActionContext,
   event: in.partake.model.EventEx,
   user: in.partake.model.UserEx,
-  tickets: List[in.partake.model.dto.EventTicket],
-  ticketHolderListMap: Map[UUID, in.partake.model.EventTicketHolderList])
+  tickets: java.util.List[in.partake.model.dto.EventTicket],
+  ticketHolderListMap: java.util.Map[java.util.UUID, in.partake.model.EventTicketHolderList])
 @import in.partake.view.util._
 @import in.partake.base._
 @import org.apache.commons.lang._

@@ -1,8 +1,12 @@
-@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, pref: in.partake.model.dto.UserPreference, openIds: java.util.List[in.partake.model.dto.UserOpenIDLink], calendarLink: in.partake.model.dto.UserCalendarLink)@internal.main(ctx, user.getScreenName()) {
+@(ctx: in.partake.controller.PartakeActionContext,
+  user: in.partake.model.UserEx,
+  pref: in.partake.model.dto.UserPreference,
+  openIds: java.util.List[in.partake.model.dto.UserOpenIDLink],
+  calendarLink: in.partake.model.dto.UserCalendarLink)@internal.main(ctx, user.getScreenName()) {
 <div class="container"><div class="content-body">
 
 <div class="page-header">
-	<h1>@user.getScreenName()</h1>
+    <h1>@user.getScreenName()</h1>
 </div>
 
 <div class="row tabbable">
@@ -24,7 +28,7 @@
     </div></div>
     <div class="span18"><div class="tab-content">
         <div class="tab-pane active" id="event-owner">
-        	@mypage._event_table(ctx, user, "owner", "owner")
+            @mypage._event_table(ctx, user, "owner", "owner")
         </div>
         <div class="tab-pane" id="event-draft">
             @mypage._event_table(ctx, user, "draft", "draft")
@@ -34,21 +38,21 @@
         </div>
 
         <div class="tab-pane" id="event-enrolled">
-        	@mypage._enrollment_table(ctx, user, "enrollment")
+            @mypage._enrollment_table(ctx, user, "enrollment")
         </div>
 
         <div class="tab-pane" id="message-received">
-        	@mypage._message(ctx, user)
+            @mypage._message(ctx, user)
         </div>
 
         <div class="tab-pane" id="account">
-        	@mypage._account(ctx, user, openIds)
+            @mypage._account(ctx, user, openIds)
         </div>
         <div class="tab-pane" id="calendar">
-        	@mypage._calendar(ctx, user, calendarLink)
+            @mypage._calendar(ctx, user, calendarLink)
         </div>
         <div class="tab-pane" id="preference">
-        	@mypage._preference(ctx, user, pref)
+            @mypage._preference(ctx, user, pref)
         </div>
     </div></div>
 </div>

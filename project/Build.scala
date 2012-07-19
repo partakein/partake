@@ -30,11 +30,13 @@ object ApplicationBuild extends Build {
         "junit" % "junit" % "4.8.2" % "test",
         "org.mockito" % "mockito-all" % "1.8.1" % "test",
         "org.hamcrest" % "hamcrest-all" % "1.1" % "test"
+        "org.scalatest" %% "scalatest" % "1.8" % "test"
     )
 
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA, settings = s).settings(
+    val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA, settings = s).settings(
         // Add your own project settings here
         externalIvySettings(),
+        testOptions in Test := Nil,
         parallelExecution in jacoco.Config := false
     )
 

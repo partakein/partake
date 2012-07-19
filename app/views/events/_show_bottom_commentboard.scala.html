@@ -1,25 +1,25 @@
 @(ctx: in.partake.controller.PartakeActionContext,
   event: in.partake.model.EventEx,
   user: in.partake.model.UserEx,
-  comments: List[in.partake.model.EventCommentEx])
+  comments: java.util.List[in.partake.model.EventCommentEx])
 @import in.partake.view.util._
 @import in.partake.controller.base.permission._
 
 @for(comment <- comments) {
-	@if(comment != null) {
+    @if(comment != null) {
     <div class="comment" id="comment-@comment.getId()">
         <p class="spinner-container"><a href="/users/@comment.getUserId()">@comment.getUser().getScreenName()</a>
         : @Helper.readableDate(comment.getCreatedAt())
-		@if(RemoveCommentPermission.check(comment, event, user)) {
-		   <a href="#" title="コメントを削除" onclick="removeComment(this, '@comment.getId()')">[x]</a>
+        @if(RemoveCommentPermission.check(comment, event, user)) {
+        <a href="#" title="コメントを削除" onclick="removeComment(this, '@comment.getId()')">[x]</a>
         }</p>
         @if(comment.isHTML()) {
-			@Html(Helper.cleanupHTML(comment.getComment()))
+            @Html(Helper.cleanupHTML(comment.getComment()))
         } else {
             <p>@comment.getComment()</p>
         }
     </div>
-	}
+    }
 }
 
 <script>
@@ -52,7 +52,7 @@
 <div class="comment-form">
 @if(user != null) {
     <form class="spinner-container">
-    	<input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
+        <input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
         <strong>コメント</strong><br />
         <textarea id="commentForm-commentEdit" name="comment"></textarea><br />
         <input id="comment-form-submit" type="button" class="btn btn-primary" value="コメントを投稿"  />

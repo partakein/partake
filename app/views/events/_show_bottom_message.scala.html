@@ -1,17 +1,17 @@
 @(ctx: in.partake.controller.PartakeActionContext,
-  messages: List[in.partake.model.EventMessageEx])
+  messages: java.util.List[in.partake.model.EventMessageEx])
 @import in.partake.view.util.Helper
 <div class="event-comments">
 @if(messages != null) {
-	@for(message <- messages) {
-		@if(message != null) {
+    @for(message <- messages) {
+        @if(message != null) {
         <div class="comment">
             <p><a href="/users/@message.getSenderId()">@message.getSender().getScreenName()</a>
             : @Helper.readableDate(message.getCreatedAt())</p>
             <p>@message.getMessage().getBody()</p>
         </div>
-		}
-	}
+        }
+    }
 }
 </div>
 

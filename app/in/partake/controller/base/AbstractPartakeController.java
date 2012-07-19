@@ -29,49 +29,6 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-class PartakeActionContextImpl implements PartakeActionContext {
-    UserEx loginUser;
-    String sessionToken;
-    String currentURL;
-    String redirectURL;
-    List<MessageCode> messageCodes = new ArrayList<MessageCode>();
-
-    @Override
-    public UserEx loginUser() {
-        return loginUser;
-    }
-
-    @Override
-    public String sessionToken() {
-        return sessionToken;
-    }
-
-    @Override
-    public String currentURL() {
-        return currentURL;
-    }
-
-    @Override
-    public String redirectURL() {
-        return redirectURL;
-    }
-
-    @Override
-    public void setRedirectURL(String redirectURL) {
-        this.redirectURL = redirectURL;
-    }
-
-    @Override
-    public void addMessage(MessageCode mc) {
-        messageCodes.add(mc);
-    }
-
-    @Override
-    public List<MessageCode> messages() {
-        return Collections.unmodifiableList(messageCodes);
-    }
-}
-
 public abstract class AbstractPartakeController extends Controller {
     private PartakeActionContextImpl ctx;
 
@@ -474,5 +431,58 @@ public abstract class AbstractPartakeController extends Controller {
             return false;
 
         return StringUtils.equals(sessionToken, originalSessionToken);
+    }
+}
+
+class PartakeActionContextImpl implements PartakeActionContext {
+    UserEx loginUser;
+    String sessionToken;
+    String currentURL;
+    String redirectURL;
+    List<MessageCode> messageCodes = new ArrayList<MessageCode>();
+
+    public void setLoginUser(UserEx loginUser) {
+        this.loginUser = loginUser;
+    }
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+    public void setCurrentURL(String currentURL) {
+        this.currentURL = currentURL;
+    }
+
+    @Override
+    public UserEx loginUser() {
+        return loginUser;
+    }
+
+    @Override
+    public String sessionToken() {
+        return sessionToken;
+    }
+
+    @Override
+    public String currentURL() {
+        return currentURL;
+    }
+
+    @Override
+    public String redirectURL() {
+        return redirectURL;
+    }
+
+    @Override
+    public void setRedirectURL(String redirectURL) {
+        this.redirectURL = redirectURL;
+    }
+
+    @Override
+    public void addMessage(MessageCode mc) {
+        messageCodes.add(mc);
+    }
+
+    @Override
+    public List<MessageCode> messages() {
+        return Collections.unmodifiableList(messageCodes);
     }
 }

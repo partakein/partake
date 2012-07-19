@@ -1,5 +1,7 @@
 package in.partake.app;
 
+import java.util.UUID;
+
 import in.partake.base.DateTime;
 import in.partake.base.TimeUtil;
 import in.partake.daemon.PartakeDaemon;

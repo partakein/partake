@@ -1,0 +1,19 @@
+@(implicit context: controllers.ActionContext)
+@import in.partake.app.PartakeApp
+
+    @* TODO: combine them all *@
+
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery/jquery.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery/jquery-ui.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/partake-all.min.js")?@PartakeApp.initializedAt.getTime())"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+    @* Supports HTML5 elements for IE6-8. *@
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        partake = createPartakeClient('@context.sessionToken');
+        partakeUI = createPartakeUIClient();
+    </script>

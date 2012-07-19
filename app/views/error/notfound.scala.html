@@ -1,4 +1,4 @@
-@(ctx: in.partake.controller.PartakeActionContext)@internal.main(ctx, "リソースが見つかりませんでした") {
+@(implicit context: controllers.ActionContext)@base.main("リソースが見つかりませんでした") {
 <div class="container"><div class="content-body">
 
 <div class="page-header">

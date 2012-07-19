@@ -1,11 +1,11 @@
 @(ctx: in.partake.controller.PartakeActionContext,
   event: in.partake.model.EventEx,
   user: in.partake.model.UserEx,
-  tickets: List[in.partake.model.dto.EventTicket],
-  userTicketMap: Map[UUID, in.partake.model.dto.UserTicket],
-  ticketHolderListMap: Map[UUID, in.partake.model.EventTicketHolderList],
-  comments: List[in.partake.model.EventCommentEx],
-  eventMessages: List[in.partake.model.EventMessageEx])
+  tickets: java.util.List[in.partake.model.dto.EventTicket],
+  userTicketMap: java.util.Map[java.util.UUID, in.partake.model.dto.UserTicket],
+  ticketHolderListMap: java.util.Map[java.util.UUID, in.partake.model.EventTicketHolderList],
+  comments: java.util.List[in.partake.model.EventCommentEx],
+  eventMessages: java.util.List[in.partake.model.EventMessageEx])
 @import in.partake.base._
 @import in.partake.controller.base.permission._
 @import in.partake.model.dto.auxiliary._
@@ -15,19 +15,19 @@
 <div class="container">
 
 @if(user != null && EventEditPermission.check(event, user)) {
-	@events._show_manage_navigation(ctx, event, user)
+    @events._show_manage_navigation(ctx, event, user)
 }
 
 <div class="content-body">
 
 <div class="page-header">
     <h1>
-    	@if(event.isPrivate()) {<img src="@routes.Assets.at("images/private.png")" title="非公開イベント" />}
-		@event.getTitle()
+        @if(event.isPrivate()) {<img src="@routes.Assets.at("images/private.png")" title="非公開イベント" />}
+        @event.getTitle()
         @if(event.isDraft()) {<span class="label label-important">このイベントはまだ公開されていません</span>}
     </h1>
     <p>
-    	@if(!StringUtils.isEmpty(event.getSummary())) { @event.getSummary() }
+        @if(!StringUtils.isEmpty(event.getSummary())) { @event.getSummary() }
     </p>
     <p>
         <span class="label label-info">@EventCategory.getReadableCategoryName(event.getCategory())</span>
@@ -76,16 +76,16 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="side-information">
-            	@events._show_side_information(ctx, event, user)
+                @events._show_side_information(ctx, event, user)
             </div>
             <div class="tab-pane" id="side-participants">
-            	@events._show_side_participants(ctx, event, user, tickets, ticketHolderListMap)
+                @events._show_side_participants(ctx, event, user, tickets, ticketHolderListMap)
             </div>
         </div>
     </div>
 
     <div class="span16">
-    	@if(event.getForeImageId() != null) {
+        @if(event.getForeImageId() != null) {
         <div class="row">
             <div class="span16">
                 <div class="event-image">
@@ -97,7 +97,7 @@
 
         <h3>詳細情報</h3>
         <div class="event-description" style="min-height: 200px;">
-        	@Html(Helper.cleanupHTML(event.getDescription()))
+            @Html(Helper.cleanupHTML(event.getDescription()))
         </div>
 
         <h3>コメント</h3>
@@ -111,13 +111,13 @@
             </ul>
             <div class="tab-content">
                 <div id="news1" class="tab-pane active">
-                	@events._show_bottom_commentboard(ctx, event, user, comments)
+                    @events._show_bottom_commentboard(ctx, event, user, comments)
                 </div>
                 <div id="news2" class="tab-pane">
-                	@events._show_bottom_message(ctx, eventMessages)
+                    @events._show_bottom_message(ctx, eventMessages)
                 </div>
                 <div id="side-twitter" class="tab-pane">
-                	@events._show_side_twitter(ctx, event)
+                    @events._show_side_twitter(ctx, event)
                 </div>
             </div>
         </div>

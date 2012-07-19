@@ -1,4 +1,4 @@
-@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, associatedOpenIds: Seq[in.partake.model.dto.UserOpenIDLink])
+@(ctx: in.partake.controller.PartakeActionContext, user: in.partake.model.UserEx, associatedOpenIds: java.util.List[in.partake.model.dto.UserOpenIDLink])
 
 <h2>OpenID でログインできるようにする</h2>
 <p>何らかの理由でtwitter が使用できない場合に、OpenID でログインできるようにします。設定には、Google や mixi などの OpenID と Twitter ID を結び付ける必要があります。</p>
@@ -9,11 +9,11 @@
         <label class="control-label">Open ID</label>
         <div class="controls">
         @if(associatedOpenIds != null && !associatedOpenIds.isEmpty()) {
-        	@for(openid <- associatedOpenIds) {
+            @for(openid <- associatedOpenIds) {
                 <p>@openid.getIdentifier()
                     <a href="#" title="結びつけを解除する" onclick="removeOpenID('@openid.getIdentifier()')">[&times;]</a>
                 </p>
-        	}
+            }
         } else {
             <p>現在どの OpenID とも結び付けられていません。</p>
         }

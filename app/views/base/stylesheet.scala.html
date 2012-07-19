@@ -1,0 +1,8 @@
+@import in.partake.app.PartakeApp
+
+    @* TODO(mayah): Unfortunately, merging jquery-ui css to partake-all causes an error. *@
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/jquery-ui-1.8.16.custom.css")'>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/partake-all.min.css")?@PartakeApp.initializedAt.getTime()'>
+    <!--[if IE ]"
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.at("/css/fixie.css")">
+    <![endif]-->

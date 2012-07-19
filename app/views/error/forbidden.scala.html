@@ -1,4 +1,4 @@
-@(ctx: in.partake.controller.PartakeActionContext)@internal.main(ctx, "権限がありません") {
+@(implicit context: controllers.ActionContext)@base.main("権限がありません") {
 <div class="container"><div class="content-body">
 
 <p>実行権限がない操作を行おうとしました。</p>

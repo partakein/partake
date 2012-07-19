@@ -1,4 +1,5 @@
-@(ctx: in.partake.controller.PartakeActionContext, event: in.partake.model.EventEx)@internal.mainForEvent(ctx, "アンケートの編集", event) {
+@(ctx: in.partake.controller.PartakeActionContext,
+  event: in.partake.model.EventEx)@internal.mainForEvent(ctx, "アンケートの編集", event) {
 <div class="container">
 
 @events._edit_manage_navigation(ctx, event, "enquete")
@@ -156,14 +157,14 @@ $(function() {
 
 // Initial display
 @if(event.getEnquetes() != null) {
-	var initialData = [
-	    @event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
-			@if(enqueteWithIndex._2 != 0){,}
-			@Html(enqueteWithIndex._1.toJSON().toString())
-	    }
+    var initialData = [
+        @event.getEnquetes().zipWithIndex.map { enqueteWithIndex =>
+            @if(enqueteWithIndex._2 != 0){,}
+            @Html(enqueteWithIndex._1.toJSON().toString())
+        }
     ];
 } else {
-	var initialData = [];
+    var initialData = [];
 }
 
 for (var i = 0; i < initialData.length; ++i) {

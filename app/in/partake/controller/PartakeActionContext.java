@@ -13,7 +13,6 @@ public interface PartakeActionContext {
     public abstract String redirectURL();
     public abstract void setRedirectURL(String redirectURL);
 
-
     public abstract void addMessage(MessageCode mc);
     public abstract List<MessageCode> messages();
 }
