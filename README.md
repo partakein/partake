@@ -13,7 +13,7 @@ Third party components
 ----------------------
 ### The Apache Software License, Version 2.0
 - [Play framework](http://www.playframework.org/) Copyright Typesafe
-- [Twitter4J](http://twitter4j.org/)
+- [Twitter4J](http://twitter4j.org/) Copyright Yusuke Yamamoto
 - [open csv 2.1](http://opencsv.sourceforge.net/)
 - [Apache Lucene](http://lucene.apache.org/java/docs/) Copyright (c) The Apache Software Foundation
 - [OpenID for java](http://code.google.com/p/openid4java/) Copyright Sxip Identity Corporation
