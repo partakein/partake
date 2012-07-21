@@ -46,7 +46,7 @@ class InvalidPageTest extends AbstractActionTest {
     val params = InvalidPageAction.parseRequest(request)
     expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { params.errorCode }
 
-    val values = InvalidPageAction.execute(params)
+    val values = InvalidPageAction.executeAction(params)
     expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
@@ -60,7 +60,7 @@ class InvalidPageTest extends AbstractActionTest {
     val params = InvalidPageAction.parseRequest(request)
     expect(None) { params.errorCode }
 
-    val values = InvalidPageAction.execute(params)
+    val values = InvalidPageAction.executeAction(params)
     expect(None) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
