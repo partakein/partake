@@ -18,12 +18,12 @@ import in.partake.model.dto.EventTicket;
 import in.partake.resource.UserErrorCode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import play.mvc.Result;
-import scala.actors.threadpool.Arrays;
 
 public class ShowParticipantsAction extends AbstractPartakeAction {
     private String eventId;
