@@ -38,7 +38,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     protected Result renderJSON(JSONObject obj, int status) {
-        return renderJSONWith(obj, status, "text/json; charset=utf-8");
+        return renderJSONWith(obj, status, "application/json; charset=utf-8");
     }
 
     protected Result renderJSONWith(JSONObject obj, int status, String contentType) {
