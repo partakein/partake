@@ -11,7 +11,9 @@ import controllers.ActionContext
 abstract class AbstractAPI extends AbstractController {
 
   def renderJson(obj: JsValue, status: Int): PlainResult = {
-    Status(status)(obj)
+    Status(status)(obj).withHeaders(
+      CACHE_CONTROL -> "no-cache"
+    )
   }
 
   override protected def renderInvalid(ec: UserErrorCode, e: Option[Throwable]): PlainResult = {

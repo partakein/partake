@@ -44,6 +44,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     protected Result renderJSONWith(JSONObject obj, int status, String contentType) {
         assert obj != null;
         response().setContentType(contentType);
+        response().setHeader("Cache-Control", "no-cache");
         return status(status, obj.toString().getBytes(UTF8));
     }
 
