@@ -7,3 +7,6 @@ notifications:
   email:
     recipients:
       - partake-dev@googlegroups.com
+before_script:
+  - createuser -U postgres --no-superuser --no-createdb --no-createrole --no-password partake
+  - createdb -U postgres -O partake --no-password partake-test
