@@ -90,8 +90,12 @@ abstract class AbstractController[S, T] extends Controller {
   def executeAction(params: S)(implicit context: ActionContext): T
   def renderResult(values: T)(implicit context: ActionContext): PlainResult
 
-  def finalizeResult(result: PlainResult)(implicit context: ActionContext): PlainResult =
-    result.withSession(context.sessionsToAddResult: _*).withHeaders(context.headers: _*)
+  def finalizeResult(result: PlainResult)(implicit context: ActionContext): PlainResult = {
+    val r0 = result;
+    val r1 = if (context.sessionsToAddResult.isEmpty) r0 else r0.withSession(context.sessionsToAddResult: _*)
+    val r2 = if (context.headers.isEmpty) r1 else r1.withHeaders(context.headers: _*)
+    return r2
+  }
 
   // ----------------------------------------------------------------------
   // parameter
