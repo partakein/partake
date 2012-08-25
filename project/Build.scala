@@ -27,8 +27,10 @@ object ApplicationBuild extends Build {
         "com.twitter" % "twitter-text" % "1.4.10",
         "net.sf.json-lib" % "json-lib" % "2.4" classifier "jdk15",
 
+        // We want to have mockito-all in test scope, however it causes some errors
+        "org.mockito" % "mockito-all" % "1.8.1",
+
         "junit" % "junit" % "4.8.2" % "test",
-        "org.mockito" % "mockito-all" % "1.8.1" % "test",
         "org.hamcrest" % "hamcrest-all" % "1.1" % "test",
         "org.scalatest" %% "scalatest" % "1.8" % "test"
     )
