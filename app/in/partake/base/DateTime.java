@@ -69,6 +69,11 @@ public final class DateTime implements Comparable<DateTime> {
         return dt.millis < millis;
     }
 
+    public DateTime adjustByMinutes() {
+        long minutes = 1000L * 60;
+        return new DateTime(getTime() - (getTime() % minutes));
+    }
+    
     public DateTime nDayBefore(int n) {
         return new DateTime(Util.ensureMin(getTime() - 1000L * 3600 * 24 * n, 0L));
     }

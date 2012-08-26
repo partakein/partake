@@ -36,6 +36,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 
+import play.Logger;
 import play.mvc.Result;
 
 public class ModifyAPI extends AbstractPartakeAPI {

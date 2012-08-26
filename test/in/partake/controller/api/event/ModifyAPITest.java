@@ -314,34 +314,35 @@ public class ModifyAPITest extends APIControllerTest {
 
     @Test
     public void testToModifyEndDate() throws Exception {
+        DateTime newEndDate = TimeUtil.getCurrentDateTime().nDayAfter(10).adjustByMinutes();
+        
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
         addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addFormParameter(proxy, "endDate", "2012-08-01 00:00");
-
+        addFormParameter(proxy, "endDate", newEndDate.toHumanReadableFormat());
         proxy.execute();
         assertResultOK(proxy);
 
         Event modified = loadEvent(DEFAULT_EVENT_ID);
-        assertThat(modified.getEndDate(), is(TimeUtil.create(2012, 8, 1, 0, 0, 0)));
+        assertThat(modified.getEndDate(), is(newEndDate));
     }
 
     @Test
     public void testToModifyEndDateFromEpoc() throws Exception {
-        DateTime dt = TimeUtil.create(2012, 8, 1, 0, 0, 0);
+        DateTime tomorrow = TimeUtil.getCurrentDateTime().nDayAfter(1);
 
         ActionProxy proxy = getActionProxy(POST, "/api/event/modify");
         loginAs(proxy, EVENT_OWNER_ID);
         addValidSessionTokenToParameter(proxy);
         addFormParameter(proxy, "eventId", DEFAULT_EVENT_ID);
-        addFormParameter(proxy, "endDate", String.valueOf(dt.getTime()));
+        addFormParameter(proxy, "endDate", String.valueOf(tomorrow.getTime()));
 
         proxy.execute();
         assertResultOK(proxy);
 
         Event modified = loadEvent(DEFAULT_EVENT_ID);
-        assertThat(modified.getEndDate(), is(dt));
+        assertThat(modified.getEndDate(), is(tomorrow));
     }
 
     @Test
