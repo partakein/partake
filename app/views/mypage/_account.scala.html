@@ -85,7 +85,7 @@
             <script>
                 function connectWithHatena() {
                     var name = $("#connect-hatena-username").val().replace(/^\s+|\s+$/g, "");
-                    var ident = "http://www.hatena.ne.jp/" + name;
+                    var ident = "http://www.hatena.ne.jp/" + name + "/";
                     $("#connect-hatena-openid-identifier").val(ident);
                     document.connectWithHatenaForm.submit();
                 }

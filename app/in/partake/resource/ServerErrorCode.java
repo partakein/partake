@@ -17,6 +17,8 @@ public enum ServerErrorCode {
     DB_ERROR("in.partake.database_error"),
     DB_CONNECTION_POOL_INITIALIZATION_FAILURE("error.db.pool.initialization_error"),
 
+    SESSION_ID_KEY_NOTFOUND("error.session.key.notfound"),
+
     ERROR_IO("error.io"),
 
     FEED_CREATION("error.feed.creation"),

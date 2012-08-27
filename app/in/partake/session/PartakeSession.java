@@ -12,7 +12,6 @@ import in.partake.resource.MessageCode;
 public class PartakeSession {
     private CSRFPrevention csrfPrevention;
 
-    private OpenIDLoginInformation openIDLoginInfomation;
     private TwitterLoginInformation twitterLoginInformation;
 
     private MessageCode messageCode;
@@ -27,13 +26,6 @@ public class PartakeSession {
 
     public CSRFPrevention getCSRFPrevention() {
         return this.csrfPrevention;
-    }
-
-    public synchronized OpenIDLoginInformation ensureOpenIDLoginInformation() {
-        if (openIDLoginInfomation == null)
-            openIDLoginInfomation = new OpenIDLoginInformation();
-
-        return openIDLoginInfomation;
     }
 
     public synchronized void setTwitterLoginInformation(TwitterLoginInformation information) {

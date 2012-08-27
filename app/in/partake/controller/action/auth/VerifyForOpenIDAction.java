@@ -1,5 +1,7 @@
 package in.partake.controller.action.auth;
 
+import in.partake.app.PartakeApp;
+import in.partake.app.PartakeConfiguration;
 import in.partake.base.PartakeException;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.UserEx;
@@ -14,13 +16,16 @@ import in.partake.resource.Constants;
 import in.partake.resource.MessageCode;
 import in.partake.resource.ServerErrorCode;
 import in.partake.resource.UserErrorCode;
+import in.partake.session.OpenIDLoginInformation;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.openid4java.OpenIDException;
+import org.openid4java.discovery.DiscoveryInformation;
 
 import play.cache.Cache;
-import play.libs.OpenID;
 import play.mvc.Result;
 
 public class VerifyForOpenIDAction extends AbstractOpenIDAction {
@@ -36,17 +41,18 @@ public class VerifyForOpenIDAction extends AbstractOpenIDAction {
         if (sessionId == null)
             return renderInvalid(UserErrorCode.INVALID_OPENID_PURPOSE);
 
-        String purpose = (String) Cache.get(Constants.Cache.OPENID_LOGIN_KEY_PREFIX + sessionId);
+        String receivingURL = receivingURL();
+        Map<String, Object> params = new HashMap<String, Object>();
+        for (Map.Entry<String, String[]> entry : request().queryString().entrySet())
+            params.put(entry.getKey(), entry.getValue());
 
-        OpenID.UserInfo info = OpenID.verifiedId().get();
-        if (info == null)
-            return renderRedirect("/", MessageCode.MESSAGE_OPENID_LOGIN_FAILURE);
-
+        OpenIDLoginInformation info = (OpenIDLoginInformation) Cache.get(Constants.Cache.OPENID_LOGIN_KEY_PREFIX + sessionId);
+        String purpose = info.takeLoginPurpose();
         try {
             if ("login".equals(purpose))
-                return verifyOpenIDForLogin(info);
+                return verifyOpenIDForLogin(receivingURL, params, info.getDiscoveryInformation());
             if ("connect".equals(purpose))
-                return verifyOpenIDForConnection(info);
+                return verifyOpenIDForConnection(receivingURL, params, info.getDiscoveryInformation());
 
             return renderInvalid(UserErrorCode.INVALID_OPENID_PURPOSE);
         } catch (OpenIDException e) {
@@ -54,13 +60,13 @@ public class VerifyForOpenIDAction extends AbstractOpenIDAction {
         }
     }
 
-    private Result verifyOpenIDForLogin(OpenID.UserInfo userInfo) throws DAOException, OpenIDException, PartakeException {
-        String identifier = userInfo.id;
-        if (identifier == null)
+    private Result verifyOpenIDForLogin(String receivingURL, Map<String, Object> params, DiscoveryInformation discoveryInformation) throws DAOException, OpenIDException, PartakeException {
+        String identity = PartakeApp.getOpenIDService().getIdentifier(receivingURL, params, discoveryInformation);
+        if (identity == null)
             return renderRedirect("/", MessageCode.MESSAGE_OPENID_LOGIN_FAILURE);
 
         // TODO: UserEx が identifier から取れるべき
-        UserEx user = new GetUserFromOpenIDIdentifierTransaction(identifier).execute();
+        UserEx user = new GetUserFromOpenIDIdentifierTransaction(identity).execute();
         if (user != null) {
             session().put(Constants.Session.USER_ID_KEY, user.getId());
             if (getRedirectURL() == null)
@@ -72,18 +78,22 @@ public class VerifyForOpenIDAction extends AbstractOpenIDAction {
         }
     }
 
-    private Result verifyOpenIDForConnection(OpenID.UserInfo userInfo) throws DAOException, PartakeException, OpenIDException {
+    private Result verifyOpenIDForConnection(String receivingURL, Map<String, Object> params, DiscoveryInformation discoveryInformation) throws DAOException, PartakeException, OpenIDException {
         User user = getLoginUser();
         if (user == null)
             return renderLoginRequired();
 
-        String identity = userInfo.id;
+        String identity = PartakeApp.getOpenIDService().getIdentifier(receivingURL, params, discoveryInformation);
         if (identity == null)
             return renderInvalid(UserErrorCode.INVALID_OPENID_IDENTIFIER);
 
         new AddOpenIDTransaction(user.getId(), identity).execute();
 
         return renderRedirect("/mypage#account", MessageCode.MESSAGE_OPENID_CONNECTION_SUCCESS);
+    }
+
+    private String receivingURL() {
+        return PartakeConfiguration.toppath() + request().uri();
     }
 }
 

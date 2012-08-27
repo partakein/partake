@@ -14,7 +14,7 @@ public class LoginByOpenIDAction extends AbstractOpenIDAction {
         return new LoginByOpenIDAction().execute();
     }
 
-    public Result doExecute() throws DAOException {
+    public Result doExecute() throws DAOException, PartakeException {
         try {
             return doAuthenticate("login");
         } catch (OpenIDException e) {

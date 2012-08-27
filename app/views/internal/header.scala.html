@@ -122,7 +122,7 @@
             <script>
                 function loginByHatena() {
                     var name = $("#login-hatena-username").val().replace(/^\s+|\s+$/g, "");
-                    var ident = "http://www.hatena.ne.jp/" + name;
+                    var ident = "http://www.hatena.ne.jp/" + name + "/";
                     $("#login-hatena-openid-identifier").val(ident);
                     document.loginByHatenaForm.submit();
                 }
