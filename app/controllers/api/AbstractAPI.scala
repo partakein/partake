@@ -7,13 +7,27 @@ import play.api.Logger
 import in.partake.resource.ServerErrorCode
 import play.api.libs.json.Json
 import controllers.ActionContext
+import scala.collection.immutable.Map
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsObject
 
-abstract class AbstractAPI extends AbstractController {
+abstract class AbstractAPI[S, T] extends AbstractController[S, T] {
 
   def renderJson(obj: JsValue, status: Int): PlainResult = {
     Status(status)(obj).withHeaders(
       CACHE_CONTROL -> "no-cache"
     )
+  }
+
+  def renderOK(): PlainResult = {
+    renderJson(Json.toJson(Map(
+        "result" -> "ok"
+    )), OK)
+  }
+
+  def renderOK(obj: JsObject): PlainResult = {
+    val json = obj ++ Json.toJson(Map("result" -> "ok")).asInstanceOf[JsObject]
+    renderJson(json, OK)
   }
 
   override protected def renderInvalid(ec: UserErrorCode, e: Option[Throwable]): PlainResult = {
@@ -41,7 +55,7 @@ abstract class AbstractAPI extends AbstractController {
         "reason" -> ec.getReasonString()
     ))
 
-    renderJson(obj, BAD_REQUEST)
+    renderJson(obj, INTERNAL_SERVER_ERROR)
   }
 
   override protected def renderLoginRequired()(implicit context: ActionContext): PlainResult = {

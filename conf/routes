@@ -66,15 +66,15 @@ GET     /feed/upcoming/:category            in.partake.controller.action.feed.Fe
 # Web API
 
 # Debug API
-GET     /api/debug/success                  in.partake.controller.api.debug.SuccessAPI.get()
-GET     /api/debug/echo                     in.partake.controller.api.debug.EchoAPI.get()
-POST    /api/debug/echo                     in.partake.controller.api.debug.EchoAPI.post()
-GET     /api/debug/successIfLogin           in.partake.controller.api.debug.SuccessIfLoginAPI.get()
-GET     /api/debug/invalid                  in.partake.controller.api.debug.InvalidAPI.get()
-GET     /api/debug/error                    in.partake.controller.api.debug.ErrorAPI.get()
-GET     /api/debug/errorException           in.partake.controller.api.debug.ErrorExceptionAPI.get()
-GET     /api/debug/errorDB                  in.partake.controller.api.debug.ErrorDBAPI.get()
-GET     /api/debug/errorDBException         in.partake.controller.api.debug.ErrorDBExceptionAPI.get()
+GET     /api/debug/success                  controllers.api.debug.SuccessAPI.run()
+GET     /api/debug/echo                     controllers.api.debug.EchoAPI.run()
+POST    /api/debug/echo                     controllers.api.debug.EchoAPI.run()
+GET     /api/debug/successIfLogin           controllers.api.debug.SuccessIfLoginAPI.run()
+GET     /api/debug/invalid                  controllers.api.debug.InvalidAPI.run()
+GET     /api/debug/error                    controllers.api.debug.ErrorAPI.run()
+GET     /api/debug/errorException           controllers.api.debug.ErrorExceptionAPI.run()
+GET     /api/debug/errorDB                  controllers.api.debug.ErrorDBAPI.run()
+GET     /api/debug/errorDBException         controllers.api.debug.ErrorDBExceptionAPI.run()
 
 # Account API
 GET     /api/account/get                    in.partake.controller.api.account.GetAPI.get()
@@ -122,4 +122,4 @@ POST    /api/ticket/attend                  in.partake.controller.api.ticket.Att
 POST    /api/ticket/removeAttendant         in.partake.controller.api.ticket.RemoveAttendantAPI.post()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                       controllers.Assets.at(path="/public", file)

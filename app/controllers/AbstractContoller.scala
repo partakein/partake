@@ -107,6 +107,23 @@ abstract class AbstractController[S, T] extends Controller {
     }
   }
 
+  def paramFromForm(key: String, request: Request[AnyContent])(implicit context: ActionContext) = {
+    request.body.asFormUrlEncoded match {
+      case None => None
+      case Some(map) => map.get(key) match {
+        case None => None
+        case Some(Seq(x, _*)) => Some(x)
+      }
+    }
+  }
+
+  def paramFromQueryOrForm(key: String, request: Request[AnyContent])(implicit context: ActionContext) = {
+    paramFromQueryString(key, request) match {
+      case None => paramFromForm(key, request)
+      case Some(x) => Some(x)
+    }
+  }
+
   // ----------------------------------------------------------------------
   // renderSomething
 
@@ -142,6 +159,7 @@ abstract class AbstractController[S, T] extends Controller {
         return renderForbidden()
       case 404 =>
         return renderNotFound()
+      case _ =>
     }
 
     if (e.getServerErrorCode() != null)
