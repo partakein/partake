@@ -1,0 +1,6 @@
+internal/* will be used for Java programs.
+SCALA program should use base/*.
+
+ActionContext cannot be created from Java.
+Java program should use PartakeActionContext.
+

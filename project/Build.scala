@@ -39,7 +39,9 @@ object ApplicationBuild extends Build {
         // Add your own project settings here
         externalIvySettings(),
         testOptions in Test := Nil,
-        parallelExecution in jacoco.Config := false
+        parallelExecution in jacoco.Config := false,
+        lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" / "partake-all.less")
+        // javascriptEntryPoints <<= baseDirectory(_ / "app" / "assets" / "javascripts" ** "*.js")
     )
 
 }

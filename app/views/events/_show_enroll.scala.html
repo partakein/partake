@@ -24,17 +24,17 @@
             <p>申込期間 @Helper.readableApplicationDuration(ticket, event) </p>
         </div>
 
-        <div class="span8" style="height: 50px;"><div class="row">
+        <div class="span8"><div class="row">
         @if(!ticket.acceptsApplication(event, TimeUtil.getCurrentDateTime())) {
-            <a href="#" class="btn btn-flat span8 p2-height disabled">申込期間外です</a>
+             <span href="#" class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">申込期間外です</span></span>
         } else {
             @if(user == null) {
-                <a href="#" class="btn btn-flat span8 p2-height disabled">参加するためにはログインが必要です</a>
+                <span href="#" class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">参加するには<a href="#" rel="tooltip" title="twitter でログイン" onclick="document.loginByTwitterForm.submit()"><strong>ログイン</strong></a>が必要です</span></span>
             } else {
                 @if(ParticipationStatus.ENROLLED.equals(status) || ParticipationStatus.RESERVED.equals(status)) {
-                    <a href="#" class="btn button-apply-ticket span8 p2-height" data-ticket="@ticket.getId().toString()">申込変更</a>
+                    <span href="#" class="btn c span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">申込変更</span></span>
                 } else {
-                    <a href="#" class="btn btn-danger-flat button-apply-ticket span8 p2-height" data-ticket="@ticket.getId().toString()">参加申込</a>
+                    <span href="#" class="btn btn-danger-flat button-apply-ticket span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">参加申込</span></span>
                 }
             }
         }

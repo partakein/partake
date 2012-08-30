@@ -1,5 +1,5 @@
-// require('jquery/jquery.js');
-// require('jquery/jquery-ui.js');
+// TODO: Due to the bug of Play framework, we cannot simply copy the bootstrap
+// javascript files. We cannot have any extra javascript files in bootstrap folder.
 require('bootstrap/bootstrap.js');
 
 require('jquery/plugins/jquery-ui-timepicker-addon.js');
