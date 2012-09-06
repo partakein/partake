@@ -88,8 +88,8 @@ POST    /api/account/setPreference          in.partake.controller.api.account.Se
 GET     /api/account/sessionToken           in.partake.controller.api.account.SessionTokenAPI.get()
 
 # Admin API
-POST    /api/admin/recreateEventIndex       in.partake.controller.api.admin.AdminEventIndexRecreationAPI.post()
-POST    /api/admin/modifySetting            in.partake.controller.api.admin.AdminModifySettingAPI.post()
+POST    /api/admin/recreateEventIndex       controllers.api.admin.AdminEventIndexRecreationAPI.run()
+POST    /api/admin/modifySetting            controllers.api.admin.AdminModifySettingAPI.run()
 
 # User API
 GET     /api/user/get                       in.partake.controller.api.user.GetAPI.get()

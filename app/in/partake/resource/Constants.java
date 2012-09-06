@@ -32,6 +32,9 @@ public final class Constants {
     // Used for HTTP request parameter key.
     public interface Parameter {
         public static final String SESSION_TOKEN = "sessionToken";
+
+        // SessionToken used for test. (Currently this value is only for Scala controllers)
+        public static final String VALID_SESSION_TOKEN_FOR_TEST = "valid-session-token-for-test";
     }
 
     // Used for Cache.

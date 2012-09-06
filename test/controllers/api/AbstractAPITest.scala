@@ -8,18 +8,23 @@ import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import play.api.libs.json.JsString
+import org.apache.commons.lang.StringUtils
 
 abstract class AbstractAPITest extends AbstractControllerTest {
 
+  // ----------------------------------------------------------------------
   // Result Expectation (2xx)
-  def expectResultOK(result: Result): Unit = {
+
+  // 200 OK
+  protected def expectResultOK(result: Result): Unit = {
     expect(Helpers.OK) { Helpers.status(result) }
   }
 
+  // ----------------------------------------------------------------------
   // Result Exceptation (4xx)
 
   // 400 Bad Request
-  def expectResultInvalid(result: Result, ec: UserErrorCode): Unit = {
+  protected def expectResultInvalid(result: Result, ec: UserErrorCode): Unit = {
     expect(Helpers.BAD_REQUEST) { Helpers.status(result) }
 
     var json: JsValue = Json.parse(Helpers.contentAsString(result))
@@ -27,7 +32,7 @@ abstract class AbstractAPITest extends AbstractControllerTest {
   }
 
   // 401 Unauthorized
-  def expectResultLoginRequired(result: Result): Unit = {
+  protected def expectResultLoginRequired(result: Result): Unit = {
     expect(Helpers.UNAUTHORIZED) { Helpers.status(result) }
 
     expect(Some("OAuth")) { Helpers.header("WWW-Authenticate", result) }
@@ -36,8 +41,21 @@ abstract class AbstractAPITest extends AbstractControllerTest {
     expect("auth") { (json \ "result").asInstanceOf[JsString].value }
   }
 
+  // 403 Forbidden
+  protected def expectResultForbidden(result: Result): Unit = {
+    expect(Helpers.FORBIDDEN) { Helpers.status(result) }
+
+    var json: JsValue = Json.parse(Helpers.contentAsString(result))
+    expect("forbidden") { (json \ "result").asInstanceOf[JsString].value }
+    expect(false) { StringUtils.isBlank((json \ "reason").asInstanceOf[JsString].value) }
+  }
+
+
+  // ----------------------------------------------------------------------
   // Result Exceptation (5xx)
-  def expectResultError(result: Result, ec: ServerErrorCode): Unit = {
+
+  // 500 Internal Server Error
+  protected def expectResultError(result: Result, ec: ServerErrorCode): Unit = {
     expect(Helpers.INTERNAL_SERVER_ERROR) { Helpers.status(result) }
 
     var json: JsValue = Json.parse(Helpers.contentAsString(result))

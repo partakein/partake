@@ -8,6 +8,7 @@ import play.api.mvc.AnyContent
 import play.api.mvc.Controller
 import play.api.mvc.PlainResult
 import play.api.Logger
+import in.partake.app.PartakeApp
 import in.partake.controller.PartakeActionContext
 import in.partake.resource.Constants
 import in.partake.model.UserEx
@@ -20,6 +21,7 @@ import in.partake.model.access.DBAccess
 import in.partake.model.dao.PartakeConnection
 import in.partake.model.IPartakeDAOs
 import in.partake.model.daofacade.UserDAOFacade
+import org.apache.commons.lang.StringUtils
 
 abstract class AbstractController[S, T] extends Controller {
 
@@ -64,7 +66,11 @@ abstract class AbstractController[S, T] extends Controller {
 
     val sessionToken: String = request.session.get(Constants.Session.TOKEN_KEY) match {
       case None =>
-        var token = UUID.randomUUID().toString()
+        var token = if (PartakeApp.isTestMode()) {
+          Constants.Parameter.VALID_SESSION_TOKEN_FOR_TEST
+        } else {
+          UUID.randomUUID().toString()
+        }
         sessionsToBeAdded = (Constants.Session.TOKEN_KEY -> token) :: sessionsToBeAdded
         token
       case Some(x) => x
@@ -122,6 +128,38 @@ abstract class AbstractController[S, T] extends Controller {
       case None => paramFromForm(key, request)
       case Some(x) => Some(x)
     }
+  }
+
+  // ----------------------------------------------------------------------
+  // Validator
+
+  protected def ensureLogin()(implicit ctx: ActionContext): UserEx = {
+    ctx.loginUser match {
+      case None => throw new PartakeException(UserErrorCode.INVALID_LOGIN_REQUIRED)
+      case Some(user) => user
+    }
+  }
+
+  protected def ensureAdmin()(implicit ctx: ActionContext): UserEx = {
+    val user: UserEx = ensureLogin()
+    if (!user.isAdministrator())
+      throw new PartakeException(UserErrorCode.INVALID_PROHIBITED);
+
+    user
+  }
+
+  protected def ensureValidSessionToken(request: Request[AnyContent])(implicit ctx: ActionContext): Unit = {
+    if (!paramHasValidSessionToken(request))
+      throw new PartakeException(UserErrorCode.INVALID_SECURITY_CSRF);
+  }
+
+  private def paramHasValidSessionToken(request: Request[AnyContent])(implicit ctx: ActionContext): Boolean = {
+    val sessionToken: String = paramFromQueryOrForm(Constants.Parameter.SESSION_TOKEN, request) match {
+      case None => return false
+      case Some(x) => x
+    }
+
+    return StringUtils.equals(sessionToken, ctx.sessionToken)
   }
 
   // ----------------------------------------------------------------------

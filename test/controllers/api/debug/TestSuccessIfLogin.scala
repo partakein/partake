@@ -9,7 +9,7 @@ import in.partake.model.fixture.TestDataProviderConstants
 class TestSuccessIfLogin extends AbstractAPITest {
   test("accessing SuccessIfLogin API with login") {
     val request = FakeRequest("GET", "/api/debug/successIfLogin").withSession(
-        Constants.Session.USER_ID_KEY -> TestDataProviderConstants.DEFAULT_USER_ID
+      Constants.Session.USER_ID_KEY -> TestDataProviderConstants.DEFAULT_USER_ID
     )
     val result = SuccessIfLoginAPI.run(request);
 

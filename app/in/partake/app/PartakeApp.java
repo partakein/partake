@@ -36,6 +36,10 @@ public class PartakeApp {
         return instance;
     }
 
+    public static boolean isTestMode() {
+        return instance.isTestModeImpl();
+    }
+
     public static IDBService getDBService() {
         return instance.dbService;
     }
@@ -113,5 +117,9 @@ public class PartakeApp {
 
     protected IDaemonInitializer createDaemonInitializer() throws Exception {
         return new DaemonInitializer();
+    }
+
+    protected boolean isTestModeImpl() {
+        return false;
     }
 }

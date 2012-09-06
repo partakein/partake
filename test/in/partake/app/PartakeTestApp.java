@@ -52,4 +52,10 @@ public class PartakeTestApp extends PartakeApp {
 
         return twitterService;
     }
+
+    @Override
+    protected boolean isTestModeImpl() {
+        return true;
+    }
+
 }

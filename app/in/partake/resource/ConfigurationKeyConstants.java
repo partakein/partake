@@ -14,6 +14,8 @@ public interface ConfigurationKeyConstants {
     public static final String TWITTER4J_CONSUMER_SECRET = "twitter4j.oauth.consumerSecret";
     public static final String ADMIN_SCREEN_NAMES = "partake.admin.screennames";
 
+    public static final String KEY_FOR_TEST = "partake.testkey";
+
     public static final Set<String> configurationkeySet = new HashSet<String>(Arrays.asList(
             TOPPATH,
             DAEMON_ENABLED,
@@ -22,6 +24,7 @@ public interface ConfigurationKeyConstants {
             GOOGLE_ANALYTICS_ID,
             TWITTER4J_CONSUMER_KEY,
             TWITTER4J_CONSUMER_SECRET,
-            ADMIN_SCREEN_NAMES
+            ADMIN_SCREEN_NAMES,
+            KEY_FOR_TEST
     ));
 }

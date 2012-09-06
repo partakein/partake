@@ -11,6 +11,9 @@ import play.api.test.FakeApplication
 import play.api.test.Helpers
 import play.api.Play
 import org.scalatest.FunSuite
+import in.partake.model.dao.access.IConfigurationItemAccess
+import in.partake.model.dto.ConfigurationItem
+import models.db.Transaction
 
 abstract class AbstractControllerTest extends FunSuite with BeforeAndAfterEach with BeforeAndAfterAll {
 
@@ -34,5 +37,18 @@ abstract class AbstractControllerTest extends FunSuite with BeforeAndAfterEach w
   }
 
   override def afterEach() {
+  }
+
+  // ----------------------------------------------------------------------
+  // Loader
+
+  protected def loadAdminSetting(key: String): Option[String] = {
+    Transaction { (con, daos) =>
+      val item: ConfigurationItem = daos.getConfiguraitonItemAccess().find(con, key)
+      if (item == null)
+        return None
+
+      return Option(item.value())
+    }
   }
 }
