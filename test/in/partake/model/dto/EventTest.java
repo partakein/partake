@@ -8,6 +8,7 @@ import in.partake.model.fixture.TestDataProvider;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import net.sf.json.JSONObject;
 
@@ -111,10 +112,16 @@ public final class EventTest extends AbstractPartakeModelTest<Event> {
 
     @Test
     public void testToJsonWhenBeginDateExistsAndEndDateIsNull() {
-        Event event = new Event();
-        event.setBeginDate(new DateTime(0L));
-        JSONObject json = event.toSafeJSON();
-        Assert.assertEquals("1970-01-01 09:00", json.getString("beginDate"));
-        Assert.assertFalse(json.containsKey("endDate"));
+        TimeZone defaultTimeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+        try {
+            Event event = new Event();
+            event.setBeginDate(new DateTime(0L));
+            JSONObject json = event.toSafeJSON();
+            Assert.assertEquals("1970-01-01 09:00", json.getString("beginDate"));
+            Assert.assertFalse(json.containsKey("endDate"));
+        } finally {
+            TimeZone.setDefault(defaultTimeZone);
+        }
     }
 }
