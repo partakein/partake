@@ -3,6 +3,9 @@ package in.partake.controller.api.event;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.TimeZone;
+
 import in.partake.base.DateTime;
 import in.partake.base.TimeUtil;
 import in.partake.base.Util;
@@ -11,9 +14,23 @@ import in.partake.controller.api.APIControllerTest;
 import in.partake.model.dto.Event;
 import in.partake.resource.UserErrorCode;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ModifyAPITest extends APIControllerTest {
+    private TimeZone defaultTimeZone;
+
+    @Before
+    public void setTimeZone() {
+        defaultTimeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+    }
+
+    @After
+    public void resetTimeZone() {
+        TimeZone.setDefault(defaultTimeZone);
+    }
 
     @Test
     public void testToModifyWithoutLogin() throws Exception {
