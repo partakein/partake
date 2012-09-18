@@ -9,9 +9,23 @@ import java.util.TimeZone;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public final class HelperTest {
+    private TimeZone defaultTimeZone;
+
+    @Before
+    public void setTimeZone() {
+        defaultTimeZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+    }
+
+    @After
+    public void resetTimeZone() {
+        TimeZone.setDefault(defaultTimeZone);
+    }
 
     // -----------------------------------------
     // readableDate
