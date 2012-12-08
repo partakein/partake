@@ -70,7 +70,7 @@ public abstract class AbstractPartakeController extends Controller {
 
         final String userId = session().get(Constants.Session.USER_ID_KEY);
 
-        impl.currentURL = request().uri();
+        impl.setCurrentURL(request().uri());
         if (userId != null) {
             impl.loginUser = new DBAccess<UserEx>() {
                 @Override
@@ -384,11 +384,11 @@ public abstract class AbstractPartakeController extends Controller {
     }
 
     public void setCurrentURL(String url) {
-        ctx.currentURL = url;
+        ctx.setCurrentURL(url);
     }
 
     public String getCurrentURL() {
-        return ctx.currentURL;
+        return ctx.currentURL();
     }
 
     // ----------------------------------------------------------------------
