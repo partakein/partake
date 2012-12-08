@@ -39,7 +39,7 @@ public enum ServerErrorCode {
 
     BITLY_ERROR("error.bitly"),
 
-    OPENID_ERROR("error.opneid"),
+    OPENID_ERROR("error.openid"),
 
     EVENT_SEARCH_SERVICE_ERROR("error.service.event_search"),
 
