@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Strings;
+
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -468,7 +470,11 @@ class PartakeActionContextImpl implements PartakeActionContext {
 
     @Override
     public String redirectURL() {
-        return redirectURL;
+        if (Strings.isNullOrEmpty(redirectURL)) {
+            return currentURL;
+        } else {
+            return redirectURL;
+        }
     }
 
     @Override
