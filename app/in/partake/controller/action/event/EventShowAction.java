@@ -141,7 +141,7 @@ class EventShowTransaction extends DBAccess<Void> {
 
         if (!StringUtils.isBlank(event.getPasscode())) {
             // owner および manager は見ることが出来る。
-            String passcode = (String) session.get("event:" + eventId);
+            String passcode = (String) session.get(eventId);
             if (user != null && PrivateEventShowPermission.check(event, user)) {
                 // OK. You have the right to show this event.
             } else if (StringUtils.equals(event.getPasscode(), passcode)) {
