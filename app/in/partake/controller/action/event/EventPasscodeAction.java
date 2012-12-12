@@ -41,7 +41,7 @@ public class EventPasscodeAction extends AbstractPartakeAction {
         }
 
         // TODO: Reconsider Session.
-        session().put("event:" + eventId, passcode);
+        session().put(eventId, passcode);
         return renderRedirect("/events/" + eventId);
     }
 
