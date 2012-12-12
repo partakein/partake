@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="span12">
-        <form method="post" action="/events/passcode" id="passcode-checking-form">
+        <form method="get" action="/events/passcode" id="passcode-checking-form">
         	<input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
             <input type="hidden" name="eventId" value="@eventId" />
             <label for="passcode">パスコード:</label><input id="passcode-checking" name="passcode" autofocus="autofocus" /><br />
