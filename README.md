@@ -18,7 +18,6 @@ Third party components
 - [Commons Pool](http://commons.apache.org/pool/) Copyright (c) The Apache Software Foundation
 - [Rome](http://rometools.org/) Copyright Sun Microsystems, Inc.
 - [twitter-text](https://github.com/twitter/twitter-text-java) Copyright Twitter, Inc.
-- [Json Lib](http://json-lib.sourceforge.net/) Copyright Json-lib
 
 ### Common Public License Version 1.0
 - [JUnit](http://junit.org/)

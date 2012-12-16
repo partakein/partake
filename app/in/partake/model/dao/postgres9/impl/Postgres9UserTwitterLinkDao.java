@@ -21,10 +21,10 @@ import in.partake.model.dto.UserTwitterLink;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityUserTwitterLinkMapper extends Postgres9EntityDataMapper<UserTwitterLink> {
-    public UserTwitterLink map(JSONObject obj) {
+    public UserTwitterLink map(ObjectNode obj) {
         return new UserTwitterLink(obj).freeze();
     }
 }

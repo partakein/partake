@@ -21,9 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,15 +66,15 @@ public class GetEventsAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getInt("totalEventCount"), is(N));
-        assertThat(obj.getJSONArray("eventStatuses"), is(not(nullValue())));
-        JSONArray array = obj.getJSONArray("eventStatuses");
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("totalEventCount").asInt(), is(N));
+        assertThat(obj.get("eventStatuses"), is(not(nullValue())));
+        JsonNode array = obj.get("eventStatuses");
         assertThat(array.size(), is(10));
         for (int i = 0; i < array.size(); ++i) {
-            JSONObject eventStatus = array.getJSONObject(i);
-            JSONObject event = eventStatus.getJSONObject("event");
-            assertThat(event.getString("id"), is(ids.get(N - i - 1)));
+            JsonNode eventStatus = array.get(i);
+            JsonNode event = eventStatus.get("event");
+            assertThat(event.get("id").asText(), is(ids.get(N - i - 1)));
         }
     }
 
@@ -87,15 +86,15 @@ public class GetEventsAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getInt("totalEventCount"), is(N));
-        assertThat(obj.getJSONArray("eventStatuses"), is(not(nullValue())));
-        JSONArray array = obj.getJSONArray("eventStatuses");
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("totalEventCount").asInt(), is(N));
+        assertThat(obj.get("eventStatuses"), is(not(nullValue())));
+        JsonNode array = obj.get("eventStatuses");
         assertThat(array.size(), is(10));
         for (int i = 0; i < array.size(); ++i) {
-            JSONObject eventStatus = array.getJSONObject(i);
-            JSONObject event = eventStatus.getJSONObject("event");
-            assertThat(event.getString("id"), is(ids.get(N - i - 1)));
+            JsonNode eventStatus = array.get(i);
+            JsonNode event = eventStatus.get("event");
+            assertThat(event.get("id").asText(), is(ids.get(N - i - 1)));
         }
     }
 }

@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class EventTicket extends PartakeModel<EventTicket> implements SafeJSONable {
     private UUID id;
@@ -106,36 +106,36 @@ public class EventTicket extends PartakeModel<EventTicket> implements SafeJSONab
                 t.createdAt, t.modifiedAt);
     }
 
-    public EventTicket(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.eventId = obj.getString("eventId");
-        this.order = obj.getInt("order");
-        this.name = obj.getString("name");
+    public EventTicket(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.eventId = obj.get("eventId").asText();
+        this.order = obj.get("order").asInt();
+        this.name = obj.get("name").asText();
 
-        this.applicationStart = TicketApplicationStart.safeValueOf(obj.getString("applicationStart"));
-        this.applicationStartDayBeforeEvent = obj.getInt("applicationStartDayBeforeEvent");
-        if (obj.containsKey("customApplicationStartDate"))
-            this.customApplicationStartDate = new DateTime(obj.getLong("customApplicationStartDate"));
+        this.applicationStart = TicketApplicationStart.safeValueOf(obj.get("applicationStart").asText());
+        this.applicationStartDayBeforeEvent = obj.get("applicationStartDayBeforeEvent").asInt();
+        if (obj.has("customApplicationStartDate"))
+            this.customApplicationStartDate = new DateTime(obj.get("customApplicationStartDate").asLong());
 
-        this.applicationEnd = TicketApplicationEnd.safeValueOf(obj.getString("applicationEnd"));
-        this.applicationEndDayBeforeEvent = obj.getInt("applicationEndDayBeforeEvent");
-        if (obj.containsKey("customApplicationEndDate"))
-            this.customApplicationEndDate = new DateTime(obj.getLong("customApplicationEndDate"));
+        this.applicationEnd = TicketApplicationEnd.safeValueOf(obj.get("applicationEnd").asText());
+        this.applicationEndDayBeforeEvent = obj.get("applicationEndDayBeforeEvent").asInt();
+        if (obj.has("customApplicationEndDate"))
+            this.customApplicationEndDate = new DateTime(obj.get("customApplicationEndDate").asLong());
 
-        this.reservationEnd = TicketReservationEnd.safeValueOf(obj.optString("reservationEnd"));
-        this.reservationEndHourBeforeApplication = obj.optInt("reservationEndHourBeforeApplication", 0);
-        if (obj.containsKey("customReservationEndDate"))
-            this.customReservationEndDate = new DateTime(obj.getLong("customReservationEndDate"));
+        this.reservationEnd = TicketReservationEnd.safeValueOf(obj.path("reservationEnd").asText());
+        this.reservationEndHourBeforeApplication = obj.path("reservationEndHourBeforeApplication").asInt(0);
+        if (obj.has("customReservationEndDate"))
+            this.customReservationEndDate = new DateTime(obj.get("customReservationEndDate").asLong());
 
-        this.priceType = TicketPriceType.safeValueOf(obj.getString("priceType"));
-        this.price = obj.getInt("price");
+        this.priceType = TicketPriceType.safeValueOf(obj.get("priceType").asText());
+        this.price = obj.get("price").asInt();
 
-        this.amountType = TicketAmountType.safeValueOf(obj.getString("amountType"));
-        this.amount = obj.getInt("amount");
+        this.amountType = TicketAmountType.safeValueOf(obj.get("amountType").asText());
+        this.amount = obj.get("amount").asInt();
 
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -144,8 +144,8 @@ public class EventTicket extends PartakeModel<EventTicket> implements SafeJSONab
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject json = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode json = new ObjectNode(JsonNodeFactory.instance);
 
         json.put("id", id.toString());
         json.put("eventId", eventId);
@@ -181,8 +181,8 @@ public class EventTicket extends PartakeModel<EventTicket> implements SafeJSONab
     }
 
 
-    public JSONObject toSafeJSON() {
-        JSONObject json = toJSON();
+    public ObjectNode toSafeJSON() {
+        ObjectNode json = toJSON();
 
         // We would like to add -Text for start date and end date.
         // TODO: Format string should be externalized.

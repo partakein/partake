@@ -7,8 +7,9 @@ import static org.junit.Assert.assertThat;
 import in.partake.controller.ActionProxy;
 import in.partake.controller.api.APIControllerTest;
 import in.partake.resource.UserErrorCode;
-import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Test;
 
 public class GetUserAPITest extends APIControllerTest {
@@ -20,17 +21,16 @@ public class GetUserAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getString("id"), is(DEFAULT_USER_ID));
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("id").asText(), is(DEFAULT_USER_ID));
         // These values should not be public.
         assertThat(obj.get("twitterId"), is(nullValue()));
         assertThat(obj.get("lastLoginAt"), is(nullValue()));
         assertThat(obj.get("calendarId"), is(nullValue()));
-
-        JSONObject twitter = obj.getJSONObject("twitter");
+        JsonNode twitter = obj.get("twitter");
         assertThat(twitter, is(notNullValue()));
-        assertThat(twitter.getString("screenName"), is(DEFAULT_TWITTER_SCREENNAME));
-        assertThat(twitter.getString("profileImageURL"), is("http://www.example.com/"));
+        assertThat(twitter.get("screenName").asText(), is(DEFAULT_TWITTER_SCREENNAME));
+        assertThat(twitter.get("profileImageURL").asText(), is("http://www.example.com/"));
         // These values should not be public.
         assertThat(twitter.get("accessToken"), is(nullValue()));
         assertThat(twitter.get("accessTokenSecret"), is(nullValue()));

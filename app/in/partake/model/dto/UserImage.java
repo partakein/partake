@@ -4,9 +4,11 @@ import in.partake.base.DateTime;
 
 import java.util.Arrays;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import com.google.common.base.Strings;
 
 public class UserImage extends PartakeModel<UserImage> {
     private String id;
@@ -35,12 +37,12 @@ public class UserImage extends PartakeModel<UserImage> {
         this.createdAt = src.createdAt;
     }
 
-    public UserImage(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.userId = obj.optString("userId");
-        this.type = obj.getString("type");
-        if (obj.containsKey("createdAt"))
-            this.createdAt = new DateTime(obj.getLong("createdAt"));
+    public UserImage(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.userId = Strings.emptyToNull(obj.path("userId").asText());
+        this.type = obj.get("type").asText();
+        if (obj.has("createdAt"))
+            this.createdAt = new DateTime(obj.get("createdAt").asLong());
 
         // We don't create data from JSONObject.
     }
@@ -77,8 +79,8 @@ public class UserImage extends PartakeModel<UserImage> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("userId", userId);
         obj.put("type", type);

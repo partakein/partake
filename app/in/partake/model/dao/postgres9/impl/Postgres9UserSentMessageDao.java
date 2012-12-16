@@ -16,10 +16,10 @@ import in.partake.model.dto.UserSentMessage;
 
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityUserSentMessageMapper extends Postgres9EntityDataMapper<UserSentMessage> {
-    public UserSentMessage map(JSONObject obj) {
+    public UserSentMessage map(ObjectNode obj) {
         return new UserSentMessage(obj).freeze();
     }
 }

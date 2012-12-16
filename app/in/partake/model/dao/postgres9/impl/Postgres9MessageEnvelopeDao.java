@@ -1,5 +1,12 @@
 package in.partake.model.dao.postgres9.impl;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
@@ -12,10 +19,9 @@ import in.partake.model.dao.postgres9.Postgres9Entity;
 import in.partake.model.dao.postgres9.Postgres9EntityDao;
 import in.partake.model.dao.postgres9.Postgres9EntityDataMapper;
 import in.partake.model.dto.MessageEnvelope;
-import net.sf.json.JSONObject;
 
 class EntityMessageEnvelopeMapper extends Postgres9EntityDataMapper<MessageEnvelope> {
-    public MessageEnvelope map(JSONObject obj) {
+    public MessageEnvelope map(ObjectNode obj) {
         return new MessageEnvelope(obj).freeze();
     }
 
@@ -66,7 +72,17 @@ public class Postgres9MessageEnvelopeDao extends Postgres9Dao implements IMessag
         if (entity == null)
             return null;
 
-        JSONObject json = JSONObject.fromObject(new String(entity.getBody(), UTF8));
+
+        ObjectNode json;
+        try {
+            json = new ObjectMapper().readValue(new String(entity.getBody(), UTF8), ObjectNode.class);
+        } catch (JsonParseException e) {
+            throw new IllegalArgumentException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new DAOException(e);
+        }
         return new MessageEnvelope(json).freeze();
     }
 

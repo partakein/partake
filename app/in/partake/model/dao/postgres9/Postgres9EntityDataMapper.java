@@ -4,9 +4,13 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataMapper;
 import in.partake.model.dto.PartakeModel;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 
 // You should override map(Postgres9Entity) or map(JSONObject).
 public abstract class Postgres9EntityDataMapper<T extends PartakeModel<T>> implements DataMapper<Postgres9Entity, T> {
@@ -17,11 +21,20 @@ public abstract class Postgres9EntityDataMapper<T extends PartakeModel<T>> imple
         if (entity == null)
             return null;
         
-        JSONObject obj = JSONObject.fromObject(new String(entity.getBody(), UTF8));
+        ObjectNode obj;
+        try {
+            obj = new ObjectMapper().readValue(new String(entity.getBody(), UTF8), ObjectNode.class);
+        } catch (JsonParseException e) {
+            throw new IllegalArgumentException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new DAOException(e);
+        }
         return map(obj);
     }
     
-    public T map(JSONObject obj) {
+    public T map(ObjectNode obj) {
         throw new UnsupportedOperationException();
     }
 

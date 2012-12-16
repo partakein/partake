@@ -1,5 +1,8 @@
 package in.partake.controller.api.account;
 
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
 import play.mvc.Result;
 import in.partake.base.PartakeException;
 import in.partake.controller.api.AbstractPartakeAPI;
@@ -9,7 +12,6 @@ import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dto.UserCalendarLink;
-import net.sf.json.JSONObject;
 
 public class RevokeCalendarAPI extends AbstractPartakeAPI {
 
@@ -24,7 +26,7 @@ public class RevokeCalendarAPI extends AbstractPartakeAPI {
 
         String newCalendarId = new RevokeCalendarAPITransaction(user).execute();
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("calendarId", newCalendarId);
         return renderOK(obj);
     }

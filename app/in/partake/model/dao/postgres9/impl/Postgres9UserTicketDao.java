@@ -22,10 +22,10 @@ import in.partake.model.dto.auxiliary.ParticipationStatus;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEnrollmentMapper extends Postgres9EntityDataMapper<UserTicket> {
-    public UserTicket map(JSONObject obj) {
+    public UserTicket map(ObjectNode obj) {
         return new UserTicket(obj).freeze();
     }
 }

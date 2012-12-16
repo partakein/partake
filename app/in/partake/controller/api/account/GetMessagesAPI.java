@@ -13,10 +13,11 @@ import in.partake.model.daofacade.MessageDAOFacade;
 
 import java.util.List;
 
-import play.mvc.Result;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 /**
  * Retrieves images which is uploaded by owners.
@@ -44,9 +45,9 @@ public class GetMessagesAPI extends AbstractPartakeAPI {
         GetMessagesTransaction transaction = new GetMessagesTransaction(user, offset, limit);
         transaction.execute();
 
-        JSONArray messages = Util.toSafeJSONArray(transaction.getUserMessageExs());
+        ArrayNode messages = Util.toSafeJSONArray(transaction.getUserMessageExs());
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("messages", messages);
         obj.put("totalMessagesCount", transaction.getCount());
         return renderOK(obj);

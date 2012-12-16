@@ -2,9 +2,12 @@ package in.partake.model.dto;
 
 import in.partake.base.DateTime;
 import in.partake.model.dto.auxiliary.MessageDelivery;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import com.google.common.base.Strings;
 
 public class TwitterMessage extends PartakeModel<TwitterMessage> {
     private String id;
@@ -27,15 +30,15 @@ public class TwitterMessage extends PartakeModel<TwitterMessage> {
         this.modifiedAt = modifiedAt;
     }
 
-    public TwitterMessage(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.userId = obj.optString("userId", null);
-        this.message = obj.getString("message");
-        this.delivery = MessageDelivery.safeValueOf(obj.getString("delivery"));
-        if (obj.containsKey("createdAt"))
-            this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+    public TwitterMessage(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.userId = Strings.emptyToNull(obj.path("userId").asText());
+        this.message = obj.get("message").asText();
+        this.delivery = MessageDelivery.safeValueOf(obj.get("delivery").asText());
+        if (obj.has("createdAt"))
+            this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -44,12 +47,12 @@ public class TwitterMessage extends PartakeModel<TwitterMessage> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("userId", userId);
         obj.put("message", message);
-        obj.put("delivery", delivery);
+        obj.put("delivery", delivery.toString());
         obj.put("createdAt", createdAt.getTime());
         if (modifiedAt != null)
             obj.put("modifiedAt", modifiedAt.getTime());

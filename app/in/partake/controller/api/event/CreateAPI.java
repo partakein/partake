@@ -17,9 +17,9 @@ import in.partake.resource.UserErrorCode;
 import java.util.Calendar;
 import java.util.Collections;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import play.mvc.Result;
 
@@ -74,7 +74,7 @@ public class CreateAPI extends AbstractPartakeAPI {
         }
 
         String eventId = new CreateTransaction(embryo).execute();
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("eventId", eventId);
         return renderOK(obj);
     }

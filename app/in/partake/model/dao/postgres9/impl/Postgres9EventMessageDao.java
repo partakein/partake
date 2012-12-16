@@ -20,10 +20,10 @@ import in.partake.model.dto.EventMessage;
 
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEventMessageMapper extends Postgres9EntityDataMapper<EventMessage> {
-    public EventMessage map(JSONObject obj) {
+    public EventMessage map(ObjectNode obj) {
         return new EventMessage(obj).freeze();
     }
 }

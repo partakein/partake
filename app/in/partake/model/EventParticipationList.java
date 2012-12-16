@@ -2,8 +2,9 @@ package in.partake.model;
 
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class EventParticipationList {
     private List<EventParticipation> participations;
@@ -14,14 +15,13 @@ public class EventParticipationList {
         this.numEvents = numEvents;
     }
 
-    public JSONObject toSafeJSON() {
-        JSONArray events = new JSONArray();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
+        obj.put("numEvents", numEvents);
+        ArrayNode events = obj.putArray("participations");
+
         for (EventParticipation participation : participations)
             events.add(participation.toSafeJSON());
-
-        JSONObject obj = new JSONObject();
-        obj.put("numEvents", numEvents);
-        obj.put("participations", events);
 
         return obj;
     }

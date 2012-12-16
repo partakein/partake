@@ -22,10 +22,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEventTicketMapper extends Postgres9EntityDataMapper<EventTicket> {
-    public EventTicket map(JSONObject obj) {
+	public EventTicket map(ObjectNode obj) {
         return new EventTicket(obj).freeze();
     }
 }

@@ -1,7 +1,9 @@
 package in.partake.model.dao.auxiliary;
 
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.model.dto.Event;
-import net.sf.json.JSONObject;
 
 public class EventStatus {
     public Event event;
@@ -23,8 +25,8 @@ public class EventStatus {
         this.numCancelledUsers = numCancelledUsers;
     }
 
-    public JSONObject toSafeJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("event", event.toSafeJSON());
         obj.put("isAmountInfinite", isAmountInfinite);
         obj.put("amount", amount);

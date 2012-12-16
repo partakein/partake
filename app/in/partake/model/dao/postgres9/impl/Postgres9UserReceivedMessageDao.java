@@ -21,10 +21,10 @@ import in.partake.model.dto.UserReceivedMessage;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityUserReceivedMessageMapper extends Postgres9EntityDataMapper<UserReceivedMessage> {
-    public UserReceivedMessage map(JSONObject obj) {
+    public UserReceivedMessage map(ObjectNode obj) {
         return new UserReceivedMessage(obj).freeze();
     }
 }

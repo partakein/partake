@@ -22,12 +22,11 @@ import in.partake.model.dto.EventTicket;
 import in.partake.model.fixture.impl.EventTestDataProvider;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Test;
 
 
@@ -46,9 +45,9 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         assertPublicEventsAreFound(json);
-        assertThat(json.containsKey("reason"), equalTo(false));
+        assertThat(json.has("reason"), equalTo(false));
     }
 
     @Test
@@ -63,9 +62,9 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         assertPublicEventsAreFound(json);
-        assertThat(json.containsKey("reason"), equalTo(false));
+        assertThat(json.has("reason"), equalTo(false));
     }
 
     @Test
@@ -79,9 +78,9 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         assertPublicEventsAreFound(json);
-        assertThat(json.containsKey("reason"), equalTo(false));
+        assertThat(json.has("reason"), equalTo(false));
 
     }
 
@@ -97,8 +96,8 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
-        assertThat(json.containsKey("reason"), equalTo(false));
+        ObjectNode json = getJSON(proxy);
+        assertThat(json.has("reason"), equalTo(false));
         assertPublicEventsAreFound(json);
     }
 
@@ -118,7 +117,7 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         assertOnlyBeforeDeadlineAreFound(json);
     }
 
@@ -136,13 +135,12 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         DateTime now = TimeUtil.getCurrentDateTime();
         boolean findEventWhichIsAfterDeadline = false;
         boolean findEventWhichIsBeforeDeadline = false;
-        for (@SuppressWarnings("unchecked")Iterator<JSONObject> iter = json.getJSONArray("events").iterator(); iter.hasNext();) {
-            JSONObject eventJSON = iter.next();
-            Event event = loadEvent(eventJSON.getString("id"));
+        for (JsonNode eventJSON : json.get("events")) {
+            Event event = loadEvent(eventJSON.get("id").asText());
             List<EventTicket> tickets = loadEventTickets(event.getId());
             DateTime deadline = event.acceptsSomeTicketsTill(tickets);
 
@@ -173,7 +171,7 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
+        ObjectNode json = getJSON(proxy);
         assertOnlyBeforeDeadlineAreFound(json);
     }
 
@@ -280,9 +278,9 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
-        assertThat(json.containsKey("reason"), equalTo(false));
-        assertThat(json.getJSONArray("events").size(), equalTo(10));
+        ObjectNode json = getJSON(proxy);
+        assertThat(json.has("reason"), equalTo(false));
+        assertThat(json.get("events").size(), equalTo(10));
     }
 
     @Test
@@ -330,30 +328,25 @@ public class SearchAPITest extends APIControllerTest {
         proxy.execute();
 
         assertResultOK(proxy);
-        JSONObject json = getJSON(proxy);
-        assertThat(json.containsKey("reason"), equalTo(false));
-        assertThat(json.getJSONArray("events").size(), equalTo(10));
+        ObjectNode json = getJSON(proxy);
+        assertThat(json.has("reason"), equalTo(false));
+        assertThat(json.get("events").size(), equalTo(10));
     }
 
     // =========================================================================
     // utility
 
-    private void assertPublicEventsAreFound(JSONObject json) {
-        boolean findEvents = false;
-        for (@SuppressWarnings("unchecked") Iterator<JSONObject> iter = json.getJSONArray("events").iterator(); iter.hasNext();) {
-            iter.next();
-            findEvents = true;
-        }
-        assertTrue(findEvents);
+    private void assertPublicEventsAreFound(ObjectNode json) {
+        assertTrue(json.get("events").isArray());
+        assertThat(json.get("events").size(), is(greaterThan(0)));
     }
 
-    private void assertOnlyBeforeDeadlineAreFound(JSONObject json) throws PartakeException, DAOException {
+    private void assertOnlyBeforeDeadlineAreFound(ObjectNode json) throws PartakeException, DAOException {
         DateTime now = TimeUtil.getCurrentDateTime();
 
         boolean findEvents = false;
-        for (@SuppressWarnings("unchecked")Iterator<JSONObject> iter = json.getJSONArray("events").iterator(); iter.hasNext();) {
-            JSONObject eventJSON = iter.next();
-            Event event = loadEvent(eventJSON.getString("id"));
+        for (JsonNode node : json.get("events")) {
+            Event event = loadEvent(node.get("id").asText());
             List<EventTicket> tickets = loadEventTickets(event.getId());
             DateTime deadline = event.acceptsSomeTicketsTill(tickets);
             assertThat("締め切り後のイベントが見つかってしまいました", deadline.getTime(), is(greaterThan(now.getTime())));

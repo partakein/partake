@@ -26,7 +26,7 @@ public class CopyAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        String eventId = getJSON(proxy).getString("eventId");
+        String eventId = getJSON(proxy).get("eventId").asText();
 
         Event originalEvent = loadEvent(DEFAULT_EVENT_ID);
         List<EventTicket> originalTickets = loadEventTickets(DEFAULT_EVENT_ID);
@@ -54,7 +54,7 @@ public class CopyAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        String eventId = getJSON(proxy).getString("eventId");
+        String eventId = getJSON(proxy).get("eventId").asText();
 
         Event event = loadEvent(eventId);
 

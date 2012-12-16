@@ -23,8 +23,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
 import play.mvc.Result;
 
 class TicketAndStatus {
@@ -62,16 +64,16 @@ public class GetTicketsAPI extends AbstractPartakeAPI {
         GetEnrollmentsTransaction transaction = new GetEnrollmentsTransaction(user.getId(), queryType, offset, limit);
         transaction.execute();
 
-        JSONArray statuses = new JSONArray();
+        ArrayNode statuses = new ArrayNode(JsonNodeFactory.instance);
         for (TicketAndStatus ticketAndStatus : transaction.getStatuses()) {
-            JSONObject obj = new JSONObject();
+            ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
             obj.put("ticket", ticketAndStatus.ticket.toSafeJSON());
             obj.put("event", ticketAndStatus.event.toSafeJSON());
             obj.put("status", ticketAndStatus.status.toString());
             statuses.add(obj);
         }
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("totalTicketCount", transaction.getTotalTicketCount());
         obj.put("ticketStatuses", statuses);
 

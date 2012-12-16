@@ -16,8 +16,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -90,7 +89,7 @@ public abstract class AbstractPartakeModelTest<T extends PartakeModel<T>> extend
     @Test
     public final void testToCheckJSON() throws Exception {
         List<T> samples = getTestDataProvider().createSamples();
-        Constructor<?> ctor = samples.get(0).getClass().getConstructor(JSONObject.class);
+        Constructor<?> ctor = samples.get(0).getClass().getConstructor(ObjectNode.class);
 
         assumeThat(samples.get(0).getClass(), not(isIn(new Object[] { UserImage.class, UserThumbnail.class })));
 
