@@ -80,7 +80,9 @@ public class ApplyAPI extends AbstractPartakeAPI {
         } catch (JsonMappingException e) {
             throw new PartakeException(UserErrorCode.INVALID_ENQUETE_ANSWERS);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            // I can not find Exception which suits in this situation,
+            // so I use RuntimeException. 2012/Dec/16 Kengo TODA
+            throw new RuntimeException(e);
         }
     }
 }
