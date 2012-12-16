@@ -8,7 +8,7 @@ import in.partake.model.access.DBAccess;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventAccess;
-import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dao.auxiliary.EventFilterCondition;
 import in.partake.model.dto.Event;
 import in.partake.model.fixture.impl.EventTestDataProvider;
 
