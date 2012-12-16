@@ -1,4 +1,4 @@
-package in.partake.model.dao.aux;
+package in.partake.model.dao.auxiliary;
 
 public enum EventFilterCondition {
     DRAFT_EVENT_ONLY,

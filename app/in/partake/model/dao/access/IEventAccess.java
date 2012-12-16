@@ -3,7 +3,7 @@ package in.partake.model.dao.access;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.PartakeConnection;
-import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dao.auxiliary.EventFilterCondition;
 import in.partake.model.dto.Event;
 
 import java.util.List;
