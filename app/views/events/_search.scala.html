@@ -137,7 +137,7 @@ function doSearch() {
     var query = $('#search-term').val();
     var category = $('#category option:selected').val() || 'all';
     var sortOrder = $('#sort-order option:selected').val() || 'createdAt';
-    var beforeDeadlineOnly = $('#before-deadline-only').is(':checked') || 'true';
+    var beforeDeadlineOnly = $('#before-deadline-only').is(':checked');
 
     partake.event.search(query, category, sortOrder, beforeDeadlineOnly, 30)
     .done(function(json) {
