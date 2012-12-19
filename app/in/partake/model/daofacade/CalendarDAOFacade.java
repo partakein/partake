@@ -6,7 +6,7 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventAccess;
-import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dao.auxiliary.EventFilterCondition;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.auxiliary.EventCategory;
 import net.fortuna.ical4j.model.Calendar;

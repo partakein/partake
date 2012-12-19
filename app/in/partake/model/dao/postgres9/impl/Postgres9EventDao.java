@@ -7,7 +7,7 @@ import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.MapperDataIterator;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventAccess;
-import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dao.auxiliary.EventFilterCondition;
 import in.partake.model.dao.postgres9.Postgres9Connection;
 import in.partake.model.dao.postgres9.Postgres9Dao;
 import in.partake.model.dao.postgres9.Postgres9DataIterator;

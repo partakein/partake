@@ -11,7 +11,7 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IEventAccess;
 import in.partake.model.dao.access.IUserAccess;
-import in.partake.model.dao.aux.EventFilterCondition;
+import in.partake.model.dao.auxiliary.EventFilterCondition;
 import in.partake.model.dto.ConfigurationItem;
 import in.partake.resource.ConfigurationKeyConstants;
 import play.mvc.Result;

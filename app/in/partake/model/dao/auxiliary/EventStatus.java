@@ -1,4 +1,4 @@
-package in.partake.model.dao.aux;
+package in.partake.model.dao.auxiliary;
 
 import in.partake.model.dto.Event;
 import net.sf.json.JSONObject;
