@@ -23,7 +23,7 @@
             if (spinner.length == 0 || !spinner.hasClass('spinner')) {
                 spinner = document.createElement('img');
                 spinner.className = 'spinner';
-                spinner.src = "/img/spinner.gif";
+                spinner.src = "/images/spinner.gif";
                 spinner = $(spinner);
                 spinner.insertAfter(targetElement);
             }
