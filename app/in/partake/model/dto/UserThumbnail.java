@@ -4,9 +4,9 @@ import in.partake.base.DateTime;
 
 import java.util.Arrays;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class UserThumbnail extends PartakeModel<UserThumbnail> {
     private String id;
@@ -27,12 +27,12 @@ public class UserThumbnail extends PartakeModel<UserThumbnail> {
         this(src.id, src.userId, src.type, src.data, src.createdAt);
     }
 
-    public UserThumbnail(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.userId = obj.optString("userId");
-        this.type = obj.getString("type");
-        if (obj.containsKey("createdAt"))
-            this.createdAt = new DateTime(obj.getLong("createdAt"));
+    public UserThumbnail(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.userId = obj.path("userId").asText();
+        this.type = obj.get("type").asText();
+        if (obj.has("createdAt"))
+            this.createdAt = new DateTime(obj.get("createdAt").asLong());
 
         // We don't create data from JSONObject.
     }
@@ -69,8 +69,8 @@ public class UserThumbnail extends PartakeModel<UserThumbnail> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("userId", userId);
         obj.put("type", type);

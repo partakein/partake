@@ -1,8 +1,8 @@
 package in.partake.model.dto;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class UserCalendarLink extends PartakeModel<UserCalendarLink> {
     private String id;
@@ -26,9 +26,9 @@ public class UserCalendarLink extends PartakeModel<UserCalendarLink> {
         this.userId = src.userId;
     }
 
-    public UserCalendarLink(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.userId = obj.getString("userId");
+    public UserCalendarLink(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.userId = obj.get("userId").asText();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class UserCalendarLink extends PartakeModel<UserCalendarLink> {
         return id;
     }
 
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("userId", userId);
         return obj;

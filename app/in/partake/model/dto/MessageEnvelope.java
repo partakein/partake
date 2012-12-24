@@ -2,9 +2,12 @@ package in.partake.model.dto;
 
 import in.partake.base.DateTime;
 import in.partake.base.TimeUtil;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import com.google.common.base.Strings;
 
 /**
  * Message を、「他に人に送る」ことを表現するクラス。
@@ -85,25 +88,25 @@ public class MessageEnvelope extends PartakeModel<MessageEnvelope> {
                 envelope.numTried, envelope.lastTriedAt, envelope.invalidAfter, envelope.tryAfter, envelope.createdAt, envelope.modifiedAt);
     }
 
-    public MessageEnvelope(JSONObject json) {
-        this.id = json.getString("id");
+    public MessageEnvelope(ObjectNode json) {
+        this.id = json.get("id").asText();
 
-        this.userMessageId = json.optString("userMessageId", null);
-        this.twitterMessageId = json.optString("twitterMessageId", null);
-        this.userNotificationId = json.optString("userNotificationId", null);
+        this.userMessageId = Strings.emptyToNull(json.path("userMessageId").asText());
+        this.twitterMessageId = Strings.emptyToNull(json.path("twitterMessageId").asText());
+        this.userNotificationId = Strings.emptyToNull(json.path("userNotificationId").asText());
 
-        this.numTried = json.getInt("numTried");
+        this.numTried = json.get("numTried").asInt();
 
-        if (json.containsKey("lastTriedAt"))
-            this.lastTriedAt = new DateTime(json.getLong("lastTriedAt"));
-        if (json.containsKey("invalidAfter"))
-            this.invalidAfter = new DateTime(json.getLong("invalidAfter"));
-        if (json.containsKey("tryAfter"))
-            this.tryAfter = new DateTime(json.getLong("tryAfter"));
-        if (json.containsKey("createdAt"))
-            this.createdAt = new DateTime(json.getLong("createdAt"));
-        if (json.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(json.getLong("modifiedAt"));
+        if (json.has("lastTriedAt"))
+            this.lastTriedAt = new DateTime(json.get("lastTriedAt").asLong());
+        if (json.has("invalidAfter"))
+            this.invalidAfter = new DateTime(json.get("invalidAfter").asLong());
+        if (json.has("tryAfter"))
+            this.tryAfter = new DateTime(json.get("tryAfter").asLong());
+        if (json.has("createdAt"))
+            this.createdAt = new DateTime(json.get("createdAt").asLong());
+        if (json.has("modifiedAt"))
+            this.modifiedAt = new DateTime(json.get("modifiedAt").asLong());
     }
 
     @Override
@@ -112,8 +115,8 @@ public class MessageEnvelope extends PartakeModel<MessageEnvelope> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
 
         if (userMessageId != null)

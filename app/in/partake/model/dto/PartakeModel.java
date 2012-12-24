@@ -1,6 +1,6 @@
 package in.partake.model.dto;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * PARTAKE で用いるモデルのベースクラス。
@@ -28,7 +28,7 @@ public abstract class PartakeModel<T extends PartakeModel<?>> {
     public abstract Object getPrimaryKey();
 
     /** @return a json object. */
-    public abstract JSONObject toJSON();
+    public abstract ObjectNode toJSON();
 
     // ----------------------------------------------------------------------
     // frozen

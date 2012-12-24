@@ -1,9 +1,10 @@
 package in.partake.model.dto;
 
 import in.partake.base.DateTime;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class User extends PartakeModel<User> {
     private String id;
@@ -24,13 +25,13 @@ public class User extends PartakeModel<User> {
         this(user.id, user.screenName, user.profileImageURL, user.createdAt, user.modifiedAt);
     }
 
-    public User(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.screenName = obj.getString("screenName");
-        this.profileImageURL = obj.getString("profileImageURL");
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+    public User(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.screenName = obj.get("screenName").asText();
+        this.profileImageURL = obj.get("profileImageURL").asText();
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -43,16 +44,16 @@ public class User extends PartakeModel<User> {
      *
      * @return
      */
-    public JSONObject toSafeJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("screenName", screenName);
         obj.put("profileImageURL", profileImageURL);
         return obj;
     }
 
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("screenName", screenName);
         obj.put("profileImageURL", profileImageURL);

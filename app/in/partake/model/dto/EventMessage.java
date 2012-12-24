@@ -1,9 +1,10 @@
 package in.partake.model.dto;
 
 import in.partake.base.DateTime;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * Message corresponding to an event.
@@ -35,14 +36,14 @@ public class EventMessage extends PartakeModel<EventMessage> {
         this.modifiedAt = modifiedAt;
     }
 
-    public EventMessage(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.eventId = obj.getString("eventId");
-        this.senderId = obj.getString("senderId");
-        this.messageId = obj.getString("messageId");
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+    public EventMessage(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.eventId = obj.get("eventId").asText();
+        this.senderId = obj.get("senderId").asText();
+        this.messageId = obj.get("messageId").asText();
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -51,8 +52,8 @@ public class EventMessage extends PartakeModel<EventMessage> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("eventId", eventId);
         obj.put("senderId", senderId);

@@ -1,5 +1,7 @@
 package in.partake.model.dao.postgres9.impl;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
@@ -13,10 +15,9 @@ import in.partake.model.dao.postgres9.Postgres9EntityDao;
 import in.partake.model.dao.postgres9.Postgres9EntityDataMapper;
 import in.partake.model.dao.postgres9.Postgres9IndexDao;
 import in.partake.model.dto.TwitterMessage;
-import net.sf.json.JSONObject;
 
 class EntityTwitterMessageMapper extends Postgres9EntityDataMapper<TwitterMessage> {
-    public TwitterMessage map(JSONObject obj) {
+    public TwitterMessage map(ObjectNode obj) {
         return new TwitterMessage(obj).freeze();
     }
 }

@@ -17,14 +17,18 @@ import in.partake.model.dto.UserPreference;
 import in.partake.model.dto.auxiliary.ParticipationStatus;
 import in.partake.resource.UserErrorCode;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import play.mvc.Result;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 public class ApplyAPI extends AbstractPartakeAPI {
 
@@ -36,7 +40,6 @@ public class ApplyAPI extends AbstractPartakeAPI {
     protected Result doExecute() throws PartakeException, DAOException {
         UserEx user = ensureLogin();
         ensureValidSessionToken();
-
         UUID ticketId = getValidTicketIdParameter();
         String status = getParameter("status");
         String comment = getParameter("comment");
@@ -64,10 +67,22 @@ public class ApplyAPI extends AbstractPartakeAPI {
 
     private Map<UUID, List<String>> convertToMap(String jsonStr) throws PartakeException {
         try {
-            JSONObject map = JSONObject.fromObject(jsonStr);
+            ObjectNode map;
+            if (jsonStr == null) {
+                map = new ObjectNode(JsonNodeFactory.instance);
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                map = mapper.readValue(jsonStr, ObjectNode.class);
+            }
             return Util.parseEnqueteAnswers(map);
-        } catch (JSONException e) {
+        } catch (JsonParseException e) {
             throw new PartakeException(UserErrorCode.INVALID_ENQUETE_ANSWERS);
+        } catch (JsonMappingException e) {
+            throw new PartakeException(UserErrorCode.INVALID_ENQUETE_ANSWERS);
+        } catch (IOException e) {
+            // I can not find Exception which suits in this situation,
+            // so I use RuntimeException. 2012/Dec/16 Kengo TODA
+            throw new RuntimeException(e);
         }
     }
 }

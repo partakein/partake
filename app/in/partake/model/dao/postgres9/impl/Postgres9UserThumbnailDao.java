@@ -15,19 +15,32 @@ import in.partake.model.dao.postgres9.Postgres9IndexDao;
 import in.partake.model.dao.postgres9.Postgres9StatementAndResultSet;
 import in.partake.model.dto.UserThumbnail;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityThumbnailMapper extends Postgres9EntityDataMapper<UserThumbnail> {
     public UserThumbnail map(Postgres9Entity entity) throws DAOException {
         if (entity == null)
             return null;
 
-        JSONObject obj = JSONObject.fromObject(new String(entity.getBody(), UTF8));
+        ObjectNode obj;
+        try {
+            obj = new ObjectMapper().readValue(new String(entity.getBody(), UTF8), ObjectNode.class);
+        } catch (JsonParseException e) {
+            throw new IllegalArgumentException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            throw new DAOException(e);
+        }
         UserThumbnail thumbnailData = new UserThumbnail(obj);
         thumbnailData.setData(entity.getOpt());
 

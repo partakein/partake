@@ -15,10 +15,11 @@ import in.partake.resource.UserErrorCode;
 
 import java.util.List;
 
-import play.mvc.Result;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 public class GetNotificationsAPI extends AbstractPartakeAPI {
 
@@ -38,9 +39,9 @@ public class GetNotificationsAPI extends AbstractPartakeAPI {
         limit = Util.ensureRange(limit, 1, 100);
 
         List<EventTicketNotification> notifications = new GetNotificationsAccess(user, eventId, offset, limit).execute();
-        JSONArray array = Util.toJSONArray(notifications);
+        ArrayNode array = Util.toJSONArray(notifications);
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("notifications", array);
         return renderOK(obj);
     }

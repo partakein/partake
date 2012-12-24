@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import com.google.common.base.Strings;
 
 /**
  * @author shinyak
@@ -41,21 +44,21 @@ public class UserSentMessage extends PartakeModel<UserSentMessage> {
         this.modifiedAt = modifiedAt;
     }
 
-    public UserSentMessage(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.senderId = obj.getString("senderId");
+    public UserSentMessage(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.senderId = obj.get("senderId").asText();
         this.receiverIds = new ArrayList<String>();
-        JSONArray array = obj.getJSONArray("receiverIds");
+        JsonNode array = obj.get("receiverIds");
         if (array != null) {
             for (int i = 0; i < array.size(); ++i)
-                this.receiverIds.add(array.getString(i));
+                this.receiverIds.add(array.get(i).asText());
         }
-        this.eventId = obj.optString("eventId", null);
-        this.messageId = obj.getString("messageId");
+        this.eventId = Strings.emptyToNull(obj.path("eventId").asText());
+        this.messageId = obj.get("messageId").asText();
 
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -64,15 +67,14 @@ public class UserSentMessage extends PartakeModel<UserSentMessage> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("senderId", senderId);
 
-        JSONArray array = new JSONArray();
+        ArrayNode array = obj.putArray("receiverIds");
         for (String receiverId : receiverIds)
             array.add(receiverId);
-        obj.put("receiverIds", array);
 
         if (eventId != null)
             obj.put("eventId", eventId);

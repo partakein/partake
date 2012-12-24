@@ -11,9 +11,9 @@ import in.partake.model.fixture.TestDataProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,23 +28,23 @@ public class GetAPITest extends APIControllerTest {
 
         // Check JSON
 
-        JSONObject obj = getJSON(proxy);
-        assertThat((String) obj.get("id"), is(TestDataProvider.DEFAULT_USER_ID));
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("id").asText(), is(TestDataProvider.DEFAULT_USER_ID));
 
         // TODO: Checks Twitter?
 
         // Checks UserPreference.
-        JSONObject prefObj = obj.getJSONObject("preference");
+        JsonNode prefObj = obj.get("preference");
         UserPreference pref = UserPreference.getDefaultPreference(TestDataProvider.DEFAULT_USER_ID);
-        Assert.assertEquals(pref.isProfilePublic(), prefObj.getBoolean("profilePublic"));
-        Assert.assertEquals(pref.isReceivingTwitterMessage(), prefObj.getBoolean("receivingTwitterMessage"));
-        Assert.assertEquals(pref.tweetsAttendanceAutomatically(), prefObj.getBoolean("tweetingAttendanceAutomatically"));
+        Assert.assertEquals(pref.isProfilePublic(), prefObj.get("profilePublic").asBoolean());
+        Assert.assertEquals(pref.isReceivingTwitterMessage(), prefObj.get("receivingTwitterMessage").asBoolean());
+        Assert.assertEquals(pref.tweetsAttendanceAutomatically(), prefObj.get("tweetingAttendanceAutomatically").asBoolean());
 
         // Checks OpenIds
-        JSONArray array = obj.getJSONArray("openIds");
+        JsonNode array = obj.get("openIds");
         List<String> openIds = new ArrayList<String>();
         for (int i = 0; i < array.size(); ++i)
-            openIds.add(array.getJSONObject(i).getString("identifier"));
+            openIds.add(array.get(i).get("identifier").asText());
 
         assertThat(openIds, hasItem(TestDataProvider.DEFAULT_USER_OPENID_IDENTIFIER));
         assertThat(openIds, hasItem(TestDataProvider.DEFAULT_USER_OPENID_ALTERNATIVE_IDENTIFIER));

@@ -6,7 +6,8 @@
   ticketHolderListMap: java.util.Map[java.util.UUID, in.partake.model.EventTicketHolderList],
   comments: java.util.List[in.partake.model.EventCommentEx],
   eventMessages: java.util.List[in.partake.model.EventMessageEx])
-@import net.sf.json.JSONObject
+@import org.codehaus.jackson.node.ObjectNode
+@import org.codehaus.jackson.node.JsonNodeFactory
 @import in.partake.model.dto.auxiliary._
 @import in.partake.base.TimeUtil
 
@@ -14,10 +15,10 @@
 @* TODO: We need refactoring here. *@
 // ----- Enrollment Data
 var enrollments = @{
-    val userTicketMapJSON = new JSONObject()
+    val userTicketMapJSON = new ObjectNode(JsonNodeFactory.instance)
     for (entry <- userTicketMap.entrySet()) {
         if (entry.getKey() != null && entry.getValue() != null)
-            userTicketMapJSON.put(entry.getKey().toString(), JSONObject.fromObject(entry.getValue().toJSON()));
+            userTicketMapJSON.put(entry.getKey().toString(), entry.getValue().toJSON());
     }
     Html(userTicketMapJSON.toString())
 };
@@ -42,14 +43,14 @@ var enqueteTypes = [
 
 // ----- Reservation Acceptance
 var reservationForbiddenMap = @{
-    val reservationForbiddenMap = new JSONObject()
+    val reservationForbiddenMap = new ObjectNode(JsonNodeFactory.instance)
     for (ticket <- event.getTickets())
-        reservationForbiddenMap.put(ticket.getId(), TicketReservationEnd.TILL_NONE.equals(ticket.getReservationEnd()))
+        reservationForbiddenMap.put(ticket.getId().toString(), TicketReservationEnd.TILL_NONE.equals(ticket.getReservationEnd()))
     Html(reservationForbiddenMap.toString())
 }
 
 var reservationTimeoverMap = @{
-    val reservationTimeoverMap = new JSONObject()
+    val reservationTimeoverMap = new ObjectNode(JsonNodeFactory.instance)
     for (ticket <- event.getTickets()) {
         val b = TimeUtil.getCurrentDateTime().isAfter(ticket.acceptsReservationTill(event))
         reservationTimeoverMap.put(ticket.getId().toString(), b);

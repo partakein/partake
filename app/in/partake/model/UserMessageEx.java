@@ -1,6 +1,7 @@
 package in.partake.model;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.SafeJSONable;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.Message;
@@ -31,8 +32,8 @@ public class UserMessageEx extends UserReceivedMessage implements SafeJSONable {
     }
 
     @Override
-    public JSONObject toSafeJSON() {
-        JSONObject obj = super.toSafeJSON();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = super.toSafeJSON();
 
         // TODO: We don't need the detailed information of the event.
         obj.put("event", event.toSafeJSON());

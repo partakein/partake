@@ -1,7 +1,7 @@
 package in.partake.base;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 public interface SafeJSONable {
-    public JSONObject toSafeJSON();
+    public ObjectNode toSafeJSON();
 }

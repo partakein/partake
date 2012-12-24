@@ -7,8 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class EnqueteQuestion implements JSONable {
     private UUID id;
@@ -24,28 +26,27 @@ public class EnqueteQuestion implements JSONable {
             this.options = new ArrayList<String>(options);
     }
 
-    public EnqueteQuestion(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.question = obj.optString("question", "");
-        this.type = EnqueteAnswerType.safeValueOf(obj.getString("type"));
+    public EnqueteQuestion(JsonNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.question = obj.path("question").asText();
+        this.type = EnqueteAnswerType.safeValueOf(obj.get("type").asText());
         this.options = new ArrayList<String>();
 
-        JSONArray array = obj.getJSONArray("options");
+        JsonNode array = obj.get("options");
         for (int i = 0; i < array.size(); ++i)
-            options.add(array.getString(i));
+            options.add(array.get(i).asText());
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("question", question);
         obj.put("type", type.toString());
 
-        JSONArray array = new JSONArray();
+        ArrayNode array = obj.putArray("options");
         for (String str : options)
             array.add(str);
-        obj.put("options", array);
 
         return obj;
     }

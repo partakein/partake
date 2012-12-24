@@ -22,9 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,10 +67,10 @@ public class GetEventsAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getInt("totalEventCount"), is(N - 6));
-        assertThat(obj.getJSONArray("eventStatuses"), is(not(nullValue())));
-        JSONArray array = obj.getJSONArray("eventStatuses");
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("totalEventCount").asInt(), is(N - 6));
+        assertThat(obj.path("eventStatuses"), is(not(nullValue())));
+        JsonNode array = obj.get("eventStatuses");
         assertThat(array.size(), is(10));
 
         int pos = N - 1;
@@ -79,9 +78,9 @@ public class GetEventsAPITest extends APIControllerTest {
             while (pos % 8 == 0 || pos % 8 == 1)
                 pos -= 1;
 
-            JSONObject eventStatus = array.getJSONObject(i);
-            JSONObject event = eventStatus.getJSONObject("event");
-            assertThat(event.getString("id"), is(ids.get(pos)));
+            JsonNode eventStatus = array.get(i);
+            JsonNode event = eventStatus.get("event");
+            assertThat(event.get("id").asText(), is(ids.get(pos)));
 
             pos -= 1;
         }
@@ -93,10 +92,10 @@ public class GetEventsAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getInt("totalEventCount"), is(N - 6));
-        assertThat(obj.getJSONArray("eventStatuses"), is(not(nullValue())));
-        JSONArray array = obj.getJSONArray("eventStatuses");
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("totalEventCount").asInt(), is(N - 6));
+        assertThat(obj.path("eventStatuses"), is(not(nullValue())));
+        JsonNode array = obj.get("eventStatuses");
         assertThat(array.size(), is(10));
 
         int pos = N - 1;
@@ -104,9 +103,9 @@ public class GetEventsAPITest extends APIControllerTest {
             while (pos % 8 == 0 || pos % 8 == 1)
                 pos -= 1;
 
-            JSONObject eventStatus = array.getJSONObject(i);
-            JSONObject event = eventStatus.getJSONObject("event");
-            assertThat(event.getString("id"), is(ids.get(pos)));
+            JsonNode eventStatus = array.get(i);
+            JsonNode event = eventStatus.get("event");
+            assertThat(event.get("id").asText(), is(ids.get(pos)));
 
             pos -= 1;
         }

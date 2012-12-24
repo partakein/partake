@@ -8,7 +8,8 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 
@@ -33,15 +34,15 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
      * @param obj
      * @return
      */
-    protected Result renderJSON(JSONObject obj) {
+    protected Result renderJSON(ObjectNode obj) {
         return renderJSON(obj, OK);
     }
 
-    protected Result renderJSON(JSONObject obj, int status) {
+    protected Result renderJSON(ObjectNode obj, int status) {
         return renderJSONWith(obj, status, "application/json; charset=utf-8");
     }
 
-    protected Result renderJSONWith(JSONObject obj, int status, String contentType) {
+    protected Result renderJSONWith(ObjectNode obj, int status, String contentType) {
         assert obj != null;
         response().setContentType(contentType);
         response().setHeader("Cache-Control", "no-cache");
@@ -54,7 +55,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
      * @return
      */
     protected Result renderOK() {
-        return renderOK(new JSONObject());
+        return renderOK(new ObjectNode(JsonNodeFactory.instance));
     }
 
     /**
@@ -62,8 +63,8 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
      * @param obj
      * @return
      */
-    protected Result renderOK(JSONObject obj) {
-        if (obj.containsKey("result"))
+    protected Result renderOK(ObjectNode obj) {
+        if (obj.has("result"))
             throw new RuntimeException("obj should not contain result");
 
         obj.put("result", "ok");
@@ -71,8 +72,8 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     @Deprecated
-    protected Result renderOKWith(JSONObject obj, String contentType) {
-        if (obj.containsKey("result"))
+    protected Result renderOKWith(ObjectNode obj, String contentType) {
+        if (obj.has("result"))
             throw new RuntimeException("obj should not contain result");
         obj.put("result", "ok");
         return renderJSONWith(obj, OK, contentType);
@@ -90,11 +91,11 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
         if (e != null) { Logger.error(reasonString, e); }
         else { Logger.error(reasonString); }
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "error");
         obj.put("reason", errorCode.getReasonString());
         if (additionalInfo != null) {
-            JSONObject info = new JSONObject();
+            ObjectNode info = new ObjectNode(JsonNodeFactory.instance);
             for (Entry<String, String> entry : additionalInfo.entrySet())
                 info.put(entry.getKey(), entry.getValue());
             obj.put("additional", info);
@@ -110,11 +111,11 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
         if (e != null)
             Logger.info("renderInvalid", e);
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "invalid");
         obj.put("reason", ec.getReasonString());
         if (additionalInfo != null) {
-            JSONObject info = new JSONObject();
+            ObjectNode info = new ObjectNode(JsonNodeFactory.instance);
             for (Entry<String, String> entry : additionalInfo.entrySet())
                 info.put(entry.getKey(), entry.getValue());
             obj.put("additional", info);
@@ -124,7 +125,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     protected Result renderLoginRequired() {
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "auth");
         obj.put("reason", "login is required");
 
@@ -133,7 +134,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     protected Result renderForbidden() {
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "forbidden");
         obj.put("reason", "forbidden action");
 
@@ -141,7 +142,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     protected Result renderForbidden(UserErrorCode ec) {
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "forbidden");
         obj.put("reason", ec.getReasonString());
         obj.put("errorCode", ec.toString());
@@ -150,7 +151,7 @@ public abstract class AbstractPartakeAPI extends AbstractPartakeController {
     }
 
     protected Result renderNotFound() {
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("result", "notfound");
         obj.put("reason", "not found");
         return renderJSON(obj, NOT_FOUND);

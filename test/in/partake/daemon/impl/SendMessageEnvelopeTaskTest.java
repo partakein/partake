@@ -26,7 +26,6 @@ import in.partake.model.dto.EventTicket;
 import in.partake.model.dto.MessageEnvelope;
 import in.partake.model.dto.TwitterMessage;
 import in.partake.model.dto.UserNotification;
-import in.partake.model.dto.UserTicket;
 import in.partake.model.dto.auxiliary.MessageDelivery;
 import in.partake.model.dto.auxiliary.NotificationType;
 import in.partake.model.fixture.TestDataProviderConstants;

@@ -7,7 +7,7 @@ import in.partake.model.dto.UserTwitterLink;
 
 import java.util.Set;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * user with related data.
@@ -41,8 +41,8 @@ public class UserEx extends User implements SafeJSONable {
     }
 
 
-    public JSONObject toSafeJSON() {
-        JSONObject obj = super.toSafeJSON();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = super.toSafeJSON();
 
         if (twitterLinkage != null)
             obj.put("twitter", twitterLinkage.toSafeJSON());

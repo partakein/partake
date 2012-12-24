@@ -11,10 +11,11 @@ import in.partake.model.dao.PartakeConnection;
 
 import java.util.List;
 
-import play.mvc.Result;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 /**
  * Retrieves images which is uploaded by owners.
@@ -42,11 +43,11 @@ public class GetImagesAPI extends AbstractPartakeAPI {
         GetImagesTransaction transaction = new GetImagesTransaction(user, offset, limit);
         transaction.execute();
 
-        JSONArray imageIds = new JSONArray();
+        ArrayNode imageIds = new ArrayNode(JsonNodeFactory.instance);
         for (String imageId : transaction.getImageIds())
             imageIds.add(imageId);
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("imageIds", imageIds);
         obj.put("count", transaction.getCountImages());
         return renderOK(obj);

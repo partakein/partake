@@ -14,13 +14,17 @@ import in.partake.model.dto.auxiliary.EnqueteAnswerType;
 import in.partake.model.dto.auxiliary.EnqueteQuestion;
 import in.partake.resource.UserErrorCode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import play.mvc.Result;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
-import net.sf.json.JSONArray;
+import play.mvc.Result;
 
 public class ModifyEnqueteAPI extends AbstractPartakeAPI {
 
@@ -79,16 +83,27 @@ class ModifyEnqueteTransaction extends Transaction<Void> {
             throw new PartakeException(UserErrorCode.FORBIDDEN_EVENT_EDIT);
 
         List<EnqueteQuestion> enquetes = new ArrayList<EnqueteQuestion>();
-        for (int i = 0; i < questions.length; ++i) {
-            List<String> optionValues = new ArrayList<String>();
-            JSONArray array = JSONArray.fromObject(options[i]);
-            for (int j = 0; j < array.size(); ++j)
-                optionValues.add(array.getString(j));
-
-            UUID enqueteId = Util.isUUID(ids[i]) ? UUID.fromString(ids[i]) : UUID.randomUUID();
-            EnqueteQuestion question = new EnqueteQuestion(
-                    enqueteId, questions[i], EnqueteAnswerType.safeValueOf(types[i]), optionValues);
-            enquetes.add(question);
+        try {
+            for (int i = 0; i < questions.length; ++i) {
+                List<String> optionValues = new ArrayList<String>();
+                ArrayNode array;
+                    array = new ObjectMapper().readValue(options[i], ArrayNode.class);
+                for (int j = 0; j < array.size(); ++j)
+                    optionValues.add(array.get(j).asText());
+    
+                UUID enqueteId = Util.isUUID(ids[i]) ? UUID.fromString(ids[i]) : UUID.randomUUID();
+                EnqueteQuestion question = new EnqueteQuestion(
+                        enqueteId, questions[i], EnqueteAnswerType.safeValueOf(types[i]), optionValues);
+                enquetes.add(question);
+            }
+        } catch (JsonParseException e) {
+            throw new IllegalArgumentException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IOException e) {
+            // I can not find Exception which suits in this situation,
+            // so I use RuntimeException. 2012/Dec/16 Kengo TODA
+            throw new RuntimeException(e);
         }
 
         Event copied = new Event(event);

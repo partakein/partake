@@ -23,10 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import play.mvc.Result;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 public class GetEventsAPI extends AbstractPartakeAPI {
 
@@ -49,11 +50,11 @@ public class GetEventsAPI extends AbstractPartakeAPI {
         GetEventsTransaction transaction = new GetEventsTransaction(user, queryType, offset, limit);
         transaction.execute();
 
-        JSONArray statuses = new JSONArray();
+        ArrayNode statuses = new ArrayNode(JsonNodeFactory.instance);
         for (EventStatus status : transaction.getEventStatuses())
             statuses.add(status.toSafeJSON());
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("totalEventCount", transaction.getNumTotalEvents());
         obj.put("eventStatuses", statuses);
 

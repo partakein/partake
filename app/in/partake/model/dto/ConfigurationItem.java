@@ -1,6 +1,7 @@
 package in.partake.model.dto;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class ConfigurationItem extends PartakeModel<ConfigurationItem> {
     private String key;
@@ -17,8 +18,8 @@ public class ConfigurationItem extends PartakeModel<ConfigurationItem> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put(key, value);
         return obj;
     }

@@ -1,5 +1,7 @@
 package in.partake.model.dao.postgres9.impl;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.MapperDataIterator;
@@ -15,10 +17,9 @@ import in.partake.model.dao.postgres9.Postgres9IdMapper;
 import in.partake.model.dao.postgres9.Postgres9IndexDao;
 import in.partake.model.dao.postgres9.Postgres9StatementAndResultSet;
 import in.partake.model.dto.EventComment;
-import net.sf.json.JSONObject;
 
 class EntityCommentMapper extends Postgres9EntityDataMapper<EventComment> {
-    public EventComment map(JSONObject obj) {
+    public EventComment map(ObjectNode obj) {
         return new EventComment(obj).freeze();
     }
 }

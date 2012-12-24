@@ -4,9 +4,9 @@ import in.partake.base.JSONable;
 
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class UserOpenIDLink extends PartakeModel<UserOpenIDLink> implements JSONable {
     private UUID id;
@@ -23,10 +23,10 @@ public class UserOpenIDLink extends PartakeModel<UserOpenIDLink> implements JSON
         this(linkage.id, linkage.userId, linkage.identifier);
     }
 
-    public UserOpenIDLink(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.userId = obj.getString("userId");
-        this.identifier = obj.getString("identifier");
+    public UserOpenIDLink(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.userId = obj.get("userId").asText();
+        this.identifier = obj.get("identifier").asText();
     }
 
     @Override
@@ -35,8 +35,8 @@ public class UserOpenIDLink extends PartakeModel<UserOpenIDLink> implements JSON
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("userId", userId);
         obj.put("identifier", identifier);

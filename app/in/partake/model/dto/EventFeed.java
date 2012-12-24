@@ -1,8 +1,8 @@
 package in.partake.model.dto;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 
 // TODO: Should be merged into Event...
@@ -24,9 +24,9 @@ public class EventFeed extends PartakeModel<EventFeed> {
         this.eventId = linkage.eventId;
     }
 
-    public EventFeed(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.eventId = obj.getString("eventId");
+    public EventFeed(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.eventId = obj.get("eventId").asText();
     }
 
     @Override
@@ -35,8 +35,8 @@ public class EventFeed extends PartakeModel<EventFeed> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("eventId", eventId);
         return obj;
