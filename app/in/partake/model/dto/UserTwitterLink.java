@@ -2,9 +2,9 @@ package in.partake.model.dto;
 
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class UserTwitterLink extends PartakeModel<UserTwitterLink> {
     private UUID id;
@@ -38,19 +38,19 @@ public class UserTwitterLink extends PartakeModel<UserTwitterLink> {
         this.profileImageURL = linkage.profileImageURL;
     }
 
-    public UserTwitterLink(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.twitterId = obj.getLong("twitterId");
-        this.userId = obj.getString("userId");
-        this.screenName = obj.getString("screenName");
-        if (obj.containsKey("name"))
-            this.name = obj.getString("name");
-        if (obj.containsKey("accessToken"))
-            this.accessToken = obj.getString("accessToken");
-        if (obj.containsKey("accessTokenSecret"))
-            this.accessTokenSecret = obj.getString("accessTokenSecret");
-        if (obj.containsKey("profileImageURL"))
-            this.profileImageURL = obj.getString("profileImageURL");
+    public UserTwitterLink(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.twitterId = obj.get("twitterId").asLong();
+        this.userId = obj.get("userId").asText();
+        this.screenName = obj.get("screenName").asText();
+        if (obj.has("name"))
+            this.name = obj.get("name").asText();
+        if (obj.has("accessToken") && !obj.get("accessToken").isNull())
+            this.accessToken = obj.get("accessToken").asText();
+        if (obj.has("accessTokenSecret") && !obj.get("accessTokenSecret").isNull())
+            this.accessTokenSecret = obj.get("accessTokenSecret").asText();
+        if (obj.has("profileImageURL"))
+            this.profileImageURL = obj.get("profileImageURL").asText();
     }
 
     @Override
@@ -58,8 +58,8 @@ public class UserTwitterLink extends PartakeModel<UserTwitterLink> {
         return id;
     }
 
-    public JSONObject toSafeJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toSafeJSON() {
+    	ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
 
         obj.put("twitterId", twitterId);
         obj.put("screenName", screenName);
@@ -70,8 +70,8 @@ public class UserTwitterLink extends PartakeModel<UserTwitterLink> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("twitterId", twitterId);
         obj.put("userId", userId);

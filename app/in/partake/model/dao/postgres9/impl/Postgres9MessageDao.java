@@ -2,6 +2,8 @@ package in.partake.model.dao.postgres9.impl;
 
 import java.util.UUID;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
@@ -14,10 +16,9 @@ import in.partake.model.dao.postgres9.Postgres9Entity;
 import in.partake.model.dao.postgres9.Postgres9EntityDao;
 import in.partake.model.dao.postgres9.Postgres9EntityDataMapper;
 import in.partake.model.dto.Message;
-import net.sf.json.JSONObject;
 
 class EntityMessageMapper extends Postgres9EntityDataMapper<Message> {
-    public Message map(JSONObject obj) {
+    public Message map(ObjectNode obj) {
         return new Message(obj).freeze();
     }
 }

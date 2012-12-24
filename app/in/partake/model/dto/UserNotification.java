@@ -5,9 +5,10 @@ import java.util.UUID;
 import in.partake.base.DateTime;
 import in.partake.model.dto.auxiliary.MessageDelivery;
 import in.partake.model.dto.auxiliary.NotificationType;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * @author shinyak
@@ -40,15 +41,15 @@ public class UserNotification extends PartakeModel<UserNotification> {
         this.modifiedAt = modifiedAt;
     }
 
-    public UserNotification(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.ticketId = UUID.fromString(obj.getString("ticketId"));
-        this.userId = obj.getString("userId");
-        this.notificationType = NotificationType.safeValueOf(obj.getString("notificationType"));
-        this.delivery = MessageDelivery.safeValueOf(obj.getString("delivery"));
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+    public UserNotification(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.ticketId = UUID.fromString(obj.get("ticketId").asText());
+        this.userId = obj.get("userId").asText();
+        this.notificationType = NotificationType.safeValueOf(obj.get("notificationType").asText());
+        this.delivery = MessageDelivery.safeValueOf(obj.get("delivery").asText());
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -57,8 +58,8 @@ public class UserNotification extends PartakeModel<UserNotification> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("ticketId", ticketId.toString());
         obj.put("userId", userId);

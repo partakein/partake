@@ -1,5 +1,7 @@
 package in.partake.model.dao.postgres9.impl;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
@@ -12,10 +14,9 @@ import in.partake.model.dao.postgres9.Postgres9Entity;
 import in.partake.model.dao.postgres9.Postgres9EntityDao;
 import in.partake.model.dao.postgres9.Postgres9EntityDataMapper;
 import in.partake.model.dto.UserPreference;
-import net.sf.json.JSONObject;
 
 class EntityUserPreferenceMapper extends Postgres9EntityDataMapper<UserPreference> {
-    public UserPreference map(JSONObject obj) {
+    public UserPreference map(ObjectNode obj) {
         return new UserPreference(obj).freeze();
     }
 }

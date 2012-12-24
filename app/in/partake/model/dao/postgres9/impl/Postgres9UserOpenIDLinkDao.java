@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityOpenIDLinkageMapper extends Postgres9EntityDataMapper<UserOpenIDLink> {
     @Override
-    public UserOpenIDLink map(JSONObject obj) {
+    public UserOpenIDLink map(ObjectNode obj) {
         return new UserOpenIDLink(obj).freeze();
     }
 }

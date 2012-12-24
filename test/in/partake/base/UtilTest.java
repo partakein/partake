@@ -6,14 +6,18 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,15 +54,15 @@ public class UtilTest {
             }
 
             @Override
-            public JSONObject toJSON() {
-                JSONObject obj = new JSONObject();
+            public ObjectNode toJSON() {
+                ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
                 obj.put("value", value);
                 return obj;
             }
 
             @Override
-            public JSONObject toSafeJSON() {
-                JSONObject obj = new JSONObject();
+            public ObjectNode toSafeJSON() {
+                ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
                 obj.put("safe", value);
                 return obj;
             }
@@ -69,32 +73,32 @@ public class UtilTest {
         xs.add(new X("1"));
         xs.add(new X("2"));
 
-        JSONArray array = Util.toJSONArray(xs);
-        JSONArray safes = Util.toSafeJSONArray(xs);
+        ArrayNode array = Util.toJSONArray(xs);
+        ArrayNode safes = Util.toSafeJSONArray(xs);
 
         assertThat(array.size(), is(3));
-        assertThat(array.getJSONObject(0).getString("value"), is("0"));
-        assertThat(array.getJSONObject(1).getString("value"), is("1"));
-        assertThat(array.getJSONObject(2).getString("value"), is("2"));
+        assertThat(array.get(0).get("value").asText(), is("0"));
+        assertThat(array.get(1).get("value").asText(), is("1"));
+        assertThat(array.get(2).get("value").asText(), is("2"));
 
         assertThat(safes.size(), is(3));
-        assertThat(safes.getJSONObject(0).getString("safe"), is("0"));
-        assertThat(safes.getJSONObject(1).getString("safe"), is("1"));
-        assertThat(safes.getJSONObject(2).getString("safe"), is("2"));
+        assertThat(safes.get(0).get("safe").asText(), is("0"));
+        assertThat(safes.get(1).get("safe").asText(), is("1"));
+        assertThat(safes.get(2).get("safe").asText(), is("2"));
     }
 
     @Test
-    public void testToParseEnqueteAnswers() {
+    public void testToParseEnqueteAnswers() throws JsonParseException, JsonMappingException, IOException {
         UUID[] ids = new UUID[5];
         for (int i = 0; i < 5; ++i)
             ids[i] = new UUID(0, i);
 
-        JSONObject obj = JSONObject.fromObject("{ \""+ids[0].toString()+"\": [\"hoge\", \"fuga\"], " +
+        ObjectNode obj = new ObjectMapper().readValue("{ \""+ids[0].toString()+"\": [\"hoge\", \"fuga\"], " +
                 "\""+ids[1].toString()+"\": [1, 2, 3], " +
                 "\""+ids[2].toString()+"\": [], " +
                 "\""+ids[3].toString()+"\": \"\", " +
-                "\""+ids[4].toString()+"\": 3, " +
-                "}");
+                "\""+ids[4].toString()+"\": 3 " +
+                "}", ObjectNode.class);
 
         Map<UUID, List<String>> converted = Util.parseEnqueteAnswers(obj);
 

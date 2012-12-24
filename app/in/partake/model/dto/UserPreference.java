@@ -4,9 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 @Entity(name = "UserPreferences")
 public class UserPreference extends PartakeModel<UserPreference> {
@@ -37,11 +37,11 @@ public class UserPreference extends PartakeModel<UserPreference> {
         this.tweetingAttendanceAutomatically = pref.tweetingAttendanceAutomatically;
     }
 
-    public UserPreference(JSONObject obj) {
-        this.userId = obj.getString("id");
-        this.profilePublic = obj.getBoolean("profilePublic");
-        this.receivingTwitterMessage = obj.getBoolean("receivingTwitterMessage");
-        this.tweetingAttendanceAutomatically = obj.getBoolean("tweetingAttendanceAutomatically");
+    public UserPreference(ObjectNode obj) {
+        this.userId = obj.get("id").asText();
+        this.profilePublic = obj.get("profilePublic").asBoolean();
+        this.receivingTwitterMessage = obj.get("receivingTwitterMessage").asBoolean();
+        this.tweetingAttendanceAutomatically = obj.get("tweetingAttendanceAutomatically").asBoolean();
     }
 
     @Override
@@ -49,8 +49,8 @@ public class UserPreference extends PartakeModel<UserPreference> {
         return userId;
     }
 
-    public JSONObject toSafeJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toSafeJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("profilePublic", profilePublic);
         obj.put("receivingTwitterMessage", receivingTwitterMessage);
         obj.put("tweetingAttendanceAutomatically", tweetingAttendanceAutomatically);
@@ -58,8 +58,8 @@ public class UserPreference extends PartakeModel<UserPreference> {
         return obj;
     }
 
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", userId);
         obj.put("profilePublic", profilePublic);
         obj.put("receivingTwitterMessage", receivingTwitterMessage);

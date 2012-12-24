@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class UserTicket extends PartakeModel<UserTicket> {
     private String id;
@@ -53,23 +55,23 @@ public class UserTicket extends PartakeModel<UserTicket> {
         this(p.id, p.userId, p.ticketId, p.eventId, p.comment, p.status, p.modificationStatus, p.attendanceStatus, p.enqueteAnswers, p.appliedAt, p.createdAt, p.modifiedAt);
     }
 
-    public UserTicket(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.userId = obj.getString("userId");
-        this.ticketId = UUID.fromString(obj.getString("ticketId"));
-        this.eventId = obj.getString("eventId");
-        this.comment = obj.getString("comment");
-        this.status = ParticipationStatus.safeValueOf(obj.getString("status"));
-        this.modificationStatus = ModificationStatus.safeValueOf(obj.getString("modificationStatus"));
-        this.attendanceStatus = AttendanceStatus.safeValueOf(obj.getString("attendanceStatus"));
-        if (obj.containsKey("enqueteAnswers")) {
-            JSONObject map = obj.getJSONObject("enqueteAnswers");
+    public UserTicket(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.userId = obj.get("userId").asText();
+        this.ticketId = UUID.fromString(obj.get("ticketId").asText());
+        this.eventId = obj.get("eventId").asText();
+        this.comment = obj.get("comment").asText();
+        this.status = ParticipationStatus.safeValueOf(obj.get("status").asText());
+        this.modificationStatus = ModificationStatus.safeValueOf(obj.get("modificationStatus").asText());
+        this.attendanceStatus = AttendanceStatus.safeValueOf(obj.get("attendanceStatus").asText());
+        if (obj.has("enqueteAnswers")) {
+            JsonNode map = obj.get("enqueteAnswers");
             this.enqueteAnswers = Util.parseEnqueteAnswers(map);
         }
-        this.appliedAt = new DateTime(obj.getLong("appliedAt"));
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+        this.appliedAt = new DateTime(obj.get("appliedAt").asLong());
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -78,8 +80,8 @@ public class UserTicket extends PartakeModel<UserTicket> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("userId", userId);
         obj.put("ticketId", ticketId.toString());
@@ -89,9 +91,12 @@ public class UserTicket extends PartakeModel<UserTicket> {
         obj.put("modificationStatus", modificationStatus.toString());
         obj.put("attendanceStatus", attendanceStatus.toString());
         if (enqueteAnswers != null && !enqueteAnswers.isEmpty()) {
-            JSONObject enqueteAnswers = new JSONObject();
-            for (Map.Entry<UUID, List<String>> entry : this.enqueteAnswers.entrySet())
-                enqueteAnswers.put(entry.getKey().toString(), entry.getValue());
+            ObjectNode enqueteAnswers = new ObjectNode(JsonNodeFactory.instance);
+            for (Map.Entry<UUID, List<String>> entry : this.enqueteAnswers.entrySet()) {
+                ArrayNode array = enqueteAnswers.putArray(entry.getKey().toString());
+                for (String s : entry.getValue())
+                    array.add(s);
+            }
             obj.put("enqueteAnswers", enqueteAnswers);
         }
         obj.put("appliedAt", appliedAt.getTime());

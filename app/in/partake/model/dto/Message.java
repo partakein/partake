@@ -1,11 +1,12 @@
 package in.partake.model.dto;
 
+import in.partake.base.DateTime;
+
 import java.util.UUID;
 
-import in.partake.base.DateTime;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 
 public class Message extends PartakeModel<Message> {
@@ -29,13 +30,13 @@ public class Message extends PartakeModel<Message> {
         this(message.id, message.subject, message.body, message.createdAt, message.modifiedAt);
     }
 
-    public Message(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.subject = obj.getString("subject");
-        this.body = obj.getString("body");
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+    public Message(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.subject = obj.get("subject").asText();
+        this.body = obj.get("body").asText();
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -44,8 +45,8 @@ public class Message extends PartakeModel<Message> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("subject", subject);
         obj.put("body", body);
@@ -56,7 +57,7 @@ public class Message extends PartakeModel<Message> {
         return obj;
     }
 
-    public JSONObject toSafeJSON() {
+    public ObjectNode toSafeJSON() {
         // Safe to use JSON for now.
         return toJSON();
     }

@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import play.mvc.Result;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 public class SearchUserAPI extends AbstractPartakeAPI {
 
@@ -39,9 +39,9 @@ public class SearchUserAPI extends AbstractPartakeAPI {
 
         List<UserEx> users = new SearchUserAccess(userNamePrefix, limit).execute();
 
-        JSONArray array = Util.toSafeJSONArray(users);
+        ArrayNode array = Util.toSafeJSONArray(users);
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("users", array);
         return renderOK(obj);
     }

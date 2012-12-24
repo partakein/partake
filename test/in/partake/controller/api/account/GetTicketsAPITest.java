@@ -19,9 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.junit.Test;
 
 import in.partake.controller.ActionProxy;
@@ -39,14 +38,14 @@ public class GetTicketsAPITest extends APIControllerTest {
         proxy.execute();
         assertResultOK(proxy);
 
-        JSONObject obj = getJSON(proxy);
-        assertThat(obj.getInt("totalTicketCount"), is(20));
+        ObjectNode obj = getJSON(proxy);
+        assertThat(obj.get("totalTicketCount").asInt(), is(20));
 
-        JSONArray array = obj.getJSONArray("ticketStatuses");
+        JsonNode array = obj.get("ticketStatuses");
         assertThat(array.size(), is(10));
         for (int i = 0; i < 10; ++i) {
-            assertThat(array.getJSONObject(i).getJSONObject("ticket").getString("id"), is(ids.get(i).getFirst().toString()));
-            assertThat(array.getJSONObject(i).getString("status"), is("enrolled"));
+            assertThat(array.get(i).get("ticket").get("id").asText(), is(ids.get(i).getFirst().toString()));
+            assertThat(array.get(i).get("status").asText(), is("enrolled"));
         }
     }
 

@@ -26,12 +26,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEventMapper extends Postgres9EntityDataMapper<Event> {
-    public Event map(JSONObject obj) {
+    public Event map(ObjectNode obj) {
         return new Event(obj).freeze();
     }
 }

@@ -11,8 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,12 +19,15 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+
 import play.Logger;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.twitter.Regex;
-
 
 public final class Util {
     private static final Random random = new Random();
@@ -75,22 +77,22 @@ public final class Util {
     // ----------------------------------------------------------------------
     // Text
 
-    public static <T extends JSONable> JSONArray toJSONArray(List<T> list) {
+    public static <T extends JSONable> ArrayNode toJSONArray(List<T> list) {
         if (list == null)
             return null;
 
-        JSONArray array = new JSONArray();
+        ArrayNode array = new ArrayNode(JsonNodeFactory.instance);
         for (JSONable jsonable : list)
             array.add(jsonable.toJSON());
 
         return array;
     }
 
-    public static <T extends SafeJSONable> JSONArray toSafeJSONArray(List<T> list) {
+    public static <T extends SafeJSONable> ArrayNode toSafeJSONArray(List<T> list) {
         if (list == null)
             return null;
 
-        JSONArray array = new JSONArray();
+        ArrayNode array = new ArrayNode(JsonNodeFactory.instance);
         for (SafeJSONable jsonable : list)
             array.add(jsonable.toSafeJSON());
 
@@ -114,22 +116,19 @@ public final class Util {
             return defaultValue;
     }
 
-    public static Map<UUID, List<String>> parseEnqueteAnswers(JSONObject map) {
-        Map<UUID, List<String>> enqueteAnswers = new HashMap<UUID, List<String>>();
-        for (Object entryObj : map.entrySet()) {
-            Entry<?, ?> entry = (Entry<?, ?>) entryObj;
-            if (!Util.isUUID(entry.getKey().toString()))
+    public static Map<UUID, List<String>> parseEnqueteAnswers(JsonNode map) {
+        Iterator<Entry<String, JsonNode>> iter = map.getFields();
+        Map<UUID, List<String>> enqueteAnswers = Maps.newHashMap();
+        while (iter.hasNext()) {
+            Entry<String, JsonNode> field = iter.next();
+            if (!Util.isUUID(field.getKey()) || !field.getValue().isArray()) {
                 continue;
-
-            if (!(entry.getValue() instanceof JSONArray))
-                continue;
-
-            JSONArray array = (JSONArray) entry.getValue();
-            List<String> answers = new ArrayList<String>();
-            for (int i = 0; i < array.size(); ++i)
-                answers.add(array.getString(i));
-
-            enqueteAnswers.put(UUID.fromString(entry.getKey().toString()), answers);
+            }
+            List<String> answers = Lists.newArrayList();
+            for (JsonNode node : field.getValue()) {
+                answers.add(node.asText());
+            }
+            enqueteAnswers.put(UUID.fromString(field.getKey()), answers);
         }
 
         return enqueteAnswers;

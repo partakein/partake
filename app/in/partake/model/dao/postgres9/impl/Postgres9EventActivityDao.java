@@ -20,10 +20,10 @@ import in.partake.model.dto.EventActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEventActivityMapper extends Postgres9EntityDataMapper<EventActivity> {
-    public EventActivity map(JSONObject obj) {
+    public EventActivity map(ObjectNode obj) {
         return new EventActivity(obj).freeze();
     }
 }

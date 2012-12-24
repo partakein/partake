@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * @author shinyak
@@ -41,20 +42,20 @@ public class EventTicketNotification extends PartakeModel<EventTicketNotificatio
         this.createdAt = createdAt;
     }
 
-    public EventTicketNotification(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.ticketId = UUID.fromString(obj.getString("ticketId"));
-        this.eventId = obj.getString("eventId");
+    public EventTicketNotification(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.ticketId = UUID.fromString(obj.get("ticketId").asText());
+        this.eventId = obj.get("eventId").asText();
 
         this.userIds = new ArrayList<String>();
         if (userIds != null) {
-            JSONArray array = obj.getJSONArray("userIds");
+            JsonNode array = obj.get("userIds");
             for (int i = 0; i < array.size(); ++i)
-                userIds.add(array.getString(i));
+                userIds.add(array.get(i).asText());
         }
 
-        this.notificationType = NotificationType.safeValueOf(obj.getString("notificationType"));
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
+        this.notificationType = NotificationType.safeValueOf(obj.get("notificationType").asText());
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
     }
 
     @Override
@@ -63,16 +64,15 @@ public class EventTicketNotification extends PartakeModel<EventTicketNotificatio
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("ticketId", ticketId.toString());
         obj.put("eventId", eventId);
 
-        JSONArray array = new JSONArray();
+        ArrayNode array = obj.putArray("userIds");
         for (String userId : userIds)
             array.add(userId);
-        obj.put("userIds", userIds);
 
         obj.put("notificationType", notificationType.toString());
         if (createdAt != null)

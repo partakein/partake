@@ -17,10 +17,11 @@ import in.partake.model.dto.auxiliary.CalculatedEnrollmentStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.mvc.Result;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import play.mvc.Result;
 
 class TicketAndStatus {
     public EventTicket ticket;
@@ -53,7 +54,7 @@ public class GetTicketsAPI extends AbstractPartakeAPI {
         GetEnrollmentsTransaction transaction = new GetEnrollmentsTransaction(userId, offset, limit);
         transaction.execute();
 
-        JSONArray statuses = new JSONArray();
+        ArrayNode statuses = new ArrayNode(JsonNodeFactory.instance);
         for (TicketAndStatus ticketAndStatus : transaction.getStatuses()) {
             // TODO: We should consider how to join EventEntities and EnrollmentEntities.
             // If the event is private (or draft), its information does not be fed.
@@ -61,14 +62,14 @@ public class GetTicketsAPI extends AbstractPartakeAPI {
             if (ticketAndStatus.event == null || !ticketAndStatus.event.isSearchable())
                 continue;
 
-            JSONObject obj = new JSONObject();
+            ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
             obj.put("ticket", ticketAndStatus.ticket.toSafeJSON());
             obj.put("event", ticketAndStatus.event.toSafeJSON());
             obj.put("status", ticketAndStatus.status.toString());
             statuses.add(obj);
         }
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("totalTicketCount", transaction.getTotalTicketCount());
         obj.put("ticketStatuses", statuses);
 

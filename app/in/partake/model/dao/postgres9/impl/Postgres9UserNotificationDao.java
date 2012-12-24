@@ -20,10 +20,10 @@ import in.partake.model.dto.UserNotification;
 
 import java.util.List;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityUserNotificationMapper extends Postgres9EntityDataMapper<UserNotification> {
-    public UserNotification map(JSONObject obj) {
+    public UserNotification map(ObjectNode obj) {
         return new UserNotification(obj).freeze();
     }
 }

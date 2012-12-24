@@ -1,5 +1,8 @@
 package in.partake.controller.api.event;
 
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
 import play.mvc.Result;
 import in.partake.base.PartakeException;
 import in.partake.controller.api.AbstractPartakeAPI;
@@ -12,7 +15,6 @@ import in.partake.model.dao.PartakeConnection;
 import in.partake.model.daofacade.EventDAOFacade;
 import in.partake.model.dto.Event;
 import in.partake.resource.UserErrorCode;
-import net.sf.json.JSONObject;
 
 public class CopyAPI extends AbstractPartakeAPI {
 
@@ -28,7 +30,7 @@ public class CopyAPI extends AbstractPartakeAPI {
         String eventId = getValidEventIdParameter();
         String newEventId = new CopyTransaction(user, eventId).execute();
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("eventId", newEventId);
         return renderOK(obj);
     }

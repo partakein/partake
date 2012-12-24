@@ -1,9 +1,10 @@
 package in.partake.model.dto;
 
 import in.partake.base.DateTime;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 
 public class EventActivity extends PartakeModel<EventActivity> {
@@ -28,13 +29,13 @@ public class EventActivity extends PartakeModel<EventActivity> {
         this(eventActivity.id, eventActivity.eventId, eventActivity.title, eventActivity.content, eventActivity.createdAt);
     }
 
-    public EventActivity(JSONObject obj) {
-        this.id = obj.getString("id");
-        this.eventId = obj.getString("eventId");
-        this.title = obj.getString("title");
-        this.content = obj.getString("content");
-        if (obj.containsKey("createdAt"))
-            this.createdAt = new DateTime(obj.getLong("createdAt"));
+    public EventActivity(ObjectNode obj) {
+        this.id = obj.get("id").asText();
+        this.eventId = obj.get("eventId").asText();
+        this.title = obj.get("title").asText();
+        this.content = obj.get("content").asText();
+        if (obj.has("createdAt"))
+            this.createdAt = new DateTime(obj.get("createdAt").asLong());
     }
 
     @Override
@@ -43,8 +44,8 @@ public class EventActivity extends PartakeModel<EventActivity> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id);
         obj.put("eventId", eventId);
         obj.put("title", title);

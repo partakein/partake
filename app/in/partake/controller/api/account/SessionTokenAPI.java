@@ -1,9 +1,11 @@
 package in.partake.controller.api.account;
 
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
 import in.partake.base.PartakeException;
 import in.partake.controller.api.AbstractPartakeAPI;
 import in.partake.model.dao.DAOException;
-import net.sf.json.JSONObject;
 import play.mvc.Result;
 
 public class SessionTokenAPI extends AbstractPartakeAPI {
@@ -14,7 +16,7 @@ public class SessionTokenAPI extends AbstractPartakeAPI {
 
     @Override
     public Result doExecute() throws DAOException {
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("token", context().sessionToken());
 
         return renderOK(obj);

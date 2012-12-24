@@ -9,9 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.ObjectUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * @author shinyak
@@ -53,23 +53,23 @@ public class UserReceivedMessage extends PartakeModel<UserReceivedMessage> {
         this.modifiedAt = modifiedAt;
     }
 
-    public UserReceivedMessage(JSONObject obj) {
-        this.id = UUID.fromString(obj.getString("id"));
-        this.senderId = obj.getString("senderId");
-        this.receiverId = obj.getString("receiverId");
-        this.eventId = obj.getString("eventId");
-        this.messageId = obj.getString("messageId");
-        this.opened = obj.getBoolean("opened");
-        this.delivery = MessageDelivery.safeValueOf(obj.getString("delivery"));
+    public UserReceivedMessage(ObjectNode obj) {
+        this.id = UUID.fromString(obj.get("id").asText());
+        this.senderId = obj.get("senderId").asText();
+        this.receiverId = obj.get("receiverId").asText();
+        this.eventId = obj.get("eventId").asText();
+        this.messageId = obj.get("messageId").asText();
+        this.opened = obj.get("opened").asBoolean();
+        this.delivery = MessageDelivery.safeValueOf(obj.get("delivery").asText());
 
-        if (obj.containsKey("openedAt"))
-            this.openedAt = new DateTime(obj.getLong("openedAt"));
-        if (obj.containsKey("deliveredAt"))
-            this.deliveredAt = new DateTime(obj.getLong("deliveredAt"));
+        if (obj.has("openedAt"))
+            this.openedAt = new DateTime(obj.get("openedAt").asLong());
+        if (obj.has("deliveredAt"))
+            this.deliveredAt = new DateTime(obj.get("deliveredAt").asLong());
 
-        this.createdAt = new DateTime(obj.getLong("createdAt"));
-        if (obj.containsKey("modifiedAt"))
-            this.modifiedAt = new DateTime(obj.getLong("modifiedAt"));
+        this.createdAt = new DateTime(obj.get("createdAt").asLong());
+        if (obj.has("modifiedAt"))
+            this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
     }
 
     @Override
@@ -78,8 +78,8 @@ public class UserReceivedMessage extends PartakeModel<UserReceivedMessage> {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject obj = new JSONObject();
+    public ObjectNode toJSON() {
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("id", id.toString());
         obj.put("senderId", senderId);
         obj.put("receiverId", receiverId);
@@ -100,10 +100,10 @@ public class UserReceivedMessage extends PartakeModel<UserReceivedMessage> {
         return obj;
     }
 
-    public JSONObject toSafeJSON() {
+    public ObjectNode toSafeJSON() {
         DateFormat format = new SimpleDateFormat(Constants.READABLE_DATE_FORMAT, Locale.getDefault());
 
-        JSONObject obj = toJSON();
+        ObjectNode obj = toJSON();
         if (this.deliveredAt != null) {
             obj.put("deliveredAtText", format.format(deliveredAt.toDate()));
             obj.put("deliveredAtTime", format.format(deliveredAt.getTime()));

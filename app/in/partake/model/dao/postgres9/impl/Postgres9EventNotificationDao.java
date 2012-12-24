@@ -22,10 +22,10 @@ import in.partake.model.dto.auxiliary.NotificationType;
 import java.util.List;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
+import org.codehaus.jackson.node.ObjectNode;
 
 class EntityEventNotificationMapper extends Postgres9EntityDataMapper<EventTicketNotification> {
-    public EventTicketNotification map(JSONObject obj) {
+    public EventTicketNotification map(ObjectNode obj) {
         return new EventTicketNotification(obj).freeze();
     }
 }

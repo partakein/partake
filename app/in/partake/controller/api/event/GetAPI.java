@@ -11,9 +11,10 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.daofacade.EventDAOFacade;
 import in.partake.resource.UserErrorCode;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
 import play.mvc.Result;
 
@@ -33,7 +34,7 @@ public class GetAPI extends AbstractPartakeAPI {
 
         EventEx event = new GetTransaction(user, eventId, passcode).execute();
 
-        JSONObject obj = new JSONObject();
+        ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         obj.put("event", event.toSafeJSON());
         return renderOK(obj);
     }
