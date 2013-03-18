@@ -10,7 +10,7 @@
         <label class="control-label">カレンダー URL</label>
         <div class="controls">
             @if(calendarLink != null) {
-                <input id="calendarURL" type="text" value="@PartakeConfiguration.toppath()/calendars/@(calendarLink.getId()).ics" class="span12" />
+                <input id="calendarURL" type="text" value="@PartakeConfiguration.toppath()/calendars/@(calendarLink.getId())" class="span12" />
             } else {
                 <input id="calendarURL" type="text" value="あなたのカレンダー ID はまだ生成されていません。" class="span12" />
             }
@@ -43,7 +43,7 @@ function callRevokeCalendar() {
     })
     .done(function (json) {
         if (json.calendarId) {
-            $('#calendarURL').val('@PartakeConfiguration.toppath()/calendars/' + json.calendarId + '.ics');
+            $('#calendarURL').val('@PartakeConfiguration.toppath()/calendars/' + json.calendarId);
         } else {
             location.reload();
         }
