@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Strings;
+
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -70,7 +72,7 @@ public abstract class AbstractPartakeController extends Controller {
 
         final String userId = session().get(Constants.Session.USER_ID_KEY);
 
-        impl.currentURL = request().uri();
+        impl.setCurrentURL(request().uri());
         if (userId != null) {
             impl.loginUser = new DBAccess<UserEx>() {
                 @Override
@@ -384,11 +386,11 @@ public abstract class AbstractPartakeController extends Controller {
     }
 
     public void setCurrentURL(String url) {
-        ctx.currentURL = url;
+        ctx.setCurrentURL(url);
     }
 
     public String getCurrentURL() {
-        return ctx.currentURL;
+        return ctx.currentURL();
     }
 
     // ----------------------------------------------------------------------
@@ -468,7 +470,11 @@ class PartakeActionContextImpl implements PartakeActionContext {
 
     @Override
     public String redirectURL() {
-        return redirectURL;
+        if (Strings.isNullOrEmpty(redirectURL)) {
+            return currentURL;
+        } else {
+            return redirectURL;
+        }
     }
 
     @Override
