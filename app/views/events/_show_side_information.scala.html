@@ -34,7 +34,10 @@
     <img src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=@Util.encodeURIComponent(event.getAddress())&zoom=17&sensor=false" />
 </a></div>
 }
-
+@if(event.getUrl() != null && !event.getUrl().isEmpty()) {
+    <h3>URL</h3>
+    <p><a href="@event.getUrl()">@event.getUrl()</a></p>
+}
 @if(event.getRelatedEvents() != null && !event.getRelatedEvents().isEmpty()) {
     <h3>関連イベント</h3>
     <ul>
