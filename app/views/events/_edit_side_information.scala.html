@@ -367,7 +367,7 @@ $('#related-submit').click(function(e) {
 var relatedEventIds = [
     @event.getRelatedEventIds().zipWithIndex.map { relatedEventIdWithIndex =>
         @if(relatedEventIdWithIndex._2 != 0) {,}
-        @relatedEventIdWithIndex._1
+        "@relatedEventIdWithIndex._1"
     }
 ];
 } else {
