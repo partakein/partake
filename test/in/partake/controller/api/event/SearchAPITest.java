@@ -333,6 +333,30 @@ public class SearchAPITest extends APIControllerTest {
         assertThat(json.get("events").size(), equalTo(10));
     }
 
+    @Test
+    public void testOffset() throws Exception {
+        storeEventBeforeDeadline();
+        storeEventBeforeDeadline();
+
+        ActionProxy proxy = getActionProxy(POST, "/api/event/search");
+        addFormParameter(proxy, "query", SEARCH_QUERY);
+        addFormParameter(proxy, "category", "all");
+        addFormParameter(proxy, "maxNum", "2");
+        proxy.execute();
+
+        assertResultOK(proxy);
+        ObjectNode json = getJSON(proxy);
+        String expectedId = json.get("events").get(1).get("id").asText();
+
+        addFormParameter(proxy, "offset", "1");
+        proxy.execute();
+
+        assertResultOK(proxy);
+        json = getJSON(proxy);
+        String actualId = json.get("events").get(0).get("id").asText();
+        assertThat(actualId, is(equalTo(expectedId)));
+    }
+
     // =========================================================================
     // utility
 
