@@ -35,6 +35,11 @@
 </a></div>
 }
 
+@if(event.getHashTag() != null && !event.getHashTag().isEmpty()) {
+    <h3>ハッシュタグ</h3>
+    <p><a href="https://twitter.com/search?q=@event.getHashTag().replaceAll("#","%23")">@event.getHashTag()</a></p>
+}
+
 @if(event.getRelatedEvents() != null && !event.getRelatedEvents().isEmpty()) {
     <h3>関連イベント</h3>
     <ul>
