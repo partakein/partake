@@ -65,7 +65,7 @@ public class SearchAPI extends AbstractPartakeAPI {
         if (maxNum <= 0)
             return renderInvalid(UserErrorCode.INVALID_ARGUMENT);
 
-        List<Event> events = new SearchTransaction(query, category, sortOrder, beforeDeadlineOnly, maxNum).execute();
+        List<Event> events = new SearchTransaction(query, category, sortOrder, beforeDeadlineOnly, offset, maxNum).execute();
 
         ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
         ArrayNode jsonEventsArray = obj.putArray("events");
@@ -115,13 +115,15 @@ class SearchTransaction extends DBAccess<List<Event>> {
     private String category;
     private String sortOrder;
     private boolean beforeDeadlineOnly;
+    private int offset;
     private int maxNum;
 
-    public SearchTransaction(String query, String category, String sortOrder, boolean beforeDeadlineOnly, int maxNum) {
+    public SearchTransaction(String query, String category, String sortOrder, boolean beforeDeadlineOnly, int offset, int maxNum) {
         this.query = query;
         this.category = category;
         this.sortOrder = sortOrder;
         this.beforeDeadlineOnly = beforeDeadlineOnly;
+        this.offset = offset;
         this.maxNum = maxNum;
     }
 
@@ -129,7 +131,7 @@ class SearchTransaction extends DBAccess<List<Event>> {
     protected List<Event> doExecute(PartakeConnection con, IPartakeDAOs daos) throws DAOException, PartakeException {
         IEventSearchService searchService = PartakeApp.getEventSearchService();
 
-        List<String> eventIds = searchService.search(query, category, sortOrder, beforeDeadlineOnly, maxNum);
+        List<String> eventIds = searchService.search(query, category, sortOrder, beforeDeadlineOnly, offset, maxNum);
         List<Event> events = new ArrayList<Event>();
 
         for (String eventId : eventIds) {
