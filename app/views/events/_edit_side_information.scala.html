@@ -311,6 +311,50 @@ $('#url-submit').click(function(e) {
 });
 </script>
 
+<div id="hashtag-show">
+    <p>ハッシュタグ ： 
+    @if(event.getHashTag() != null && !event.getHashTag().isEmpty()){
+        <a href="https://twitter.com/search?q=@event.getHashTag().replaceAll("#","%23")">@event.getHashTag()</a>
+    }</p>
+    <p><span id="hashtag-edit" class="label label-edit edit-button">ハッシュタグを編集</span></p>
+</div>
+<form id="hashtag-form" action="javascript:void(0)" style="display: none;">
+    <div class="control-group">
+        <p class="help-inline">ハッシュタグを入力します。ハッシュタグは半角＃で始まる必要があります。</p>
+        <input id="hashtag" type="text" placeholder="#partakein">
+        <div class="edit-form-buttons">
+            <input type="button" value="キャンセル" class="btn edit-cancel-button">
+            <input id="hashtag-submit" type="button" value="保存" class="btn edit-save-button">
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+$("#hashtag-edit").click(function(){
+    var hashTag = $("#hashtag-show p:first-child a").text();
+    $("#hashtag").val(hashTag);
+    $("#hashtag-form").show();
+});
+$("#hashtag-submit").click(function(e){
+    var hashtag = $("#hashtag").val();
+    if (hashtag.charAt(0) !== '#') {
+        $("#hashtag-form").children(".control-group").addClass("error")
+        .children("p").text("ハッシュタグは半角＃で始まる必要があります。");
+        e.preventDefault();
+        return;
+    }
+    partake.event.modify(eventId, { "hashTag": hashtag })
+    .done(function (json) {
+        $("#hashtag-show").show().children("p:first-child").empty()
+        .append("ハッシュタグ ： ").append($("<a>", {
+            href: "https://twitter.com/search?q=" + encodeURIComponent(hashtag)
+        }).text(hashtag));
+        $("#hashtag-form").hide().children(".control-group").removeClass("error")
+        .children("p").text("ハッシュタグを入力します。ハッシュタグは半角＃で始まる必要があります。");
+    })
+    .fail(partake.defaultFailHandler);
+});
+</script>
+
 <div id="related-show">
     <ul id="related-content">
     @for(relatedEvent <- event.getRelatedEvents()) {
@@ -367,7 +411,7 @@ $('#related-submit').click(function(e) {
 var relatedEventIds = [
     @event.getRelatedEventIds().zipWithIndex.map { relatedEventIdWithIndex =>
         @if(relatedEventIdWithIndex._2 != 0) {,}
-        @relatedEventIdWithIndex._1
+        "@relatedEventIdWithIndex._1"
     }
 ];
 } else {
