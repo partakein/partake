@@ -39,7 +39,7 @@
     </script>
 
     <div class="form-actions">
-        <input id="passcode-submit" type="button" class="btn btn-primary" value="保存">
+        <input id="passcode-submit" type="button" class="btn btn-primary" value="保存" disabled>
         <span id="submit-info" class="text-info"></span>
     </div>
     <script>
@@ -62,11 +62,13 @@
 
         partake.event.modify(eventId, { passcode: passcode })
         .done(function (json) {
-            $('#submit-info').hide();
-            $('#submit-info').text('保存しました');
-            $('#submit-info').fadeIn(500);
+            $('#submit-info').text('保存しました').fadeIn(500);
+            $("#passcode-submit").attr("disabled", true);
         })
         .fail(partake.defaultFailHandler);
+    });
+    $(document).on("change", "input", function(){
+        $("#passcode-submit").attr("disabled", false);
     });
     </script>
 </form>

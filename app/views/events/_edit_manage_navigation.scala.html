@@ -10,4 +10,15 @@
         <li class="pull-right-if-not-phone"><a href="/events/@event.getId()">編集を終了</a></li>
     </ul>
 </div></div>
-
+<script type="text/javascript">
+// see https://github.com/partakein/partake/issues/418
+$(document).on("click", "a[href!=#]", function(e){
+    function isEditing() {
+        return $("input[type=button]").filter(":visible:enabled").length > 0;
+    }
+    if (isEditing() && !window.confirm("保存していない変更があります。保存しないまま編集を終了し、次のページに行く場合は「OK」を押してください。")) {
+        // cancel saving, and continue to edit
+        e.preventDefault();
+    }
+});
+</script>
