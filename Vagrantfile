@@ -43,9 +43,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider :virtualbox do |vb|
-    # Play! needs much memory, so we have to provide 1.5 GiB at least.
+    # Play! needs much memory, so we have to provide 2 GiB at least.
     # When you reduce this, please modify -Xmx parameter in /home/vagrant/play-2.0.4/framework/build
-    vb.customize ["modifyvm", :id, "--memory", "1536"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
 
     # see https://github.com/mitchellh/vagrant/issues/516
     vb.customize ["modifyvm", :id, "--nictype1", "Am79C973"]
