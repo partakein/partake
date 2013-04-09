@@ -13,4 +13,4 @@ dist
 .settings
 .target
 .DS_Store
-
+.vagrant
