@@ -1,0 +1,6 @@
+Cheffile.lock
+.bundle
+.cache
+.kitchen
+/cookbooks
+/tmp
