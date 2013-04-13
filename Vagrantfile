@@ -47,11 +47,16 @@ Vagrant.configure("2") do |config|
 --------------------------------------------------------
           [PARTAKE]  development environment
 --------------------------------------------------------
+Welcome to your development environment.
+To start your service in development mode, please exec
+'~/play-2.0.4/play start' in '/vagrant' directory.
+--------------------------------------------------------
 Eclipse project has already been generated. When you
 update dependency, please follow below:
 
   1. execute '~/play-2.0.4/play eclipsify' in '/vagrant'
   2. replace '/home/vagrant/.ivy2' with '#{host_ivy_dir}' in /vagrant/.classpath file.
+--------------------------------------------------------
         EOL
       }
     }
