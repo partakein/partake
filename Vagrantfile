@@ -37,7 +37,8 @@ Vagrant.configure("2") do |config|
       },
       :play => {
         :version => "2.0.4",
-        :install_dir => "/home/vagrant"
+        :install_dir => "/home/vagrant",
+        :host_ivy_dir => Dir::pwd + '/.ivy2'
       }
     }
   end
