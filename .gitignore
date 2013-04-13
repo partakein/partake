@@ -13,4 +13,15 @@ dist
 .settings
 .target
 .DS_Store
-.vagrant
+
+# --------------------------------------------------
+# To support using Vagrant to build development env,
+# it is better to ignore these files.
+
+# Just ignore metadata created by Vagrant
+/.vagrant
+
+# To share .ivy2 directory from the host, our
+# cookbook will make a static link from 
+# ~/.ivy to /vagrant/.ivy2 in the VM.
+/.ivy2
