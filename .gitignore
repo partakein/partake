@@ -23,5 +23,5 @@ dist
 
 # To share .ivy2 directory from the host, our
 # cookbook will make a static link from 
-# ~/.ivy to /vagrant/.ivy2 in the VM.
+# ~/.ivy2 to /vagrant/.ivy2 in the VM.
 /.ivy2
