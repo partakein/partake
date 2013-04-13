@@ -21,7 +21,9 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "java"
     chef.add_recipe "play"
     chef.add_recipe "init-db"
+    chef.add_recipe "motd-tail"
     chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
+    host_ivy_dir = Dir::pwd + '/.ivy2'
     chef.json = {
       :postgresql => {
         :version => "9.1",
@@ -38,7 +40,19 @@ Vagrant.configure("2") do |config|
       :play => {
         :version => "2.0.4",
         :install_dir => "/home/vagrant",
-        :host_ivy_dir => Dir::pwd + '/.ivy2'
+        :host_ivy_dir => host_ivy_dir
+      },
+      :"motd-tail" => {
+        :additional_text => <<-EOL
+--------------------------------------------------------
+          [PARTAKE]  development environment
+--------------------------------------------------------
+Eclipse project has already been generated. When you
+update dependency, please follow below:
+
+  1. execute '~/play-2.0.4/play eclipsify' in '/vagrant'
+  2. replace '/home/vagrant/.ivy2' with '#{host_ivy_dir}' in /vagrant/.classpath file.
+        EOL
       }
     }
   end
