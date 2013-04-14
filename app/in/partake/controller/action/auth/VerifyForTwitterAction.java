@@ -119,8 +119,14 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
     private UserEx getUserFromTwitterLinkage(PartakeConnection con, IPartakeDAOs daos, UserTwitterLink twitterLinkage) throws DAOException, TwitterException {
         String userId = twitterLinkage.getUserId();
         User user = daos.getUserAccess().find(con, userId);
-        if (user != null)
-            return new UserEx(user, twitterLinkage);
+        if (user != null) {
+            if (verifyUserProfiles(user, twitterLinkage)) {
+                return new UserEx(user, twitterLinkage);
+            } else {
+                // to update user data, the user is once removed.
+                daos.getUserAccess().remove(con, userId);
+            }
+        }
 
         // If no user was associated to UserTwitterLink, we create a new user.
         User newUser = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
@@ -129,4 +135,19 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
 
         return new UserEx(newUser, twitterLinkage);
     }
+
+	/**
+	 * Verifies whether the screenName & profileImageURL of the user are the same<br>
+	 *  with the original twitterLinkage ones.
+	 * @param user
+	 * @param twitterLinkage
+	 * @return true when the data are the same.
+	 */
+	private boolean verifyUserProfiles(User user, UserTwitterLink twitterLinkage) {
+    return
+        user.getScreenName().equals(twitterLinkage.getScreenName())
+        &&
+        user.getProfileImageURL().equals(twitterLinkage.getProfileImageURL());
+	}
+
 }
