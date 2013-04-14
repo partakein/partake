@@ -27,13 +27,25 @@ execute "install-play" do
     action :nothing
 end
 
+# remove ~/.ivy2 if it exists to replace with symbolic link
+directory "/home/vagrant/.ivy2" do
+    recursive true
+    action :delete
+end
+
+# to share libraries, ~/.ivy2 should be a link to /vagrant/.ivy2
+link "/home/vagrant/.ivy2" do
+    owner "vagrant"
+    group "vagrant"
+    to "/vagrant/.ivy2"
+    action :create
+end
+
 bash "eclipsify" do
     user "vagrant"
     group "vagrant"
     cwd "/vagrant"
     code <<-EOH
-    rm -rf /home/vagrant/.ivy2
-    ln -s /vagrant/.ivy2 /home/vagrant/.ivy2
     #{node[:play][:install_dir]}/play-#{node[:play][:version]}/play eclipsify
     mv .classpath /tmp/.classpath
     cat /tmp/.classpath | sed -e 's"/home/vagrant/.ivy2"#{node[:play][:host_ivy_dir]}"' > .classpath
