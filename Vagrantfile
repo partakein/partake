@@ -52,10 +52,8 @@ To start your service in development mode, please exec
 '~/play-2.0.4/play start' in '/vagrant' directory.
 --------------------------------------------------------
 Eclipse project has already been generated. When you
-update dependency, please follow below:
-
-  1. execute '~/play-2.0.4/play eclipsify' in '/vagrant'
-  2. replace '/home/vagrant/.ivy2' with '#{host_ivy_dir}' in /vagrant/.classpath file.
+update dependency, kick '~/eclipsify.sh' instead of
+'play eclipsify' command.
 --------------------------------------------------------
         EOL
       }

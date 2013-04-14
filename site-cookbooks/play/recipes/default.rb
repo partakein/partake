@@ -41,14 +41,18 @@ link "/home/vagrant/.ivy2" do
     action :create
 end
 
+template "/home/vagrant/eclipsify.sh" do
+    owner "vagrant"
+    group "vagrant"
+    mode  0700
+end
+
 bash "eclipsify" do
     user "vagrant"
     group "vagrant"
     cwd "/vagrant"
     code <<-EOH
-    #{node[:play][:install_dir]}/play-#{node[:play][:version]}/play eclipsify
-    mv .classpath /tmp/.classpath
-    cat /tmp/.classpath | sed -e 's"/home/vagrant/.ivy2"#{node[:play][:host_ivy_dir]}"' > .classpath
+    /home/vagrant/eclipsify.sh
     EOH
     creates "/vagrant/.project"
 end
