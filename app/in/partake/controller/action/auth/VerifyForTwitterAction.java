@@ -120,12 +120,8 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
         String userId = twitterLinkage.getUserId();
         User user = daos.getUserAccess().find(con, userId);
         if (user != null) {
-            if (verifyUserProfiles(user, twitterLinkage)) {
+            if (verifyUserProfiles(user, twitterLinkage))
                 return new UserEx(user, twitterLinkage);
-            } else {
-                // to update user data, the user is once removed.
-                daos.getUserAccess().remove(con, userId);
-            }
         }
 
         // If no user was associated to UserTwitterLink, we create a new user.
