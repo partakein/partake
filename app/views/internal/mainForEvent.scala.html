@@ -7,11 +7,10 @@
 <html lang="ja">
 <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     @if(!StringUtils.isEmpty(event.getSummary())) {
-    <meta name="description" content="@event.getSummary()" />
+    <meta name="description" content="@event.getSummary()">
     <meta property="og:description" content="@event.getSummary()">
     } else {
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
