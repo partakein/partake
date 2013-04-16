@@ -5,7 +5,7 @@
 @import in.partake.controller.base.permission._
 
 <html lang="ja">
-<head>
+<head prefix="og: http://ogp.me/ns#">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +15,10 @@
     } else {
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
     }
+    @if(ctx.thumbnailURL() != null) {
+    <meta property="og:image" content="@ctx.thumbnailURL()">
+    }
+    <meta property="og:image" content="@routes.Assets.at("images/musangas.jpg")">
 
     @internal.stylesheet(ctx)
     @if(event.getBackImageId() != null) {
