@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    @if(StringUtils.isEmpty(event.getSummary())) {
+    @if(!StringUtils.isEmpty(event.getSummary())) {
     <meta name="description" content="@event.getSummary()" />
     } else {
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
