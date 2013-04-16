@@ -25,14 +25,11 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.base.Strings;
-
-import controllers.Assets;
-
 import play.Logger;
-import play.core.Router;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.google.common.base.Strings;
 
 public abstract class AbstractPartakeController extends Controller {
     private PartakeActionContextImpl ctx;
