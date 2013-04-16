@@ -18,17 +18,13 @@
     <meta property="og:description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)">
     }
 
-    @*
-    We have to provide absolute URL, but @ctx.currentURL does not
-    contain context path and host name.
-    <meta property="og:url" content="@ctx.currentURL">
-    *@
+    <meta property="og:url" content="@in.partake.app.PartakeConfiguration.toppath@ctx.currentURL">
     <meta property="og:title" content="@title">
     <meta property="og:site_name" content="PARTAKE">
     @if(ctx.thumbnailURL() != null) {
-    <meta property="og:image" content="@ctx.thumbnailURL()">
+    <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@ctx.thumbnailURL">
     }
-    <meta property="og:image" content="@routes.Assets.at("images/musangas.jpg")">
+    <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@routes.Assets.at("images/musangas.jpg")">
     <meta property="og:type" content="article">
 
     @internal.stylesheet(ctx)
