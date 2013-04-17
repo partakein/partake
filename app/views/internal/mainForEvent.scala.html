@@ -5,16 +5,26 @@
 @import in.partake.controller.base.permission._
 
 <html lang="ja">
-<head>
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    @if(StringUtils.isEmpty(event.getSummary())) {
-    <meta name="description" content="@event.getSummary()" />
+    @if(!StringUtils.isEmpty(event.getSummary())) {
+    <meta name="description" content="@event.getSummary()">
+    <meta property="og:description" content="@event.getSummary()">
     } else {
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
+    <meta property="og:description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)">
     }
+
+    <meta property="og:url" content="@in.partake.app.PartakeConfiguration.toppath@ctx.currentURL">
+    <meta property="og:title" content="@title">
+    <meta property="og:site_name" content="PARTAKE">
+    @if(ctx.thumbnailURL() != null) {
+    <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@ctx.thumbnailURL">
+    }
+    <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@routes.Assets.at("images/musangas.jpg")">
+    <meta property="og:type" content="article">
 
     @internal.stylesheet(ctx)
     @if(event.getBackImageId() != null) {

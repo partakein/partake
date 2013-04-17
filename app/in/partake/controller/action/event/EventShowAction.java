@@ -74,6 +74,9 @@ public class EventShowAction extends AbstractPartakeAction {
         this.comments = transaction.getComments();
         this.eventMessages = transaction.getEventMessages();
 
+        if (event.getForeImageId() != null) {
+            context().setThumbnailURL("/images/thumbnail/" + event.getForeImageId());
+        }
         return render(views.html.events.show.render(context(), event, user, tickets, userTicketMap, ticketHolderListMap, comments, eventMessages));
     }
 
