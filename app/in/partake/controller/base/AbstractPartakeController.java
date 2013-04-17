@@ -25,11 +25,11 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.base.Strings;
-
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.google.common.base.Strings;
 
 public abstract class AbstractPartakeController extends Controller {
     private PartakeActionContextImpl ctx;
@@ -441,6 +441,7 @@ class PartakeActionContextImpl implements PartakeActionContext {
     String sessionToken;
     String currentURL;
     String redirectURL;
+    String thumbnailURL;
     List<MessageCode> messageCodes = new ArrayList<MessageCode>();
 
     public void setLoginUser(UserEx loginUser) {
@@ -490,5 +491,13 @@ class PartakeActionContextImpl implements PartakeActionContext {
     @Override
     public List<MessageCode> messages() {
         return Collections.unmodifiableList(messageCodes);
+    }
+    @Override
+    public String thumbnailURL() {
+        return thumbnailURL;
+    }
+    @Override
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 }
