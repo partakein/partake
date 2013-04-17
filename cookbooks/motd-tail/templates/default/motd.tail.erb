@@ -1,0 +1,25 @@
+***
+Chef-Client - <%= node.name %>
+Hostname: <%= node['cloud'] ? node['cloud']['public_hostname'] : node['fqdn'] %>
+<% if ! Chef::Config[:solo] -%>
+Chef Server: <%= Chef::Config[:chef_server_url] %>
+<% end -%>
+<% if node.chef_environment != '_default' -%>
+Environment: <%= node.chef_environment %>
+<% end -%>
+Last Run: <%= ::Time.now %>
+
+Roles:
+<% node['roles'].each do |role| -%>
+  <%= role %>
+<% end -%>
+<% if node['tags'] && !node['tags'].empty? -%>
+
+Tags:
+<% node['tags'].each do |tag| -%>
+  <%= tag %>
+<% end -%>
+<% end -%>
+***
+
+<%= node['motd-tail']['additional_text'] %>
