@@ -1,0 +1,32 @@
+{
+  "name": "motd-tail",
+  "description": "Updates motd.tail with Chef Roles",
+  "long_description": "Description\n===========\n\nUpdates motd.tail with Chef Roles\n\nRequirements\n============\n\nNeeds to be used on a system that utilizes /etc/motd.tail, e.g. Ubuntu.\n\nAttributes\n==========\n\n* `node['motd-tail']['additional_text']` - Additional text to add to the end\n  of the motd.tail (e.g. unauthorized access banner).\n\nUsage\n=====\n\n```json\n\"run_list\": [\n    \"recipe[motd-tail]\"\n]\n```\n\ndefault\n----\n\nUpdates motd.tail with useful node data\n\nExamples\n--------\n\nFor example,\n\n    % ssh myserver.int.example.org\n    ***\n    Chef-Client - myserver.int.example.org\n    ubuntu\n    samba_server\n    netatalk_server\n    munin_server\n    rsyslog_server\n    ***\n\n    Additional text here when `node['motd-tail']['additional_text']` present.\n\nTesting\n=====\n\nThis cookbook is using [ChefSpec](https://github.com/acrmp/chefspec) for testing.\n\n    % cd $repo\n    % bundle\n    % librarian-chef install\n    % ln -s ../ cookbooks/motd-tail\n    % rspec cookbooks/motd-tail\n\nLicense and Author\n==================\n\nAuthor:: Nathan Haneysmith <nathan@opscode.com>\n\nCopyright:: 2009-2012, Opscode, Inc\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n",
+  "maintainer": "Opscode, Inc.",
+  "maintainer_email": "cookbooks@opscode.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "debian": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "motd-tail": "Updates motd.tail with useful node data"
+  },
+  "version": "1.2.0"
+}

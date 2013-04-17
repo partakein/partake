@@ -1,0 +1,8 @@
+#!/bin/bash
+# This shell script will generate Eclipse project files for host.
+
+pushd /vagrant
+/home/vagrant/play-2.0.4/play eclipsify
+mv .classpath /tmp/.classpath
+cat /tmp/.classpath | sed -e 's"/home/vagrant/.ivy2"<%= node[:play][:host_ivy_dir] %>"' > .classpath
+popd

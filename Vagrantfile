@@ -21,7 +21,9 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "java"
     chef.add_recipe "play"
     chef.add_recipe "init-db"
+    chef.add_recipe "motd-tail"
     chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
+    host_ivy_dir = Dir::pwd + '/.ivy2'
     chef.json = {
       :postgresql => {
         :version => "9.1",
@@ -37,7 +39,23 @@ Vagrant.configure("2") do |config|
       },
       :play => {
         :version => "2.0.4",
-        :install_dir => "/home/vagrant"
+        :install_dir => "/home/vagrant",
+        :host_ivy_dir => host_ivy_dir
+      },
+      :"motd-tail" => {
+        :additional_text => <<-EOL
+--------------------------------------------------------
+          [PARTAKE]  development environment
+--------------------------------------------------------
+Welcome to your development environment.
+To start your service in development mode, please exec
+'~/play-2.0.4/play start' in '/vagrant' directory.
+--------------------------------------------------------
+Eclipse project has already been generated. When you
+update dependency, kick '~/eclipsify.sh' instead of
+'play eclipsify' command.
+--------------------------------------------------------
+        EOL
       }
     }
   end
