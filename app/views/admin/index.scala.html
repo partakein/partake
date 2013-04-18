@@ -28,7 +28,10 @@
             <dt>draft event</dt><dd>@countDraftEvent</dd>
         </dl>
         <h2>いろんなリンク</h2>
-        <p><a href="/admin/recreateEventIndex">Luceneインデックス の再生成</a></p>
+        <form method="post" action="/api/admin/recreateEventIndex">
+            <input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
+            <input type="submit" value="Luceneインデックス の再生成">
+        </form>
     </div>
     <div class="span12">
         <h2>設定</h2>
