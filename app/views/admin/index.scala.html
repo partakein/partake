@@ -28,7 +28,11 @@
             <dt>draft event</dt><dd>@countDraftEvent</dd>
         </dl>
         <h2>いろんなリンク</h2>
-        <p><a href="/admin/recreateEventIndex">Luceneインデックス の再生成</a></p>
+        <form id="recreate-index" method="post" action="/api/admin/recreateEventIndex">
+            <input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
+            <input type="submit" value="Luceneインデックス の再生成">
+            <span class="text-info"></span>
+        </form>
     </div>
     <div class="span12">
         <h2>設定</h2>
@@ -58,6 +62,25 @@
                 })
                 .fail(partake.defaultFailHandler);
             }
+
+            var $recreateIndexForm = $("#recreate-index"),
+                $submitButton = $recreateIndexForm.find("input[type=submit]"),
+                $statusSpan = $recreateIndexForm.find(".text-info");
+            $recreateIndexForm.submit(function(e){
+                var url = $recreateIndexForm.attr("action");
+                e.preventDefault();
+                $submitButton.prop("disabled", true);
+                $.post(url, {
+                    "sessionToken": "@ctx.sessionToken()"
+                })
+                .done(function() {
+                    $statusSpan.hide().text('再作成しました').fadeIn(500);
+                })
+                .fail(partake.defaultFailHandler)
+                .always(function(){
+                    $submitButton.prop("disabled", false);
+                });
+            });
             </script>
     </div>
 </div>
