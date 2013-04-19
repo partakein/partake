@@ -492,10 +492,12 @@ class PartakeActionContextImpl implements PartakeActionContext {
     public List<MessageCode> messages() {
         return Collections.unmodifiableList(messageCodes);
     }
+
     @Override
     public String thumbnailURL() {
         return thumbnailURL;
     }
+
     @Override
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
