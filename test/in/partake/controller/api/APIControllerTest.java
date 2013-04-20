@@ -50,7 +50,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
     protected void assertResultOK(ActionProxy proxy) throws Exception {
         Assert.assertEquals(200, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         assertThat(obj.get("result").asText(), is("ok"));
@@ -58,7 +58,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
     protected void assertResultInvalid(ActionProxy proxy, UserErrorCode ec) throws Exception {
         Assert.assertEquals(400, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         assertThat(obj.get("result").asText(), is("invalid"));
@@ -67,7 +67,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
     protected void assertResultInvalid(ActionProxy proxy, UserErrorCode ec, String additional) throws Exception {
         Assert.assertEquals(400, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         assertThat(obj.get("result").asText(), is("invalid"));
@@ -80,7 +80,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
     protected void assertResultLoginRequired(ActionProxy proxy) throws Exception {
         Assert.assertEquals(401, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         String authenticate = (String) Helpers.header("WWW-Authenticate", proxy.getResult());
         Assert.assertNotNull(authenticate);
@@ -94,7 +94,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
     protected void assertResultForbidden(ActionProxy proxy) throws Exception {
         // status code should be 403
         Assert.assertEquals(403, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         Assert.assertEquals("forbidden", obj.get("result").asText());
@@ -105,7 +105,7 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
         assert ec.getStatusCode() == 403;
         // status code should be 403
         Assert.assertEquals(403, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         Assert.assertEquals("forbidden", obj.get("result").asText());
@@ -115,14 +115,14 @@ public abstract class APIControllerTest extends AbstractPartakeControllerTest {
 
     protected void assertResultError(ActionProxy proxy, ServerErrorCode ec) throws Exception {
         Assert.assertEquals(500, Helpers.status(proxy.getResult()));
-        expectHabitASApi(proxy.getResult());
+        expectBehaveAsApi(proxy.getResult());
 
         ObjectNode obj = getJSON(proxy);
         assertThat(obj.get("result").asText(), is("error"));
         assertThat(obj.get("reason").asText(), is(ec.getReasonString()));
     }
 
-    private void expectHabitASApi(Result result) {
+    private void expectBehaveAsApi(Result result) {
         assertThat(
                 Helpers.header(Helpers.CONTENT_TYPE, result),
                 is("application/json; charset=utf-8"));
