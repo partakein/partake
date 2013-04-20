@@ -21,6 +21,7 @@ import in.partake.session.TwitterLoginInformation;
 
 import java.util.UUID;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 import play.cache.Cache;
@@ -119,14 +120,34 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
     private UserEx getUserFromTwitterLinkage(PartakeConnection con, IPartakeDAOs daos, UserTwitterLink twitterLinkage) throws DAOException, TwitterException {
         String userId = twitterLinkage.getUserId();
         User user = daos.getUserAccess().find(con, userId);
-        if (user != null)
-            return new UserEx(user, twitterLinkage);
-
-        // If no user was associated to UserTwitterLink, we create a new user.
-        User newUser = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
-        daos.getUserAccess().put(con, newUser);
-        newUser.freeze();
-
-        return new UserEx(newUser, twitterLinkage);
+        if (user == null) {
+            user = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
+            daos.getUserAccess().put(con, user);
+            user.freeze();
+        } else {
+            if (!verifyUserProfiles(user, twitterLinkage)) {
+                user = new User(user);
+                user.setScreenName(twitterLinkage.getScreenName());
+                user.setProfileImageURL(twitterLinkage.getProfileImageURL());
+                daos.getUserAccess().put(con, user);
+                user.freeze();
+            }
+        }
+        return new UserEx(user, twitterLinkage);
     }
+
+	/**
+	 * Verifies whether the screenName & profileImageURL of the user are the same<br>
+	 *  with the original twitterLinkage ones.
+	 * @param user
+	 * @param twitterLinkage
+	 * @return true when the data are the same.
+	 */
+	private boolean verifyUserProfiles(User user, UserTwitterLink twitterLinkage) {
+    return
+        ObjectUtils.equals(user.getScreenName(), twitterLinkage.getScreenName())
+        &&
+        ObjectUtils.equals(user.getProfileImageURL(), twitterLinkage.getProfileImageURL());
+	}
+
 }
