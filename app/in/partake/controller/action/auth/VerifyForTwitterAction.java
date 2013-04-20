@@ -122,13 +122,17 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
         User user = daos.getUserAccess().find(con, userId);
         if (user == null) {
             user = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
-        } else if (!verifyUserProfiles(user, twitterLinkage)) {
-            user = new User(user); 
-            user.setScreenName(twitterLinkage.getScreenName());
-            user.setProfileImageURL(twitterLinkage.getProfileImageURL());
+            daos.getUserAccess().put(con, user);
+            user.freeze();
+        } else {
+            if (!verifyUserProfiles(user, twitterLinkage)) {
+                user = new User(user);
+                user.setScreenName(twitterLinkage.getScreenName());
+                user.setProfileImageURL(twitterLinkage.getProfileImageURL());
+                daos.getUserAccess().put(con, user);
+                user.freeze();
+            }
         }
-        daos.getUserAccess().put(con, user);
-        user.freeze();
         return new UserEx(user, twitterLinkage);
     }
 
