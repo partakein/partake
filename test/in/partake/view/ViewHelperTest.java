@@ -2,6 +2,7 @@ package in.partake.view;
 
 import static in.partake.view.util.Helper.escapeTwitterResponse;
 import static in.partake.view.util.Helper.h;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import in.partake.view.util.Helper;
@@ -49,6 +50,14 @@ public class ViewHelperTest {
         String sanity = Helper.cleanupHTML(dirty);
 
         assertThat(sanity.contains("script"), is(false));
+    }
+
+    @Test
+    public void testToCleanupAnchor() throws Exception {
+        String dirty = "<a href=\"http://partake.in/events/5ca0b9eb-10d3-437f-bdc2-712727d1d518\">link</a>";
+        String sanity = Helper.cleanupHTML(dirty);
+
+        assertThat(sanity, is(equalTo(dirty)));
     }
 
     @Test
