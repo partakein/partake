@@ -13,10 +13,15 @@
 <script type="text/javascript">
 // see https://github.com/partakein/partake/issues/418
 $(document).on("click", "a[href!=#]", function(e){
+    var that = this;
+    function isLinkInTinyMce() {
+        return $(that).parents('[class^=mce]').length > 0;
+    }
     function isEditing() {
         return $("input[type=button]").filter(":visible:enabled").length > 0;
     }
-    if (isEditing() && !window.confirm("保存していない変更があります。保存しないまま編集を終了し、次のページに行く場合は「OK」を押してください。")) {
+    if (!isLinkInTinyMce() && isEditing() &&
+            !window.confirm("保存していない変更があります。保存しないまま編集を終了し、次のページに行く場合は「OK」を押してください。")) {
         // cancel saving, and continue to edit
         e.preventDefault();
     }
