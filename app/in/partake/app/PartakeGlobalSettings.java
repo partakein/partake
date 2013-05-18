@@ -27,6 +27,7 @@ public class PartakeGlobalSettings extends GlobalSettings {
             PartakeApp.instance().initializeDBService();
             PartakeApp.instance().loadConfiguration(app.configuration());
             PartakeApp.instance().initializeOtherServices();
+            PartakeApp.instance().createDemoEvent();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

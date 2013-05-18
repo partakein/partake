@@ -65,14 +65,23 @@ public class EventDAOFacade {
 
 
     /**
-     * event をデータベースに保持します。
+     * event をデータベースに保持します。イベントIDは新しいものが使用されます。
      * @return event id
      */
     public static String create(PartakeConnection con, IPartakeDAOs daos, Event eventEmbryo) throws DAOException {
         String eventId = daos.getEventAccess().getFreshId(con);
         eventEmbryo.setId(eventId);
+        createWithSpecifiedId(con, daos, eventEmbryo);
+        return eventEmbryo.getId();
+    }
+
+    /**
+     * event をデータベースに保持します。イベントIDの更新は行いません。
+     */
+    public static void createWithSpecifiedId(PartakeConnection con, IPartakeDAOs daos, Event eventEmbryo) throws DAOException {
         daos.getEventAccess().put(con, eventEmbryo);
 
+        String eventId = eventEmbryo.getId();
         // Feed Dao にも挿入。
         String feedId = daos.getEventFeedAccess().findByEventId(con, eventId);
         if (feedId == null) {
@@ -90,8 +99,6 @@ public class EventDAOFacade {
         // さらに、twitter bot がつぶやく (private の場合はつぶやかない)
         if (eventEmbryo.isSearchable())
             tweetNewEventArrival(con, daos, eventEmbryo);
-
-        return eventEmbryo.getId();
     }
 
     public static String copy(PartakeConnection con, IPartakeDAOs daos, UserEx user, Event event) throws DAOException {

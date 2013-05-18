@@ -1,11 +1,11 @@
 package in.partake.app;
 
-import java.util.UUID;
-
 import in.partake.base.DateTime;
+import in.partake.base.PartakeException;
 import in.partake.base.TimeUtil;
 import in.partake.daemon.PartakeDaemon;
 import in.partake.daemon.impl.DaemonInitializer;
+import in.partake.model.dao.DAOException;
 import in.partake.service.IDBService;
 import in.partake.service.IDaemonInitializer;
 import in.partake.service.IEventSearchService;
@@ -121,5 +121,9 @@ public class PartakeApp {
 
     protected boolean isTestModeImpl() {
         return false;
+    }
+
+    void createDemoEvent() throws DAOException, PartakeException {
+        new DemoEventCreator().execute();
     }
 }
