@@ -3,13 +3,13 @@ package in.partake.controller.action.auth;
 import in.partake.app.PartakeApp;
 import in.partake.app.PartakeConfiguration;
 import in.partake.base.PartakeException;
-import in.partake.base.TimeUtil;
 import in.partake.controller.action.AbstractPartakeAction;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.UserEx;
 import in.partake.model.access.Transaction;
 import in.partake.model.dao.DAOException;
 import in.partake.model.dao.PartakeConnection;
+import in.partake.model.daofacade.UserDAOFacade;
 import in.partake.model.dto.User;
 import in.partake.model.dto.UserTwitterLink;
 import in.partake.resource.Constants;
@@ -121,9 +121,7 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
         String userId = twitterLinkage.getUserId();
         User user = daos.getUserAccess().find(con, userId);
         if (user == null) {
-            user = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
-            daos.getUserAccess().put(con, user);
-            user.freeze();
+            return UserDAOFacade.create(con, daos, twitterLinkage);
         } else {
             if (!verifyUserProfiles(user, twitterLinkage)) {
                 user = new User(user);

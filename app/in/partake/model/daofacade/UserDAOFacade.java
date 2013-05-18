@@ -1,5 +1,6 @@
 package in.partake.model.daofacade;
 
+import in.partake.base.TimeUtil;
 import in.partake.model.IPartakeDAOs;
 import in.partake.model.UserEx;
 import in.partake.model.dao.DAOException;
@@ -29,4 +30,11 @@ public class UserDAOFacade extends AbstractPartakeDAOFacade {
         return new UserEx(user, linkage);
     }
 
+    public static UserEx create(PartakeConnection con, IPartakeDAOs daos, UserTwitterLink twitterLinkage) throws DAOException {
+        User user = new User(twitterLinkage.getUserId(), twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
+        daos.getUserAccess().put(con, user);
+        user.freeze();
+
+        return new UserEx(user, twitterLinkage);
+    }
 }
