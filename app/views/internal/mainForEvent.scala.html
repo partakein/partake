@@ -12,16 +12,24 @@
     @if(!StringUtils.isEmpty(event.getSummary())) {
     <meta name="description" content="@event.getSummary()">
     <meta property="og:description" content="@event.getSummary()">
+    <meta name="twitter:description" content="@event.getSummary()">
     } else {
     <meta name="description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)" />
     <meta property="og:description" content="@Util.shorten(Util.removeTags(event.getDescription()), 128)">
     }
 
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@@partakein">
+    <meta name="twitter:creator" content="@@@event.getOwner.getScreenName">
     <meta property="og:url" content="@in.partake.app.PartakeConfiguration.toppath@ctx.currentURL">
     <meta property="og:title" content="@title">
+    <meta name="twitter:title" content="@title">
     <meta property="og:site_name" content="PARTAKE">
     @if(ctx.thumbnailURL() != null) {
     <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@ctx.thumbnailURL">
+    <meta name="twitter:image" content="@in.partake.app.PartakeConfiguration.toppath@ctx.thumbnailURL">
+    } else {
+    <meta name="twitter:image" content="@in.partake.app.PartakeConfiguration.toppath@routes.Assets.at("images/musangas.jpg")">
     }
     <meta property="og:image" content="@in.partake.app.PartakeConfiguration.toppath@routes.Assets.at("images/musangas.jpg")">
     <meta property="og:type" content="article">
