@@ -381,12 +381,12 @@ $('#related-edit').click(function(e) {
 $('#related-submit').click(function(e) {
     var id = removeSuffix($(enclosingForm(this)).attr("id"), "-form");
 
-    var relatedEventIds = [];
+    var newRelatedEventIds = [];
     $('#related-list input').each(function(elem) {
-        relatedEventIds.push($(this).val());
+        newRelatedEventIds.push($(this).val());
     });
 
-    partake.event.modify(eventId, { relatedEventIds: relatedEventIds })
+    partake.event.modify(eventId, { relatedEventIds: newRelatedEventIds })
     .done(function (json) {
         $('#' + id + '-form').hide();
         $('#' + id + '-show').show();
@@ -395,6 +395,7 @@ $('#related-submit').click(function(e) {
         if (!json.relatedEvents)
             return;
 
+        relatedEventIds = [];
         for (var i = 0; i < json.relatedEvents.length; ++i) {
             var relatedEvent = json.relatedEvents[i];
             var li = $("<li></li>");
@@ -402,6 +403,7 @@ $('#related-submit').click(function(e) {
             a.attr('href', '/events/' + relatedEvent.id);
             a.text(relatedEvent.title);
             li.append(a);
+            relatedEventIds.push(relatedEvent.id);
 
             $('#related-content').append(li);
         }
