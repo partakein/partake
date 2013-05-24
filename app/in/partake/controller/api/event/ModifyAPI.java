@@ -67,7 +67,7 @@ public class ModifyAPI extends AbstractPartakeAPI {
             searchService.create(event, tickets);
 
         ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
-        obj.put("eventId", eventId);
+        obj.putAll(transaction.getJSONObject());
         return renderOK(obj);
     }
 }
