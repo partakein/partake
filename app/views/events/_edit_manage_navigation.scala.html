@@ -17,10 +17,13 @@ $(document).on("click", "a[href!=#]", function(e){
     function isLinkInTinyMce() {
         return $(that).parents('[class^=mce]').length > 0;
     }
+    function isLinkInDateEdit() {
+        return $(that).parents('.ui-datepicker-header').length > 0;
+    }
     function isEditing() {
         return $("input[type=button]").filter(":visible:enabled").length > 0;
     }
-    if (!isLinkInTinyMce() && isEditing() &&
+    if (!isLinkInTinyMce() && !isLinkInDateEdit() && isEditing() &&
             !window.confirm("保存していない変更があります。保存しないまま編集を終了し、次のページに行く場合は「OK」を押してください。")) {
         // cancel saving, and continue to edit
         e.preventDefault();
