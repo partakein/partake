@@ -167,7 +167,7 @@ $('#editor-input').autocomplete({
 <div><input type="text" id="date-begin-input" name="beginDate" class="edit-input" placeholder="YYYY-MM-DD HH:MM" value="@TimeUtil.formatForEvent(event.getBeginDate())" /></div>
 <p>終了日時</p>
 <div class="input-prepend">
-    <div class="add-on"><input id="date-end-use-input" type="checkbox" class="edit-input" name="usesEndDate" @if(event.getEndDate() != null) { checked } ></div><input type="text" id="date-end-input" name="endDate" placeholder="YYYY-MM-DD HH:MM" value="@if(event.getEndDate() != null) { @TimeUtil.formatForEvent(event.getEndDate()) } else { @TimeUtil.formatForEvent(event.getBeginDate()) }" />
+    <div class="add-on"><input id="date-end-use-input" type="checkbox" class="edit-input" name="usesEndDate" @if(event.getEndDate() != null) { checked } ></div><input type="text" id="date-end-input" name="endDate" placeholder="YYYY-MM-DD HH:MM" value="@if(event.getEndDate() != null) {@TimeUtil.formatForEvent(event.getEndDate())} else {@TimeUtil.formatForEvent(event.getBeginDate())}" />
 </div>
 <div class="edit-form-buttons">
     <input type="button" value="キャンセル" class="btn edit-cancel-button">
