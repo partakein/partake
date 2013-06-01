@@ -7,7 +7,7 @@
         <col class="span1" /><col class="span6" /><col class="span3" /><col class="span2" />
     </colgroup>
     <thead>
-        <tr><th>送信者</th><th>タイトル</th><th>受信日時</th></tr>
+        <tr><th></th><th>送信者</th><th>タイトル</th><th>受信日時</th></tr>
     </thead>
     <tbody id="received-tbody">
     </tbody>
@@ -46,7 +46,6 @@
 
             // 送信者
             $('<td></td>').text(message.sender.screenName).appendTo(tr);
-            if (message.sender)
 
             // タイトル
             $('<td></td>').text(message.message.subject).appendTo(tr);
