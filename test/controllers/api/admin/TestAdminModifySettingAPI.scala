@@ -7,8 +7,17 @@ import in.partake.resource.Constants
 import in.partake.resource.UserErrorCode
 import in.partake.model.fixture.TestDataProviderConstants
 import in.partake.resource.ConfigurationKeyConstants
+import models.db.Transaction
 
 class TestAdminModifySettingAPI extends AbstractAPITest {
+
+  override def beforeEach() {
+    super.beforeEach()
+    Transaction { (con, daos) =>
+      daos.getConfiguraitonItemAccess().remove(con, ConfigurationKeyConstants.KEY_FOR_TEST)
+    }
+  }
+
   test("Accessing with admin user") {
     val currentValue: Option[String] = loadAdminSetting(ConfigurationKeyConstants.KEY_FOR_TEST)
     expect(None) { currentValue }

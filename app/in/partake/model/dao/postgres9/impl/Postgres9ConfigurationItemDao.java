@@ -126,6 +126,7 @@ public class Postgres9ConfigurationItemDao extends Postgres9Dao implements IConf
         try {
             String sql = "DELETE FROM " + TABLE_NAME + " WHERE key = ?";
             ps = cn.prepareStatement(sql);
+            ps.setString(1, key);
             ps.execute();
         } catch (SQLException e) {
             throw new DAOException(e);
