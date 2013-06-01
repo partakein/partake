@@ -132,7 +132,6 @@ $('#template-remove').click(function() {
     var id = $(this).attr('id');
     var prefix = id.substr(0, id.indexOf('-'));
     $('#' + prefix).remove();
-    $("#ticket-submit").attr("disabled", false);
 });
 
 function cloneTemplate(newPrefix) {
@@ -157,7 +156,6 @@ $(function() {
         var newPrefix = "q" + idx;
         var cloned = cloneTemplate(newPrefix);
         $('#ticket-list').append(cloned);
-        $("#ticket-submit").attr("disabled", false);
     });
 });
 
@@ -197,7 +195,7 @@ for (var i = 0; i < initialData.length; ++i) {
 
 <form><fieldset>
     <div class="form-actions">
-        <input type="button" id="ticket-submit" class="btn btn-primary" value="保存" disabled>
+        <input type="button" id="ticket-submit" class="btn btn-primary" value="保存">
         <span id="ticket-submit-info" class="text-info"></span>
     </div>
 </fieldset></form>
@@ -242,12 +240,8 @@ $('#ticket-submit').click(function() {
     partake.event.modifyTicket(eventId, tickets)
     .done(function (json) {
         $('#ticket-submit-info').hide().text('保存しました').fadeIn(500);
-        $("#ticket-submit").attr("disabled", true);
     })
     .fail(partake.defaultFailHandler);
-});
-$(document).on("change", "input", function(e) {
-    $("#ticket-submit").attr("disabled", false);
 });
 </script>
 
