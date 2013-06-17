@@ -215,6 +215,11 @@ http://www.w3.org/TR/html401/struct/global.html
 		 	</regexp-list>
 		 </attribute>
 
+        <attribute name="target">
+            <regexp-list>
+                <regexp value="[a-zA-Z0-9\-_\$]+"/>
+            </regexp-list>
+        </attribute>
 
 		<attribute name="shape" description="The 'shape' attribute defines the shape of the selectable area">
 			<literal-list>
@@ -753,6 +758,7 @@ http://www.w3.org/TR/html401/struct/global.html
 					<literal value="nofollow"/>
 				</literal-list>
 			</attribute>
+			<attribute name="target"/>
 			<attribute name="name"/>
 
 		</tag>
