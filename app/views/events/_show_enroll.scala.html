@@ -26,15 +26,15 @@
 
         <div class="span8"><div class="row">
         @if(!ticket.acceptsApplication(event, TimeUtil.getCurrentDateTime())) {
-             <span href="#" class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">申込期間外です</span></span>
+             <span class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">申込期間外です</span></span>
         } else {
             @if(user == null) {
-                <span href="#" class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">参加するには<a href="#" rel="tooltip" title="twitter でログイン" onclick="document.loginByTwitterForm.submit()"><strong>ログイン</strong></a>が必要です</span></span>
+                <span class="btn btn-flat span8 btn-enroll p2-height border-box disabled"><span class="btn-enroll-inner">参加するには<a href="#" rel="tooltip" title="twitter でログイン" onclick="document.loginByTwitterForm.submit()"><strong>ログイン</strong></a>が必要です</span></span>
             } else {
                 @if(ParticipationStatus.ENROLLED.equals(status) || ParticipationStatus.RESERVED.equals(status)) {
-                    <span href="#" class="btn c button-apply-ticket span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">申込変更</span></span>
+                    <span class="btn c button-apply-ticket span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">申込変更</span></span>
                 } else {
-                    <span href="#" class="btn btn-danger-flat button-apply-ticket span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">参加申込</span></span>
+                    <span class="btn btn-danger-flat button-apply-ticket span8 btn-enroll border-box p2-height" data-ticket="@ticket.getId().toString()"><span class="btn-enroll-inner">参加申込</span></span>
                 }
             }
         }

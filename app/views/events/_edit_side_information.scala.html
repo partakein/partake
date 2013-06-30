@@ -277,7 +277,9 @@ $('#address-submit').click(function(e) {
 </script>
 
 <div class="event-map"><a id="address-anchor" href="http://maps.google.co.jp/maps?q=@if(event.getAddress() != null){@Util.encodeURIComponent(event.getAddress())}">
-    <img id="address-img" src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=@if(event.getAddress() != null){@Util.encodeURIComponent(event.getAddress())}&zoom=17&sensor=false" />
+    <img id="address-img" src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&amp;center=@if(event.getAddress() != null){@Util.encodeURIComponent(event.getAddress())}&amp;zoom=17&amp;sensor=false"
+        alt="@if(event.getAddress() != null){event.getAddress()}"
+    />
 </a></div>
 
 <h3>参考情報</h3>
