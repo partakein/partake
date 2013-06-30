@@ -40,10 +40,10 @@
             @for(key <- in.partake.resource.ConfigurationKeyConstants.configurationkeySet) {
                 <form class="form-horizontal"><fieldset>
                 <div class="control-group">
-                    <label class="control-label" for="input01">@key</label>
+                    <label class="control-label" for="input-@key">@key</label>
                     <div class="controls">
                         <input type="hidden" name="sessionToken" value="@ctx.sessionToken()">
-                        <input type="text" class="span8" name="key" value="@if(configurationMap.get(key) != null) { @configurationMap.get(key) }"  onclick="return false;">
+                        <input type="text" id="input-@key" class="span8" name="key" value="@if(configurationMap.get(key) != null) { @configurationMap.get(key) }" onclick="return false;">
                         <input type="button" value="設定" class="btn" onclick="modifySetting($(this).form(), '@key')">
                         <span class="text-info"></span>
                     </div>

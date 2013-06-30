@@ -7,7 +7,7 @@
 <div class="subnav subnav-fixed"><div class="container">
     <ul class="nav nav-pills nav-stacked-if-phone">
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img class="hidden-phone-inline" src="@routes.Assets.at("/images/gear.png")"/> イベント編集<b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="" class="hidden-phone-inline" src="@routes.Assets.at("/images/gear.png")"/> イベント編集<b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="/events/edit/basic/@event.getId()">イベントを編集</a></li>
                 <li><a href="/events/edit/ticket/@event.getId()">チケットを編集</a></li>
@@ -30,13 +30,13 @@
             })
             </script>
         </li>
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img class="hidden-phone-inline" src="@routes.Assets.at("/images/momonga1.png")"/> 参加者管理<b class="caret"></b></a>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img alt="" class="hidden-phone-inline" src="@routes.Assets.at("/images/momonga1.png")"/> 参加者管理<b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="/events/participants/@event.getId()">参加者一覧を表示</a></li>
                 <li><a href="/events/participants/csv/@event.getId()">参加者リストを CSV (UTF-8) で出力</a></li>
             </ul>
         </li>
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><b><img class="hidden-phone-inline" src="@routes.Assets.at("/images/mail.png")"/></b> メッセージ管理<b class="caret"></b></a>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><b><img alt="" class="hidden-phone-inline" src="@routes.Assets.at("/images/mail.png")"/></b> メッセージ管理<b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a data-toggle="modal" href="#message-send-dialog">参加者へメッセージ送信</a></li>
                 <li class="divider"></li>
@@ -195,7 +195,7 @@
         <h3>リマインダーなどの送付状況</h3>
     </div>
     <div class="modal-body">
-        <div id="event-reminder-dialog-spinner"><img src="@routes.Assets.at("/images/spinner.gif")"></div>
+        <div id="event-reminder-dialog-spinner"><img alt="loading..." src="@routes.Assets.at("/images/spinner.gif")"></div>
         <ul id="event-reminder-list">
         </ul>
     </div>

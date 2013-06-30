@@ -35,7 +35,7 @@
             }
             @* Enquete information if any *@
             @if(event.getEnquetes() != null && !event.getEnquetes().isEmpty()) {
-                <th colspan="@(event.getEnquetes().size() - 1)">アンケートの回答</th>
+                <th colspan="@(event.getEnquetes().size())">アンケートの回答</th>
             }
         </tr>
         <tr>

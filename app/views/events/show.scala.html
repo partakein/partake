@@ -32,7 +32,7 @@
     <p>
         <span class="label label-info">@EventCategory.getReadableCategoryName(event.getCategory())</span>
     <p>
-</div>
+</div>@* close .page-header *@
 
 <div id="social-plugins" class="row">
     <script>
@@ -64,7 +64,7 @@
         $('#social-plugins').html(socialPluginHTML);
     });
     </script>
-</div>
+</div>@* close #social-plugins *@
 
 @events._show_enroll(ctx, event, user, tickets, userTicketMap)
 
@@ -126,7 +126,7 @@
 
 @events._show_enroll(ctx, event, user, tickets, userTicketMap)
 
-</div>
+</div>@* close .content-body *@
 @events._show_forms(ctx, event, user, tickets, userTicketMap, ticketHolderListMap, comments, eventMessages)
-</div></div>
+</div>@* close .container *@
 }
