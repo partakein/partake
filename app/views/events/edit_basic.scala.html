@@ -177,9 +177,9 @@ $(function() {
         <input type="hidden" id="backimage-id" value="@event.getBackImageId()" />
         <div class="event-image">
             @if(StringUtils.isBlank(event.getBackImageId())) {
-                <img id="backimage-editimage" src="@routes.Assets.at("/images/no-image.png")">
+                <img id="backimage-editimage" src="@routes.Assets.at("/images/no-image.png")" alt="">
             } else {
-                <img id="backimage-editimage" src="/images/@event.getBackImageId()">
+                <img id="backimage-editimage" src="/images/@event.getBackImageId()" alt="">
             }
         </div>
 
@@ -244,9 +244,9 @@ $(function() {
         <div id="foreimage-show">
             <div class="event-image">
                 @if(StringUtils.isBlank(event.getForeImageId())) {
-                    <img id="foreimage-showimage" src="@routes.Assets.at("/images/no-image.png")" style="display: none">
+                    <img id="foreimage-showimage" src="@routes.Assets.at("/images/no-image.png")" style="display: none" alt="">
                 } else {
-                    <img id="foreimage-showimage" src="/images/@event.getForeImageId()">
+                    <img id="foreimage-showimage" src="/images/@event.getForeImageId()" alt="">
                 }
             </div>
             <span id="foreimage-edit" class="label label-edit edit-button">この位置への掲載画像を編集</span>
@@ -255,9 +255,9 @@ $(function() {
             <input type="hidden" id="foreimage-id" value="@event.getForeImageId()" />
             <div class="event-image">
                 @if(StringUtils.isBlank(event.getForeImageId())) {
-                    <img id="foreimage-editimage" src="@routes.Assets.at("/images/no-image.png")">
+                    <img id="foreimage-editimage" src="@routes.Assets.at("/images/no-image.png")" alt="">
                 } else {
-                    <img id="foreimage-editimage" src="/images/@event.getForeImageId()">
+                    <img id="foreimage-editimage" src="/images/@event.getForeImageId()" alt="">
                 }
             </div>
 

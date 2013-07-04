@@ -43,10 +43,10 @@
                     <label class="control-label">募集開始日時</label>
                     <div class="controls">
                         <label class="radio"><input id="template-start-anytime" type="radio" name="applicationStart" value="anytime" checked />今から</label>
-                        <label class="radio"><input id="template-start-before" type="radio" name="applicationStart" value="from_nday_before" />イベントの <input type="text" class="span2" name="applicationStartDayBeforeEvent" value="0" /> 日前から</label>
-                        <label class="radio"><input id="template-start-custom" type="radio" name="applicationStart" value="from_custom_day" />次の日付から
-                            <input type="text" type="text" name="customApplicationStartDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm" />
-                        </label>
+                        <div class="radio"><input id="template-start-before" type="radio" name="applicationStart" value="from_nday_before" /><label for="template-start-before" style="display:inline;">イベントの </label><input type="text" class="span2" name="applicationStartDayBeforeEvent" value="0" /><label for="template-start-before" style="display:inline;"> 日前から</label></div>
+                        <div class="radio"><input id="template-start-custom" type="radio" name="applicationStart" value="from_custom_day" /><label for="template-start-custom" style="display:inline;">次の日付から </label>
+                            <input type="text" name="customApplicationStartDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm" />
+                        </div>
                         <p class="help-block">YYYY-MM-DD hh:mm 形式で入力します。</p>
                     </div>
                 </div>
@@ -55,10 +55,10 @@
                     <div class="controls">
                         <label class="radio"><input type="radio" name="applicationEnd" value="till_time_before_event" checked />イベントが始まるまで</label>
                         <label class="radio"><input type="radio" name="applicationEnd" value="till_time_after_event" checked />イベントが終わるまで</label>
-                        <label class="radio"><input type="radio" name="applicationEnd" value="till_nday_before" />イベントの <input type="text" class="span2" name="applicationEndDayBeforeEvent" value="0" /> 日前まで</label>
-                        <label class="radio"><input type="radio" name="applicationEnd" value="till_custom_day" />次の日付まで
-                            <input type="text" type="text" name="customApplicationEndDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm"/>
-                        </label>
+                        <div class="radio"><input type="radio" name="applicationEnd" value="till_nday_before" id="template-application-end-till-nday-before" /><label style="display:inline;" for="template-application-end-till-nday-before">イベントの </label><input type="text" class="span2" name="applicationEndDayBeforeEvent" value="0" /><label style="display:inline;" for="template-application-end-till-nday-before"> 日前まで</label></div>
+                        <div class="radio"><input type="radio" name="applicationEnd" value="till_custom_day" id="template-application-end-till-custom_day" /><label for="template-application-end-till-custom_day" style="display:inline;">次の日付まで</label>
+                            <input type="text" name="customApplicationEndDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm"/>
+                        </div>
                         <p class="help-block">YYYY-MM-DD hh:mm 形式で入力します。</p>
                     </div>
                 </div>
@@ -66,11 +66,16 @@
                     <label class="control-label">仮参加締切日時</label>
                     <div class="controls">
                         <label class="radio"><input type="radio" name="reservationEnd" value="till_time_before_application" checked />申込締切と同じ</label>
-                        <label class="radio"><input type="radio" name="reservationEnd" value="till_nhour_before" />申込締切の <input type="text" class="span2" name="reservationEndHourBeforeApplication" value="0" /> 時間前まで</label>
+                        <div class="radio">
+                            <input type="radio" name="reservationEnd" value="till_nhour_before" id="template-reservation-end-till-nhour-before" />
+                            <label for="template-reservation-end-till-nhour-before" style="display:inline;">申込締切の </label>
+                            <input type="text" class="span2" name="reservationEndHourBeforeApplication" value="0" />
+                            <label for="template-reservation-end-till-nhour-before" style="display:inline;"> 時間前まで</label></div>
                         <label class="radio"><input type="radio" name="reservationEnd" value="till_none" />仮参加を認めない</label>
-                        <label class="radio"><input type="radio" name="reservationEnd" value="till_custom_day" />次の日付まで
-                            <input type="text" type="text" name="customReservationEndDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm" />
-                        </label>
+                        <div class="radio"><input type="radio" name="reservationEnd" value="till_custom_day" id="template-reservation-end-till-custom-day" />
+                            <label for="template-reservation-end-till-custom-day" style="display:inline;">次の日付まで</label>
+                            <input type="text" name="customReservationEndDate" class="edit-date" placeholder="YYYY-MM-DD hh:mm" />
+                        </div>
                         <p class="help-block">YYYY-MM-DD hh:mm 形式で入力します。</p>
                     </div>
                 </div>
@@ -78,16 +83,22 @@
                     <label class="control-label">価格</label>
                     <div class="controls">
                         <label class="radio"><input type="radio" name="priceType" value="free" checked />無料</label>
-                        <label class="radio"><input type="radio" name="priceType" value="nonfree" />
-                        <input type="text" class="span4" name="price" value="1000" />円 (会場で支払い)</label>
+                        <div class="radio">
+                            <input type="radio" name="priceType" value="nonfree" id="template-price-type-nonfree" />
+                            <input type="text" class="span4" name="price" value="1000" />
+                            <label for="template-price-type-nonfree" style="display:inline;">円 (会場で支払い)</label>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">チケット枚数</label>
                     <div class="controls">
                         <label class="radio"><input type="radio" name="amountType" value="unlimited" checked />無制限</label>
-                        <label class="radio"><input type="radio" name="amountType" value="limited" />
-                            <input type="text" class="span2" name="amount" value="10" />枚</label>
+                        <div class="radio">
+                            <input type="radio" name="amountType" value="limited" id="template-amount-type-limited" />
+                            <input type="text" class="span2" name="amount" value="10" />
+                            <label for="template-amount-type-limited" style="display:inline;">枚</label>
+                        </div>
                     </div>
                 </div>
             </fieldset></form>
@@ -139,7 +150,7 @@ function cloneTemplate(newPrefix) {
     var cloned = template.clone(true);
     cloned.find("[id^=template]").each(function() {
         var id = $(this).attr('id').replace('template', newPrefix);
-        $(this).attr('id', id);
+        $(this).attr('id', id).siblings('label').attr('for', id);
     });
     cloned.attr('id', newPrefix);
     cloned.find('.edit-date').datetimepicker({

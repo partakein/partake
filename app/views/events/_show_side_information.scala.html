@@ -31,7 +31,9 @@
 @if(!StringUtils.isBlank(event.getAddress())) {
 <p>住所: @event.getAddress()</p>
 <div class="event-map"><a href="http://maps.google.co.jp/maps?q=@Util.encodeURIComponent(event.getAddress())">
-    <img src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&center=@Util.encodeURIComponent(event.getAddress())&zoom=17&sensor=false" />
+    <img src="http://maps.google.co.jp/maps/api/staticmap?size=280x200&amp;center=@Util.encodeURIComponent(event.getAddress())&amp;zoom=17&amp;sensor=false"
+        alt="@if(event.getAddress() != null){event.getAddress()}"
+    />
 </a></div>
 }
 @if(event.getUrl() != null && !event.getUrl().isEmpty()) {
