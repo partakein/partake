@@ -68,6 +68,7 @@ public class User extends PartakeModel<User> {
         obj.put("createdAt", createdAt.getTime());
         if (modifiedAt != null)
             obj.put("modifiedAt", modifiedAt.getTime());
+        obj.put("isBanned", isBanned);
         return obj;
     }
 

@@ -20,6 +20,22 @@
     Partake.prototype.account = {
         partake: this,
 
+        getBan: function(targetUserId) {
+            var arg = {
+                targetUserId: targetUserId
+            };
+            return $.get('/api/account/ban', arg);
+        },
+
+        ban: function(targetUserId, targetState) {
+            var arg = {
+                sessionToken: partake.sessionToken,
+                targetUserId: targetUserId,
+                targetState: targetState
+            };
+            return $.post('/api/account/ban', arg);
+        },
+
         // Gets events of account.
         getEvents: function(queryType, offset, limit) {
             var arg = {
