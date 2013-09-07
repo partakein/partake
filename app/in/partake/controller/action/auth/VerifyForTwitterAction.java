@@ -121,7 +121,7 @@ class VerifyForTwitterActionTransaction extends Transaction<UserEx> {
         String userId = twitterLinkage.getUserId();
         User user = daos.getUserAccess().find(con, userId);
         if (user == null) {
-            user = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null);
+            user = new User(userId, twitterLinkage.getScreenName(), twitterLinkage.getProfileImageURL(), TimeUtil.getCurrentDateTime(), null, false);
             daos.getUserAccess().put(con, user);
             user.freeze();
         } else {

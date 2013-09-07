@@ -12,17 +12,22 @@ public class User extends PartakeModel<User> {
     private String profileImageURL;
     private DateTime createdAt;
     private DateTime modifiedAt;
+    /**
+     * true if system administrator banned this account
+     */
+    private boolean isBanned;
 
-    public User(String id, String screenName, String profileImageURL, DateTime createdAt, DateTime modifiedAt) {
+    public User(String id, String screenName, String profileImageURL, DateTime createdAt, DateTime modifiedAt, boolean isBanned) {
         this.id = id;
         this.screenName = screenName;
         this.profileImageURL = profileImageURL;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.isBanned = isBanned;
     }
 
     public User(User user) {
-        this(user.id, user.screenName, user.profileImageURL, user.createdAt, user.modifiedAt);
+        this(user.id, user.screenName, user.profileImageURL, user.createdAt, user.modifiedAt, user.isBanned);
     }
 
     public User(ObjectNode obj) {
@@ -32,6 +37,9 @@ public class User extends PartakeModel<User> {
         this.createdAt = new DateTime(obj.get("createdAt").asLong());
         if (obj.has("modifiedAt"))
             this.modifiedAt = new DateTime(obj.get("modifiedAt").asLong());
+        if (obj.has("isBanned")) {
+            this.isBanned = obj.get("isBanned").asBoolean();
+        }
     }
 
     @Override
@@ -78,6 +86,7 @@ public class User extends PartakeModel<User> {
         if (!ObjectUtils.equals(lhs.profileImageURL, rhs.profileImageURL)) { return false; }
         if (!ObjectUtils.equals(lhs.createdAt, rhs.createdAt)) { return false; }
         if (!ObjectUtils.equals(lhs.modifiedAt, rhs.modifiedAt)) { return false; }
+        if (!ObjectUtils.equals(lhs.isBanned, rhs.isBanned)) { return false; }
         return true;
     }
 
@@ -109,6 +118,10 @@ public class User extends PartakeModel<User> {
         return modifiedAt;
     }
 
+    public boolean isBanned() {
+        return isBanned;
+    }
+
     public void setId(String id) {
         checkFrozen();
         this.id = id;
@@ -133,4 +146,10 @@ public class User extends PartakeModel<User> {
         checkFrozen();
         this.modifiedAt = modifiedAt;
     }
+
+    public void setBanned(boolean isBanned) {
+        checkFrozen();
+        this.isBanned = isBanned;
+    }
+
 }
