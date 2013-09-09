@@ -3,6 +3,33 @@
 
 <div class="page-header">
 	<h1>@user.getScreenName()</h1>
+    @if(ctx.loginUser != null && ctx.loginUser.isAdministrator()) {
+        <button id="ban-user" class="btn" disabled>Loading...</button>
+        <script>
+            var $banButton = $("#ban-user").click(function(e){
+                var targetState = $(this).data("target-state"),
+                    targetUserId = "@user.getId()";
+                $banButton.prop('disabled', true);
+                partake.account.ban(targetUserId, targetState).done(function(user){
+                    updateBanButton(user);
+                }).fail(partake.defaultFailHandler);
+            });
+
+            function updateBanButton(user) {
+                if (user.isBanned) {
+                    $banButton.removeClass("btn-warning").data("target-state", false).text("イベント作成を許可する");
+                } else {
+                    $banButton.addClass("btn-warning").data("target-state", true).text("イベント作成を禁止する");
+                }
+                $banButton.prop('disabled', false);
+            }
+            $(function(){
+                partake.account.getBan("@user.getId()").done(function(user){
+                    updateBanButton(user);
+                }).fail(partake.defaultFailHandler);
+            });
+        </script>
+    }
 </div>
 
 <div class="row tabbable">
