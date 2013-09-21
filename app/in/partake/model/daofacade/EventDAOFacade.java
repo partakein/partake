@@ -192,8 +192,8 @@ public class EventDAOFacade {
     public static void tweetNewEventArrival(PartakeConnection con, IPartakeDAOs daos, Event event) throws DAOException {
         String hashTag = event.getHashTag() != null ? event.getHashTag() : "";
         String messagePrefix = "[PARTAKE] 新しいイベントが追加されました :";
-        String eventURL = event.getEventURL(); // Always 20
-        int length = (messagePrefix.length() + 1) + (20 + 1) + (hashTag.length() + 1);
+        String eventURL = event.getEventURL(); // Always 23
+        int length = (messagePrefix.length() + 1) + (23 + 1) + (hashTag.length() + 1);
         String title = Util.shorten(event.getTitle(), 140 - length);
 
         String message = messagePrefix + " " + title + " " + eventURL + " " + hashTag;
