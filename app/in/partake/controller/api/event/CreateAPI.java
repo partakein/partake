@@ -33,6 +33,9 @@ public class CreateAPI extends AbstractPartakeAPI {
     protected Result doExecute() throws DAOException, PartakeException {
         UserEx user = ensureLogin();
         ensureValidSessionToken();
+        if (user.isBanned()) {
+            throw new PartakeException(UserErrorCode.BANNED_USER);
+        }
 
         Event embryo = new Event();
         embryo.setOwnerId(user.getId());

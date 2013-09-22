@@ -63,6 +63,7 @@ public enum UserErrorCode {
     MISSING_USER_ID("invalid.missing_userid"),
     INVALID_USER_PRIVATE("invalid.user.profile.private", 403),
     MISSING_USERNAME("invalid.user.username.missing"),
+    BANNED_USER("invalid.user.banned", 403),
 
     // OPEN_ID
     INVALID_OPENID("invalid.invalid_openid"),
