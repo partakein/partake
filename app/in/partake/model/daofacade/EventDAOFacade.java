@@ -30,6 +30,12 @@ import java.util.List;
 import play.Logger;
 
 public class EventDAOFacade {
+    /**
+     * <p>Expected length of shortened URL</p>
+     * @see https://dev.twitter.com/blog/upcoming-tco-changes
+     */
+    public static final int URL_LENGTH = 23;
+
     public static EventEx getEventEx(PartakeConnection con, IPartakeDAOs daos, String eventId) throws DAOException {
         Event event = daos.getEventAccess().find(con, eventId);
         if (event == null) { return null; }
@@ -192,8 +198,8 @@ public class EventDAOFacade {
     public static void tweetNewEventArrival(PartakeConnection con, IPartakeDAOs daos, Event event) throws DAOException {
         String hashTag = event.getHashTag() != null ? event.getHashTag() : "";
         String messagePrefix = "[PARTAKE] 新しいイベントが追加されました :";
-        String eventURL = event.getEventURL(); // Always 20
-        int length = (messagePrefix.length() + 1) + (20 + 1) + (hashTag.length() + 1);
+        String eventURL = event.getEventURL(); // Always 23
+        int length = (messagePrefix.length() + 1) + (23 + 1) + (hashTag.length() + 1);
         String title = Util.shorten(event.getTitle(), 140 - length);
 
         String message = messagePrefix + " " + title + " " + eventURL + " " + hashTag;
