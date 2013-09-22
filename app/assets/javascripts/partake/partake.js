@@ -21,10 +21,13 @@
         partake: this,
 
         getBan: function(targetUserId) {
-            var arg = {
-                targetUserId: targetUserId
-            };
-            return $.get('/api/account/ban', arg);
+            return $.ajax({
+                url: '/api/account/ban',
+                data: {
+                    targetUserId: targetUserId
+                },
+                cache: false
+            });
         },
 
         ban: function(targetUserId, targetState) {
