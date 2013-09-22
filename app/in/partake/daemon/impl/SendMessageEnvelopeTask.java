@@ -13,6 +13,7 @@ import in.partake.model.dao.DAOException;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.PartakeConnection;
 import in.partake.model.dao.access.IUserTwitterLinkAccess;
+import in.partake.model.daofacade.EventDAOFacade;
 import in.partake.model.daofacade.UserDAOFacade;
 import in.partake.model.dto.Event;
 import in.partake.model.dto.EventTicket;
@@ -169,7 +170,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
                 String format = "[PRTK] %s 「%s」に関する新着メッセージがあります。 : %s";
                 rest -= Util.codePointCount(format);
 
-                rest -= 23; // for URL. Twitter will shorten URL if its length is more than 23.
+                rest -= EventDAOFacade.URL_LENGTH;
 
                 String title = Util.shorten(event.getTitle(), 30);
                 rest -= Util.codePointCount(title);
@@ -182,7 +183,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
                 String format = "[PRTK] %s 新着メッセージがあります。: %s";
                 rest -= Util.codePointCount(format);
 
-                rest -= 23; // for URL.
+                rest -= EventDAOFacade.URL_LENGTH;
 
                 String subject = Util.shorten(message.getSubject(), rest);
 
@@ -327,7 +328,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             rest -= Util.codePointCount(beginDate);
 
             String url = event.getEventURL();
-            rest -= 23; // URL is always 23. see https://dev.twitter.com/blog/upcoming-tco-changes
+            rest -= EventDAOFacade.URL_LENGTH;
 
             String title = Util.shorten(event.getTitle(), rest);
             return String.format(format, title, beginDate, url);
@@ -341,7 +342,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             rest -= Util.codePointCount(deadline);
 
             String url = event.getEventURL();
-            rest -= 23; // For URL
+            rest -= EventDAOFacade.URL_LENGTH;
 
             String title = Util.shorten(event.getTitle(), rest);
             return String.format(format, title, deadline, url);
@@ -355,7 +356,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             rest -= Util.codePointCount(deadline);
 
             String url = event.getEventURL();
-            rest -= 23; // For URL
+            rest -= EventDAOFacade.URL_LENGTH;
 
             String title = Util.shorten(event.getTitle(), rest);
             return String.format(format, title, deadline, url);
@@ -366,7 +367,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             rest -= Util.codePointCount(format);
 
             String url = event.getEventURL();
-            rest -= 23; // For URL
+            rest -= EventDAOFacade.URL_LENGTH;
 
             String title = Util.shorten(event.getTitle(), rest);
             return String.format(format, title, url);
@@ -377,7 +378,7 @@ class SendMessageEnvelopeTask extends Transaction<Void> implements IPartakeDaemo
             rest -= Util.codePointCount(format);
 
             String url = event.getEventURL();
-            rest -= 23; // For URL
+            rest -= EventDAOFacade.URL_LENGTH;
 
             String title = Util.shorten(event.getTitle(), rest);
             return String.format(format, title, url);

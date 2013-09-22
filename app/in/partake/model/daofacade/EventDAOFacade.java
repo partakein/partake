@@ -30,6 +30,12 @@ import java.util.List;
 import play.Logger;
 
 public class EventDAOFacade {
+    /**
+     * <p>Expected length of shortened URL</p>
+     * @see https://dev.twitter.com/blog/upcoming-tco-changes
+     */
+    public static final int URL_LENGTH = 23;
+
     public static EventEx getEventEx(PartakeConnection con, IPartakeDAOs daos, String eventId) throws DAOException {
         Event event = daos.getEventAccess().find(con, eventId);
         if (event == null) { return null; }
