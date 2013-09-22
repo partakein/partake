@@ -77,6 +77,8 @@ GET     /api/debug/errorDB                  controllers.api.debug.ErrorDBAPI.run
 GET     /api/debug/errorDBException         controllers.api.debug.ErrorDBExceptionAPI.run()
 
 # Account API
+GET     /api/account/ban                    in.partake.controller.api.account.GetBanAPI.get()
+POST    /api/account/ban                    in.partake.controller.api.account.BanAPI.post()
 GET     /api/account/get                    in.partake.controller.api.account.GetAPI.get()
 GET     /api/account/events                 in.partake.controller.api.account.GetEventsAPI.get()
 GET     /api/account/tickets                in.partake.controller.api.account.GetTicketsAPI.get()
