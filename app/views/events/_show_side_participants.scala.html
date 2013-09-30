@@ -60,7 +60,7 @@
 
     <h3>キャンセル</h3>
     @if(list.getCancelledParticipations().isEmpty()) {
-    <p>現在補欠者はいません</p>
+    <p>現在キャンセルした人はいません</p>
     } else {
     <ol>
         @for(userTicket <- list.getCancelledParticipations()) {
