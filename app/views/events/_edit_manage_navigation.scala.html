@@ -17,7 +17,7 @@ $(window).on("beforeunload", function(e){
         return $("input[type=button]").filter(":visible:enabled").length > 0;
     }
     if (isEditing()) {
-        return "保存していない変更があります。保存しないまま編集を終了し、次のページに行く場合は「OK」を押してください。";
+        return "保存していない変更があります。保存しないまま編集を終了して良いですか？";
     }
 });
 </script>
