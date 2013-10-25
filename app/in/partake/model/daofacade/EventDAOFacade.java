@@ -26,6 +26,11 @@ import in.partake.service.IEventSearchService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.collect.Sets;
 
 import play.Logger;
 
@@ -141,6 +146,7 @@ public class EventDAOFacade {
 
     public static void recreateEventIndex(PartakeConnection con, IPartakeDAOs daos, IEventSearchService searchService) throws DAOException, EventSearchServiceException {
         searchService.truncate();
+        Set<String> bannedUserId = collectBannedUserId(con, daos);
         DataIterator<Event> it = daos.getEventAccess().getIterator(con);
         try {
             while (it.hasNext()) {
@@ -149,7 +155,7 @@ public class EventDAOFacade {
 
                 List<EventTicket> tickets = daos.getEventTicketAccess().findEventTicketsByEventId(con, event.getId());
 
-                if (!event.isSearchable())
+                if (!event.isSearchable() || bannedUserId.contains(event.getOwnerId()))
                     searchService.remove(event.getId());
                 else if (searchService.hasIndexed(event.getId()))
                     searchService.update(event, tickets);
@@ -160,6 +166,21 @@ public class EventDAOFacade {
             it.close();
         }
     }
+
+    /**
+     * <p>Banned user should not be so many, we can store their ID on memory.</p>
+     */
+    @Nonnull
+    private static Set<String> collectBannedUserId(PartakeConnection con,
+            IPartakeDAOs daos) throws DAOException {
+        DataIterator<User> iter = daos.getUserAccess().listBannedUser(con);
+        Set<String> collected = Sets.newHashSet();
+        while (iter.hasNext()) {
+            collected.add(iter.next().getId());
+        }
+        return collected;
+    }
+
 
     // ----------------------------------------------------------------------
     // Comments

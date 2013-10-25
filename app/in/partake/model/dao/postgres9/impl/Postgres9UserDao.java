@@ -1,9 +1,14 @@
 package in.partake.model.dao.postgres9.impl;
 
+import java.util.Set;
+
 import org.codehaus.jackson.node.ObjectNode;
+
+import com.google.common.base.Predicate;
 
 import in.partake.base.TimeUtil;
 import in.partake.model.dao.DAOException;
+import in.partake.model.dao.DataFilter;
 import in.partake.model.dao.DataIterator;
 import in.partake.model.dao.MapperDataIterator;
 import in.partake.model.dao.PartakeConnection;
@@ -99,5 +104,15 @@ public class Postgres9UserDao extends Postgres9Dao implements IUserAccess {
     @Override
     public int count(PartakeConnection con) throws DAOException {
         return entityDao.count((Postgres9Connection) con);
+    }
+
+    @Override
+    public DataIterator<User> listBannedUser(PartakeConnection con) throws DAOException {
+        return new DataFilter<User>(getIterator(con), new Predicate<User>(){
+            @Override
+            public boolean apply(User user) {
+                return user != null && user.isBanned();
+            }
+        });
     }
 }
