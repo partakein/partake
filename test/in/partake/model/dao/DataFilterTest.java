@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.NoSuchElementException;
 
@@ -26,14 +27,7 @@ public class DataFilterTest {
     @Before
     public void createFiltered() throws DAOException {
         filtered = mock(DataIterator.class);
-        doAnswer(new Answer<Boolean>(){
-            private int time;
-            @Override
-            public Boolean answer(InvocationOnMock invocation) throws Throwable {
-                ++time;
-                return time < 3;
-            }
-        }).when(filtered).hasNext();
+        when(filtered.hasNext()).thenReturn(true, true, false);
         doAnswer(new Answer<Object>(){
             private int time;
             @Override
