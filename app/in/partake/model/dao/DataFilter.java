@@ -41,7 +41,7 @@ public class DataFilter<T> extends DataIterator<T> {
 
     @Override
     public T next() throws DAOException {
-        if ((searchedNext && !foundNext) || (!searchedNext && !hasNext())){
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
         searchedNext = foundNext = false;
