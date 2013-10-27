@@ -12,7 +12,7 @@ class NotFoundPageTest extends AbstractActionTest {
   test("access without login") {
     val request = FakeRequest("GET", "/notfound")
     val result = NotFoundPageAction.run(request)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with login") {
@@ -20,6 +20,6 @@ class NotFoundPageTest extends AbstractActionTest {
       Constants.Session.USER_ID_KEY -> TestDataProviderConstants.DEFAULT_USER_ID
     )
     val result = NotFoundPageAction.run(request)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 }

@@ -20,7 +20,7 @@ class TestAdminModifySettingAPI extends AbstractAPITest {
 
   test("Accessing with admin user") {
     val currentValue: Option[String] = loadAdminSetting(ConfigurationKeyConstants.KEY_FOR_TEST)
-    expect(None) { currentValue }
+    assertResult(None) { currentValue }
 
     val request = FakeRequest("POST", "/api/admin/modifySetting").withSession(
       Constants.Session.USER_ID_KEY -> TestDataProviderConstants.ADMIN_USER_ID

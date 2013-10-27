@@ -12,7 +12,7 @@ class ForbiddenPageTest extends AbstractActionTest {
   test("access without login") {
     val request = FakeRequest("GET", "/forbidden")
     val result = ForbiddenPageAction.run(request)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with login") {
@@ -20,6 +20,6 @@ class ForbiddenPageTest extends AbstractActionTest {
       Constants.Session.USER_ID_KEY -> TestDataProviderConstants.DEFAULT_USER_ID
     )
     val result = ForbiddenPageAction.run(request)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 }

@@ -12,7 +12,7 @@ class LoginRequiredPageTest extends AbstractActionTest {
   test("access without login") {
     val request = FakeRequest("GET", "/loginRequired")
     val result = LoginRequiredPageAction.run(request)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with login") {
@@ -20,7 +20,7 @@ class LoginRequiredPageTest extends AbstractActionTest {
       Constants.Session.USER_ID_KEY -> TestDataProviderConstants.DEFAULT_USER_ID
     )
     val result = LoginRequiredPageAction.run(request)
-    expect(Helpers.SEE_OTHER) { Helpers.status(result) }
-    expect(Some("/")) { Helpers.redirectLocation(result) }
+    assertResult(Helpers.SEE_OTHER) { Helpers.status(result) }
+    assertResult(Some("/")) { Helpers.redirectLocation(result) }
   }
 }

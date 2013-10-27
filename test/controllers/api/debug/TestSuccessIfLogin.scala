@@ -13,7 +13,7 @@ class TestSuccessIfLogin extends AbstractAPITest {
     )
     val result = SuccessIfLoginAPI.run(request);
 
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("accessing SuccessIfLogin API without login") {
