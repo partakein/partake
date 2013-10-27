@@ -23,7 +23,7 @@ public class DataFilter<T> extends DataIterator<T> {
     @Override
     public boolean hasNext() throws DAOException {
         if (searchedNext) {
-            return next != null;
+            return foundNext;
         }
 
         searchedNext = true;
@@ -35,7 +35,7 @@ public class DataFilter<T> extends DataIterator<T> {
             }
         }
         next = null;
-        foundNext = true;
+        foundNext = false;
         return false;
     }
 
