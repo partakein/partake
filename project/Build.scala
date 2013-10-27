@@ -1,6 +1,6 @@
 import sbt._
 import Keys._
-import PlayProject._
+import play.Project._
 import de.johoop.jacoco4sbt.JacocoPlugin._
 
 object ApplicationBuild extends Build {
@@ -12,6 +12,8 @@ object ApplicationBuild extends Build {
 
     val appDependencies = Seq(
         // Add your project dependencies here,
+        jdbc,
+        javaJpa,
         "commons-lang" % "commons-lang" % "2.6",
         "org.owasp" % "antisamy" % "1.4",
         "ical4j" % "ical4j" % "0.9.20",
@@ -31,10 +33,10 @@ object ApplicationBuild extends Build {
 
         "junit" % "junit" % "4.8.2" % "test",
         "org.hamcrest" % "hamcrest-all" % "1.1" % "test",
-        "org.scalatest" %% "scalatest" % "1.8" % "test"
+        "org.scalatest" %% "scalatest" % "1.9.2" % "test"
     )
 
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA, settings = s).settings(
+    val main = play.Project(appName, appVersion, appDependencies, settings = s).settings(
         // Add your own project settings here
         externalIvySettings(),
         testOptions in Test := Nil,
