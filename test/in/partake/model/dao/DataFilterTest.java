@@ -2,7 +2,6 @@ package in.partake.model.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -12,8 +11,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import com.google.common.base.Predicates;
 
@@ -28,17 +25,7 @@ public class DataFilterTest {
     public void createFiltered() throws DAOException {
         filtered = mock(DataIterator.class);
         when(filtered.hasNext()).thenReturn(true, true, false);
-        doAnswer(new Answer<Object>(){
-            private int time;
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                ++time;
-                if (time >= 3) {
-                    throw new NoSuchElementException();
-                }
-                return Integer.valueOf(time);
-            }
-        }).when(filtered).next();
+        when(filtered.next()).thenReturn(Integer.valueOf(1), Integer.valueOf(2)).thenThrow(new NoSuchElementException());
     }
 
     @Test
