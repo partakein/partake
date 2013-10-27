@@ -6,14 +6,14 @@ import java.util.NoSuchElementException;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 public class DataFilter<T> extends DataIterator<T> {
     private final DataIterator<T> unfiltered;
     private final Predicate<? super T> predicate;
-    private Optional<T> next;
+    private T next;
     private boolean searchedNext;
+    private boolean foundNext;
 
     public DataFilter(@Nonnull DataIterator<T> unfiltered, @Nonnull Predicate<? super T> predicate) {
         this.unfiltered = checkNotNull(unfiltered);
@@ -28,23 +28,24 @@ public class DataFilter<T> extends DataIterator<T> {
 
         searchedNext = true;
         while (unfiltered.hasNext()) {
-            T nextValue = unfiltered.next();
-            if (predicate.apply(nextValue)) {
-                next = Optional.of(nextValue);
+            next = unfiltered.next();
+            if (predicate.apply(next)) {
+                foundNext = true;
                 return true;
             }
         }
         next = null;
+        foundNext = true;
         return false;
     }
 
     @Override
     public T next() throws DAOException {
-        if ((searchedNext && next == null) || (!searchedNext && !hasNext())){
+        if ((searchedNext && !foundNext) || (!searchedNext && !hasNext())){
             throw new NoSuchElementException();
         }
-        searchedNext = false;
-        return next.get();
+        searchedNext = foundNext = false;
+        return next;
     }
 
     @Override
