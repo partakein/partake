@@ -14,13 +14,13 @@ class InvalidPageTest extends AbstractActionTest {
     implicit val context = InvalidPageAction.prepare(request)
 
     val params = InvalidPageAction.parseRequest(request)
-    expect(None) { params.errorCode }
+    assertResult(None) { params.errorCode }
 
     val values = InvalidPageAction.executeAction(params)
-    expect(None) { values.errorCode }
+    assertResult(None) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with errorCode") {
@@ -28,13 +28,13 @@ class InvalidPageTest extends AbstractActionTest {
     implicit val context = InvalidPageAction.prepare(request)
 
     val params = InvalidPageAction.parseRequest(request)
-    expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { params.errorCode }
+    assertResult(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { params.errorCode }
 
     val values = InvalidPageAction.executeAction(params)
-    expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { values.errorCode }
+    assertResult(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with login") {
@@ -44,13 +44,13 @@ class InvalidPageTest extends AbstractActionTest {
     implicit val context = InvalidPageAction.prepare(request)
 
     val params = InvalidPageAction.parseRequest(request)
-    expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { params.errorCode }
+    assertResult(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { params.errorCode }
 
     val values = InvalidPageAction.executeAction(params)
-    expect(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { values.errorCode }
+    assertResult(Some(UserErrorCode.INTENTIONAL_USER_ERROR)) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 
   test("access with invalid errorCode") {
@@ -58,12 +58,12 @@ class InvalidPageTest extends AbstractActionTest {
     implicit val context = InvalidPageAction.prepare(request)
 
     val params = InvalidPageAction.parseRequest(request)
-    expect(None) { params.errorCode }
+    assertResult(None) { params.errorCode }
 
     val values = InvalidPageAction.executeAction(params)
-    expect(None) { values.errorCode }
+    assertResult(None) { values.errorCode }
 
     val result = InvalidPageAction.renderResult(values)
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 }

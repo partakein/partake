@@ -15,7 +15,7 @@ class TestEchoAPI extends AbstractAPITest {
     expectResultOK(result)
 
     val json: JsValue = Json.parse(Helpers.contentAsString(result))
-    expect((json \ "data").asInstanceOf[JsString].value) { "test" }
+    assertResult((json \ "data").asInstanceOf[JsString].value) { "test" }
   }
 
   test("accessing Echo API using get without argument") {
@@ -33,7 +33,7 @@ class TestEchoAPI extends AbstractAPITest {
 
     expectResultOK(result)
     val json: JsValue = Json.parse(Helpers.contentAsString(result))
-    expect((json \ "data").asInstanceOf[JsString].value) { "test" }
+    assertResult((json \ "data").asInstanceOf[JsString].value) { "test" }
   }
 
   test("accessing Echo API using post without argument") {

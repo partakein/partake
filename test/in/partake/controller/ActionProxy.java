@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import play.mvc.Result;
 import play.test.FakeRequest;
 import play.test.FakeRequestOperation;
+import play.test.Helpers;
 
 public class ActionProxy {
     private FakeRequest request;
@@ -91,6 +92,11 @@ public class ActionProxy {
         }
 
         result = routeAndCall(request);
+
+        // Ensure that response has been done to keep backward compatibility:
+        //   from Play! 2.1.x, it might be AsyncResult. To ensure that request
+        //   has been done, we need to call Helpers.xxx()
+        Helpers.status(result);
     }
 
     public Result getResult() {

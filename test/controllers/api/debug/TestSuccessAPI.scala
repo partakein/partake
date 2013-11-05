@@ -16,6 +16,6 @@ class TestSuccessAPI extends AbstractAPITest {
   test("accessing success API") {
     val request = FakeRequest("GET", "/api/debug/success")
     val result = SuccessAPI.run(request);
-    expect(Helpers.OK) { Helpers.status(result) }
+    assertResult(Helpers.OK) { Helpers.status(result) }
   }
 }

@@ -16,7 +16,7 @@ class TestInvalidAPI extends AbstractAPITest {
   test("accessing invalid API") {
     val request = FakeRequest("GET", "/api/debug/invalid")
     val result = InvalidAPI.run(request);
-    expect(Helpers.BAD_REQUEST) { Helpers.status(result) }
+    assertResult(Helpers.BAD_REQUEST) { Helpers.status(result) }
     expectResultInvalid(result, UserErrorCode.INTENTIONAL_USER_ERROR)
   }
 }
