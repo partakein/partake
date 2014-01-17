@@ -17,7 +17,7 @@ object ApplicationBuild extends Build {
         "commons-lang" % "commons-lang" % "2.6",
         "org.owasp" % "antisamy" % "1.4",
         "ical4j" % "ical4j" % "0.9.20",
-        "org.twitter4j" % "twitter4j-core" % "3.0.3",
+        "org.twitter4j" % "twitter4j-core" % "3.0.5",
         "net.sf.opencsv" % "opencsv" % "2.1",
         "org.apache.lucene" % "lucene-analyzers" % "3.0.2",
         "org.openid4java" % "openid4java" % "0.9.5",
